@@ -511,35 +511,37 @@
                              id="header-shortcut-scroll">
                             <div class="grid grid-cols-3 gap-2">
                                 <div class="">
-                                    <a href="javascript:void(0);"
+                                    <a href="{{route('flux-schnell')}}"
                                        class="p-4 items-center related-app block text-center rounded-sm hover:bg-gray-50 dark:hover:bg-black/20">
                                         <div>
-                                            <img src="../assets/images/apps/figma.png" alt="figma"
-                                                 class="!h-[1.75rem] !w-[1.75rem] text-2xl avatar text-primary flex justify-center items-center mx-auto">
+                                            <img src="{{asset('assets/images/schnell.webp')}}" alt="figma"
+                                                style="height: 60px!important;" class="!w-full text-2xl avatar text-primary flex justify-center items-center mx-auto">
                                             <div class="text-[0.75rem] text-defaulttextcolor dark:text-[#8c9097] dark:text-white/50">
-                                                Figma
+                                                Flux Schnell
                                             </div>
                                         </div>
                                     </a>
                                 </div>
                                 <div class="">
-                                    <a href="javascript:void(0);"
+                                    <a href="{{route('midjourney')}}"
                                        class="p-4 items-center related-app block text-center rounded-sm hover:bg-gray-50 dark:hover:bg-black/20">
-                                        <img src="../assets/images/apps/microsoft-powerpoint.png" alt="miscrosoft"
-                                             class="leading-[1.75] text-2xl !h-[1.75rem] !w-[1.75rem] align-middle flex justify-center mx-auto">
+                                        <img src="{{asset('assets/images/midjourney.jpg')}}"
+                                             style="height: 60px!important;"
+
+                                             class="!w-full text-2xl avatar text-primary flex justify-center items-center mx-auto">
                                         <div class="text-[0.75rem] text-defaulttextcolor dark:text-[#8c9097] dark:text-white/50">
-                                            Power Point
+                                            Midjourney
                                         </div>
                                     </a>
                                 </div>
                                 <div class="">
-                                    <a href="javascript:void(0);"
+                                    <a href="{{route('bg.remove')}}"
                                        class="p-4 items-center related-app block text-center rounded-sm hover:bg-gray-50 dark:hover:bg-black/20">
-                                        <img src="../assets/images/apps/microsoft-word.png" alt="miscrodoftword"
-                                             class="leading-none
-                       text-2xl !h-[1.75rem] !w-[1.75rem] align-middle flex justify-center mx-auto">
+                                        <img src="{{asset('assets/images/removebg.webp')}}"
+                                             style="height: 60px!important;width: 60px!important"
+                                             class=" text-2xl avatar text-primary flex justify-center items-center mx-auto">
                                         <div class="text-[0.75rem] text-defaulttextcolor dark:text-[#8c9097] dark:text-white/50">
-                                            MS Word
+                                            Remove BG
                                         </div>
                                     </a>
                                 </div>
@@ -606,9 +608,9 @@
                             </div>
                         </div>
                         <div class="p-4 first:pt-0 border-t">
-                            <a class="w-full ti-btn ti-btn-primary-full p-2 !m-0" href="javascript:void(0);">
-                                View All
-                            </a>
+{{--                            <a class="w-full ti-btn ti-btn-primary-full p-2 !m-0" href="javascript:void(0);">--}}
+{{--                                View All--}}
+{{--                            </a>--}}
                         </div>
 
                     </div>

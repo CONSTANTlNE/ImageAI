@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('midjourneys', function (Blueprint $table) {
             $table->id();
-            $table->string('user_prompt_ka')->nullable();
-            $table->string('user_prompt_en')->nullable();
+            $table->text('user_prompt_ka')->nullable();
+            $table->text('user_prompt_en')->nullable();
             $table->string('task_id')->nullable();
-            $table->text('ai_revised_prompt')->nullable();
+            $table->string('model')->nullable();
+            $table->string('status')->nullable();
             $table->string('midjourney_url')->nullable();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();

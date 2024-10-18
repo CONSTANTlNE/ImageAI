@@ -39,14 +39,10 @@ class FortifyServiceProvider extends ServiceProvider
         });
 
 
-
-
         $this->app->instance(LoginResponse::class, new class implements LoginResponse {
             public function toResponse($request)
             {
-
-
-                return redirect(route('dashboard'));
+                return redirect(route('flux-schnell'));
             }
         });
 
@@ -54,17 +50,15 @@ class FortifyServiceProvider extends ServiceProvider
             public function toResponse($request)
             {
 //                return redirect(route('main',['locale' => app()->getLocale()]));
-
-                return redirect(route('landing'));
+                return redirect(route('index'));
             }
         });
-
 
 
         $this->app->instance(RegisterResponse::class, new class implements RegisterResponse {
             public function toResponse($request)
             {
-                return redirect(route('dashboard'));
+                return redirect(route('flux-schnell'));
             }
         });
     }

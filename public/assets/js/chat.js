@@ -11,7 +11,10 @@
     new SimpleBar(myElement3, { autoHide: true });
 
     var myElement4 = document.getElementById('main-chat-content');
-    new SimpleBar(myElement4, { autoHide: true });
+    if(myElement4){
+        new SimpleBar(myElement4, { autoHide: true });
+
+    }
 
     var myElement5 = document.getElementById('chat-user-details');
     new SimpleBar(myElement5, { autoHide: true });

@@ -13,10 +13,12 @@ return new class extends Migration
     {
         Schema::create('fluxes', function (Blueprint $table) {
             $table->id();
-            $table->text('prompt');
+            $table->text('prompt_en')->nullable();
+            $table->text('prompt_ka')->nullable();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('image_url')->nullable();
+            $table->string('model')->nullable();
             $table->timestamps();
-
         });
     }
 

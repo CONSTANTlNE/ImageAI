@@ -24,7 +24,8 @@
                                 </a>
                             </p>
                             <p class="text-[#8c9097] dark:text-white/50 mb-0 chatpersonstatus !text-defaultsize">
-                                online</p>
+                               ფასი - 0.03 ₾
+                            </p>
                         </div>
                     </div>
 
@@ -73,8 +74,8 @@
                         </button>
                     </div>
                 </div>
-                <div class="chat-content" id="main-chat-content">
-                    <ul class="list-none">
+                <div class="chat-content" id="main-chat-contentt">
+                    <ul id="chat-target" class="list-none">
                         <li class="chat-day-label">
                             <span>Today</span>
                         </li>
@@ -88,7 +89,7 @@
                                         </span>
                                         <div class="main-chat-msg">
                                             <div>
-                                                <p class="mb-0">{{$item->prompt}}</p>
+                                                <p class="mb-0">{{$item->prompt_en}}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -175,18 +176,20 @@
                         <span class="badge bg-primary/10 !rounded-full text-primary ms-1">22</span>
                         <span class="ltr:float-right rtl:float-left text-[0.6875rem]">
                             <a href="javascript:void(0);" class="text-primary underline">
-                                <u>View All</u>
+                                <u>
+                                    <a href="{{route('gallery',['model'=>'flux-schnell'])}}">  View All</a>
+                                </u>
                             </a>
                         </span>
                     </div>
                     <div class="grid grid-cols-12 gap-x-[1rem]">
-                        @foreach($flux as $item2)
+                        @foreach($flux2 as $item2)
                             @if($loop->iteration  < 20)
                                 @foreach($item2->media as $media2)
                                     <div class="xl:col-span-4 lg:col-span-4 md:col-span-4 sm:col-span-4 col-span-4">
                                         <a aria-label="anchor" href="{{$media2->getUrl()}}"
                                            class="chat-media glightbox">
-                                            <img src="{{$media2->getUrl()}}" alt="">
+                                            <img style="object-fit: cover" src="{{$media2->getUrl()}}" alt="">
                                         </a>
                                     </div>
                                 @endforeach
@@ -197,11 +200,5 @@
             </div>
         </div>
     </div>
-    <script>
 
-        const lightbox = GLightbox({
-            selector: '.glightbox'
-        });
-
-    </script>
 @endsection

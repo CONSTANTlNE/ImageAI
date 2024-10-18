@@ -194,7 +194,6 @@ class AiController extends Controller
 
     }
 
-
     // add background color
     public function addBGcolorindex(Removebg $removebg)
     {

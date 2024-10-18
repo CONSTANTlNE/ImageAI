@@ -51,6 +51,10 @@ class User extends Authenticatable
         return $this->hasMany(ImageGeneration::class);
     }
 
+    public function fluxes(): HasMany{
+        return $this->hasMany(Flux::class);
+    }
+
     public function midjourneys(): HasMany
     {
         return $this->hasMany(Midjourney::class);
@@ -61,6 +65,9 @@ class User extends Authenticatable
         return $this->hasMany(Removebg::class);
     }
 
+    public function balances(): HasMany{
 
+        return $this->hasMany(Balance::class);
+    }
 
 }

@@ -4,7 +4,6 @@ import * as fal from "@fal-ai/serverless-client";
 
 
 
-
 async function callFalAi2(prompt) {
     try {
 
@@ -21,7 +20,7 @@ async function callFalAi2(prompt) {
         });
 
 
-        console.log(result);
+
 
 
           //
@@ -59,6 +58,7 @@ async function callFalAi2(prompt) {
 
 // ================== Traditional form submission  ========================
 
+
 // Create a form element
         const form = document.createElement('form');
         form.method = 'POST';
@@ -88,7 +88,6 @@ async function callFalAi2(prompt) {
 // Append the form to the body and submit it
         document.body.appendChild(form);
         form.submit();
-
 
     } catch (error) {
         console.log(error);

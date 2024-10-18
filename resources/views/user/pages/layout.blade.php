@@ -15,6 +15,7 @@
     <!-- Favicon -->
     <link rel="shortcut icon" href="../assets/images/brand-logos/favicon.ico">
 
+
     <!-- Main JS -->
     <script src="{{asset('assets/js/main.js')}}"></script>
 
@@ -47,7 +48,7 @@
             integrity="sha384-0895/pl2MU10Hqc6jd4RvrthNlDiE9U1tWmX7WRESftEDRosgxNsQG/Ze9YMRzHq"
             crossorigin="anonymous"></script>
 
-    @if(request()->routeIs('image.generate'))
+    @if(request()->routeIs('midjourney'))
         <style>
             .simplebar-content {
                 padding-right: 5px !important;
@@ -132,8 +133,8 @@
 
 </head>
 
-<body>
-
+<body   id="foo">
+<div id="htmxerrors"></div>
 <!-- ========== Switcher  ========== -->
 @include('user.pages.components.switcher')
 <!-- ========== END Switcher  ========== -->
@@ -162,6 +163,7 @@
         @yield('add-color')
         @yield('removebg-gallery')
         @yield('fluxshnell')
+        @yield('gallery')
 
     </div>
     <!-- End::content  -->
@@ -184,214 +186,7 @@
 
 <div id="responsive-overlay"></div>
 
-<svg id="foo" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24">
-    <rect width="7.33" height="7.33" x="1" y="1" fill="currentColor">
-        <animate id="svgSpinnersBlocksWave0" attributeName="x" begin="0;svgSpinnersBlocksWave1.end+0.2s" dur="0.6s"
-                 values="1;4;1"/>
-        <animate attributeName="y" begin="0;svgSpinnersBlocksWave1.end+0.2s" dur="0.6s" values="1;4;1"/>
-        <animate attributeName="width" begin="0;svgSpinnersBlocksWave1.end+0.2s" dur="0.6s" values="7.33;1.33;7.33"/>
-        <animate attributeName="height" begin="0;svgSpinnersBlocksWave1.end+0.2s" dur="0.6s" values="7.33;1.33;7.33"/>
-    </rect>
-    <rect width="7.33" height="7.33" x="8.33" y="1" fill="currentColor">
-        <animate attributeName="x" begin="svgSpinnersBlocksWave0.begin+0.1s" dur="0.6s" values="8.33;11.33;8.33"/>
-        <animate attributeName="y" begin="svgSpinnersBlocksWave0.begin+0.1s" dur="0.6s" values="1;4;1"/>
-        <animate attributeName="width" begin="svgSpinnersBlocksWave0.begin+0.1s" dur="0.6s" values="7.33;1.33;7.33"/>
-        <animate attributeName="height" begin="svgSpinnersBlocksWave0.begin+0.1s" dur="0.6s" values="7.33;1.33;7.33"/>
-    </rect>
-    <rect width="7.33" height="7.33" x="1" y="8.33" fill="currentColor">
-        <animate attributeName="x" begin="svgSpinnersBlocksWave0.begin+0.1s" dur="0.6s" values="1;4;1"/>
-        <animate attributeName="y" begin="svgSpinnersBlocksWave0.begin+0.1s" dur="0.6s" values="8.33;11.33;8.33"/>
-        <animate attributeName="width" begin="svgSpinnersBlocksWave0.begin+0.1s" dur="0.6s" values="7.33;1.33;7.33"/>
-        <animate attributeName="height" begin="svgSpinnersBlocksWave0.begin+0.1s" dur="0.6s" values="7.33;1.33;7.33"/>
-    </rect>
-    <rect width="7.33" height="7.33" x="15.66" y="1" fill="currentColor">
-        <animate attributeName="x" begin="svgSpinnersBlocksWave0.begin+0.2s" dur="0.6s" values="15.66;18.66;15.66"/>
-        <animate attributeName="y" begin="svgSpinnersBlocksWave0.begin+0.2s" dur="0.6s" values="1;4;1"/>
-        <animate attributeName="width" begin="svgSpinnersBlocksWave0.begin+0.2s" dur="0.6s" values="7.33;1.33;7.33"/>
-        <animate attributeName="height" begin="svgSpinnersBlocksWave0.begin+0.2s" dur="0.6s" values="7.33;1.33;7.33"/>
-    </rect>
-    <rect width="7.33" height="7.33" x="8.33" y="8.33" fill="currentColor">
-        <animate attributeName="x" begin="svgSpinnersBlocksWave0.begin+0.2s" dur="0.6s" values="8.33;11.33;8.33"/>
-        <animate attributeName="y" begin="svgSpinnersBlocksWave0.begin+0.2s" dur="0.6s" values="8.33;11.33;8.33"/>
-        <animate attributeName="width" begin="svgSpinnersBlocksWave0.begin+0.2s" dur="0.6s" values="7.33;1.33;7.33"/>
-        <animate attributeName="height" begin="svgSpinnersBlocksWave0.begin+0.2s" dur="0.6s" values="7.33;1.33;7.33"/>
-    </rect>
-    <rect width="7.33" height="7.33" x="1" y="15.66" fill="currentColor">
-        <animate attributeName="x" begin="svgSpinnersBlocksWave0.begin+0.2s" dur="0.6s" values="1;4;1"/>
-        <animate attributeName="y" begin="svgSpinnersBlocksWave0.begin+0.2s" dur="0.6s" values="15.66;18.66;15.66"/>
-        <animate attributeName="width" begin="svgSpinnersBlocksWave0.begin+0.2s" dur="0.6s" values="7.33;1.33;7.33"/>
-        <animate attributeName="height" begin="svgSpinnersBlocksWave0.begin+0.2s" dur="0.6s" values="7.33;1.33;7.33"/>
-    </rect>
-    <rect width="7.33" height="7.33" x="15.66" y="8.33" fill="currentColor">
-        <animate attributeName="x" begin="svgSpinnersBlocksWave0.begin+0.3s" dur="0.6s" values="15.66;18.66;15.66"/>
-        <animate attributeName="y" begin="svgSpinnersBlocksWave0.begin+0.3s" dur="0.6s" values="8.33;11.33;8.33"/>
-        <animate attributeName="width" begin="svgSpinnersBlocksWave0.begin+0.3s" dur="0.6s" values="7.33;1.33;7.33"/>
-        <animate attributeName="height" begin="svgSpinnersBlocksWave0.begin+0.3s" dur="0.6s" values="7.33;1.33;7.33"/>
-    </rect>
-    <rect width="7.33" height="7.33" x="8.33" y="15.66" fill="currentColor">
-        <animate attributeName="x" begin="svgSpinnersBlocksWave0.begin+0.3s" dur="0.6s" values="8.33;11.33;8.33"/>
-        <animate attributeName="y" begin="svgSpinnersBlocksWave0.begin+0.3s" dur="0.6s" values="15.66;18.66;15.66"/>
-        <animate attributeName="width" begin="svgSpinnersBlocksWave0.begin+0.3s" dur="0.6s" values="7.33;1.33;7.33"/>
-        <animate attributeName="height" begin="svgSpinnersBlocksWave0.begin+0.3s" dur="0.6s" values="7.33;1.33;7.33"/>
-    </rect>
-    <rect width="7.33" height="7.33" x="15.66" y="15.66" fill="currentColor">
-        <animate id="svgSpinnersBlocksWave1" attributeName="x" begin="svgSpinnersBlocksWave0.begin+0.4s" dur="0.6s"
-                 values="15.66;18.66;15.66"/>
-        <animate attributeName="y" begin="svgSpinnersBlocksWave0.begin+0.4s" dur="0.6s" values="15.66;18.66;15.66"/>
-        <animate attributeName="width" begin="svgSpinnersBlocksWave0.begin+0.4s" dur="0.6s" values="7.33;1.33;7.33"/>
-        <animate attributeName="height" begin="svgSpinnersBlocksWave0.begin+0.4s" dur="0.6s" values="7.33;1.33;7.33"/>
-    </rect>
-</svg>
-
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-
-<!-- Switch JS -->
-<script src="{{asset('assets/js/switch.js')}}"></script>
-
-<!-- Preline JS -->
-<script src="{{asset('assets/libs/preline/preline.js')}}"></script>
-
-<!-- popperjs -->
-<script src="{{asset('assets/libs/@popperjs/core/umd/popper.min.js')}}"></script>
-
-<!-- Color Picker JS -->
-<script src="{{asset('assets/libs/@simonwep/pickr/pickr.es5.min.js')}}"></script>
-
-<!-- sidebar JS -->
-<script src="{{asset('assets/js/defaultmenu.js')}}"></script>
-
-<!-- sticky JS -->
-<script src="{{asset('assets/js/sticky.js')}}"></script>
-
-<!-- Simplebar JS -->
-<script src="{{asset('assets/libs/simplebar/simplebar.min.js')}}"></script>
-
-<!-- Apex Charts JS -->
-{{--<script src="../assets/libs/apexcharts/apexcharts.min.js"></script>--}}
-
-<!-- Jobs-Dashboard -->
-{{--<script src="../assets/js/jobs-dashboard.js"></script>--}}
-
-<!-- Custom-Switcher JS -->
-<script src="{{asset('assets/js/custom-switcher.js')}}"></script>
-
-@if(request()->routeIs('image.generate') || request()->routeIs('flux-schnell'))
-    <!-- Chat JS -->
-    <script src="{{asset('assets/js/chat.js')}}"></script>
-@endif
-
-@if(request()->routeIs('bg.remove'))
-
-    <script>
-
-        const inputElement = document.querySelector('.filepond');
-
-        FilePond.registerPlugin(
-            FilePondPluginImagePreview,
-            FilePondPluginImageExifOrientation,
-            FilePondPluginImageValidateSize,
-        );
-
-        const multipleInput = document.getElementById('multiple');
-        FilePond.create(inputElement, {
-            labelIdle: `მოათავსეთ ფოტო Drag & Drop-ით ან <span class="filepond--label-action">ატვირთეთ</span>`,
-            onupdatefiles: (files) => {
-                // When FilePond updates, update the hidden input with the FilePond files
-                const fileArray = files.map(fileItem => fileItem.file);
-                const dataTransfer = new DataTransfer();
-
-                // Add each file from FilePond to the hidden input
-                fileArray.forEach(file => {
-                    dataTransfer.items.add(file);
-                });
-
-                // Set the files in the hidden input
-                multipleInput.files = dataTransfer.files;
-            },
-        });
-
-    </script>
-
-@endif
-
-<!-- Custom JS -->
-<script src="{{asset('assets/js/custom.js')}}"></script>
-
-
-@if(session()->has('alert_error'))
-    <script>
-        Swal.fire({
-                html: `
-    <div class="flex justify-center">
-<span style="color:red;font-size:50px" class="material-symbols-outlined">error</span>
-  </div>
-    <p style="font-size:1.2rem" class="mt-2">{{session()->get('alert_error')}}</p>
-  `,
-                timer: 1800,
-                showConfirmButton: false,
-
-            },
-        )
-    </script>
-    @php
-        session()->forget('alert_error');
-    @endphp
-@endif
-@if(session()->has('alert_success'))
-    <script>
-        Swal.fire({
-                icon: 'success',
-                showConfirmButton: false,
-                timer: 1800,
-                text: '{{session()->get('alert_success')}}',
-            },
-        )
-    </script>
-    @php
-        session()->forget('alert_success');
-    @endphp
-@endif
-@if($errors->any())
-    <script>
-        Swal.fire({
-            icon: 'error',
-            html: '{!! implode('<br>', $errors->all()) !!}',
-            showConfirmButton: false,
-            timer: 2800,
-        });
-    </script>
-@endif
-<script type="module" src="{{asset('assets/js/spin.js')}}"></script>
-
-<script type="module">
-    import {Spinner} from '../../../../assets/js/spin.js';
-
-    var opts = {
-        lines: 13, // The number of lines to draw
-        length: 38, // The length of each line
-        width: 17, // The line thickness
-        radius: 45, // The radius of the inner circle
-        scale: 1, // Scales overall size of the spinner
-        corners: 1, // Corner roundness (0..1)
-        speed: 1, // Rounds per second
-        rotate: 0, // The rotation offset
-        animation: 'spinner-line-fade-quick', // The CSS animation name for the lines
-        direction: 1, // 1: clockwise, -1: counterclockwise
-        color: '#ffffff', // CSS color or array of colors
-        fadeColor: 'transparent', // CSS color or array of colors
-        top: '50%', // Top position relative to parent
-        left: '50%', // Left position relative to parent
-        shadow: '0 0 1px transparent', // Box-shadow for the lines
-        zIndex: 2000000000, // The z-index (defaults to 2e9)
-        className: 'spinner', // The CSS class to assign to the spinner
-        position: 'absolute', // Element positioning
-    };
-
-    var target = document.getElementById('foo');
-    var spinner = new Spinner(opts).spin(target);
-</script>
-
+@include('user.pages.components.scripts')
 </body>
 
 </html>
