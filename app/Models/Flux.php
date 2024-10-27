@@ -29,7 +29,6 @@ class Flux extends Model  implements HasMedia
             $flux->user_id = auth()->id();
         });
 
-        // Global scope for getting always current users data
         static::addGlobalScope(function (Builder $builder) {
             $builder->where('user_id', auth()->id());
         });

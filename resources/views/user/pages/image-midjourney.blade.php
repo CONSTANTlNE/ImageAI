@@ -12,7 +12,7 @@
                 <div class="sm:flex items-center p-2 border-b dark:border-defaultborder/10">
                     <div class="flex items-center leading-none">
                             <span class="avatar avatar-lg online me-4 avatar-rounded chatstatusperson">
-                                <img class="chatimageperson" src="../assets/images/faces/2.jpg" alt="img">
+                                <img class="chatimageperson" src="{{asset('assets/images/midjourney.jpg')}}" alt="img">
                             </span>
                         <div class="flex-grow">
                             <p class="mb-1 font-semibold text-[.875rem]">
@@ -141,29 +141,9 @@
                 <button aria-label="button" type="button"
                         class="ti-btn ti-btn-icon ti-btn-outline-light my-1 ms-2 responsive-chat-close2"><i
                             class="ri-close-line"></i></button>
-                <div class="text-center mb-[3rem]">
-                        <span class="avatar avatar-rounded online avatar-xxl me-2 mb-4 chatstatusperson">
-                            <img class="chatimageperson" src="../assets/images/faces/2.jpg" alt="img">
-                        </span>
-                    <p class="mb-1 text-[0.9375rem] font-semibold text-defaulttextcolor dark:text-defaulttextcolor/70 leading-none chatnameperson ">
-                        MidJourney
-                    </p>
-                    <p class="text-[0.75rem] text-[#8c9097] dark:text-white/50 !mb-4"><span class="chatnameperson">emaileyjackson2134</span>@gmail.com
-                    </p>
-                    <p class="text-center mb-0">
-                        <button type="button" aria-label="button"
-                                class="ti-btn ti-btn-icon !rounded-full ti-btn-primary"><i
-                                    class="ri-phone-line"></i></button>
-                        <button type="button" aria-label="button"
-                                class="ti-btn ti-btn-icon !rounded-full ti-btn-primary !ms-2"><i
-                                    class="ri-video-add-line"></i></button>
-                        <button type="button" aria-label="button"
-                                class="ti-btn ti-btn-icon !rounded-full ti-btn-primary !ms-2"><i
-                                    class="ri-chat-1-line"></i></button>
-                    </p>
-                </div>
 
-                <div style="margin-left: 10px" class="mb-0">
+
+                <div style="margin-left: 10px" class="mb-0 mt-3">
                     <div class="font-semibold mb-4 text-defaultsize dark:text-defaulttextcolor/70">Photos &amp; Media
                         <span class="badge bg-primary/10 !rounded-full text-primary ms-1">22</span>
                         <span class="ltr:float-right rtl:float-left text-[0.6875rem]">

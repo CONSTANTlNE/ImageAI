@@ -4,8 +4,9 @@
          role="tablist">
         <a class="hs-tab-active:border-b-2 hs-tab-active:border-b-primary hs-tab-active:bg-primary/10 hs-tab-active:text-primary cursor-pointer border-e dark:border-defaultborder/10 text-defaulttextcolor py-2 px-4 flex-grow  text-sm font-medium text-center rounded-none active"
            id="users-item" data-hs-tab="#users-tab-pane" aria-controls="users-tab-pane">
-            <i
-                    class="ri-history-line me-1 align-middle inline-block cursor-pointer w-[1.875rem] h-[1.875rem] p-[0.4rem] rounded-full hs-tab-active:bg-primary/10 bg-light"></i>მოქმედება
+            <i  class="ri-history-line me-1 align-middle inline-block cursor-pointer w-[1.875rem] h-[1.875rem] p-[0.4rem] rounded-full hs-tab-active:bg-primary/10 bg-light">
+                       </i>
+            AI
         </a>
         <a class="hs-tab-active:border-b-2 hs-tab-active:border-b-primary hs-tab-active:bg-primary/10 hs-tab-active:text-primary cursor-pointer border-e dark:border-defaultborder/10 text-defaulttextcolor py-2 px-4 text-sm flex-grow font-medium text-center  rounded-none "
            id="groups-item" data-hs-tab="#groups-tab-pane" aria-controls="groups-tab-pane">
@@ -28,11 +29,11 @@
                 </li>
                 {{-- Midjourney--}}
                 <li class="checkforactive">
-                    <a  href="{{route('midjourney')}}" onclick="changeTheInfo(this,'Midjourney','5','online')" >
+                    <a  href="{{route('midjourney')}}" onclick="changeTheInfo(this,'Midjourney','5','ფასი - 0.25 ₾')" >
                         <div class="flex items-start">
                             <div class="me-1 leading-none">
                                                 <span class="avatar avatar-md online me-2 avatar-rounded">
-                                                    <img src="../assets/images/faces/5.jpg" alt="img">
+                                                    <img src="{{asset('assets/images/midjourney.jpg')}}" alt="img">
                                                 </span>
                             </div>
                             <div class="flex-grow">
@@ -49,13 +50,36 @@
                         </div>
                     </a>
                 </li>
-                {{-- Flux shcnell--}}
+                {{-- Runway--}}
                 <li class="checkforactive">
-                    <a  href="{{route('flux-schnell')}}" onclick="changeTheInfo(this,'Flux Schnell','5','online')">
+                    <a  href="{{route('runway')}}" onclick="changeTheInfo(this,'Runway','5','ფასი - 1.50 ₾')" >
                         <div class="flex items-start">
                             <div class="me-1 leading-none">
                                                 <span class="avatar avatar-md online me-2 avatar-rounded">
-                                                    <img src="../assets/images/faces/5.jpg" alt="img">
+                                                    <img src="{{asset('assets/images/runway.png')}}" alt="img">
+                                                </span>
+                            </div>
+                            <div class="flex-grow">
+                                <p class="mb-0 font-semibold">
+                                    Runway <span
+                                            class="ltr:float-right rtl:float-left text-[#8c9097] dark:text-white/50 font-normal text-[0.6875rem]">1:32PM</span>
+                                </p>
+                                <p class="text-[0.75rem] mb-0">
+                                    <span class="chat-msg text-truncate">Need to go for lunch?</span>
+                                    <span class="chat-read-icon ltr:float-right rtl:float-left align-middle"><i
+                                                class="ri-check-double-fill"></i></span>
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+                {{-- Flux shcnell--}}
+                <li class="checkforactive">
+                    <a  href="{{route('flux-schnell')}}" onclick="changeTheInfo(this,'Flux Schnell','5','ფასი - 0.03 ₾')">
+                        <div class="flex items-start">
+                            <div class="me-1 leading-none">
+                                                <span class="avatar avatar-md online me-2 avatar-rounded">
+                                                    <img src="{{asset('assets/images/schnell.webp')}}" alt="img">
                                                 </span>
                             </div>
                             <div class="flex-grow">

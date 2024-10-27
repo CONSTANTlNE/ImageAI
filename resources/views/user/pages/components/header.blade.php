@@ -535,6 +535,18 @@
                                     </a>
                                 </div>
                                 <div class="">
+                                    <a href="{{route('runway')}}"
+                                       class="p-4 items-center related-app block text-center rounded-sm hover:bg-gray-50 dark:hover:bg-black/20">
+                                        <img  src="{{asset('assets/images/runway.png')}}"
+                                             style="height: 60px!important;object-fit: cover"
+
+                                             class="!w-full text-2xl avatar text-primary flex justify-center items-center mx-auto">
+                                        <div class="text-[0.75rem] text-defaulttextcolor dark:text-[#8c9097] dark:text-white/50">
+                                            Runway
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="">
                                     <a href="{{route('bg.remove')}}"
                                        class="p-4 items-center related-app block text-center rounded-sm hover:bg-gray-50 dark:hover:bg-black/20">
                                         <img src="{{asset('assets/images/removebg.webp')}}"

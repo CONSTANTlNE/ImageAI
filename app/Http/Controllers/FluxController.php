@@ -16,12 +16,12 @@ class FluxController extends Controller
 
     public function index(Request $request)
     {
-        $flux = flux::where('model', 'schnell')
+        $flux = Flux::where('model', 'schnell')
             ->whereDate('created_at', Carbon::today())
             ->with('media')
             ->get();
 
-        $flux2 = flux::where('model', 'schnell')
+        $flux2 = Flux::where('model', 'schnell')
             ->with('media')
             ->take(30)
             ->orderBy('created_at', 'desc')
@@ -60,7 +60,7 @@ class FluxController extends Controller
 
 
 
-        return view('user.htmx.flux-schnell', compact('prompt', 'key'));
+        return view('user.htmx.flux-htmx', compact('prompt', 'key'));
     }
 
     public function schnellsave(Request $request)

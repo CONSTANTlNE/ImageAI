@@ -12,7 +12,8 @@
                 <input id="multiple" style="display: none" type="file" name="images[]">
                 <input type="file"
                        class="filepond"
-                       multiple
+                       data-allow-reorder="true"
+
                 >
                 <button class="ti-btn ti-btn-dark !rounded-full ti-btn-wave text-white mt-3">დამუშავება</button>
             </form>

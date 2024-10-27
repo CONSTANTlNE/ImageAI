@@ -4,8 +4,12 @@ use App\Http\Controllers\AiController;
 use App\Http\Controllers\FluxController;
 use App\Http\Controllers\MidjourneyController;
 use App\Http\Controllers\MainController;
+use App\Http\Controllers\RunwayController;
+use App\Jobs\WebmConversion;
 use App\Models\Balance;
 use App\Models\Midjourney;
+use FFMpeg\FFMpeg;
+use FFMpeg\Format\Video\WebM;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
@@ -59,20 +63,17 @@ Route::middleware('auth')
             [FluxController::class, 'schnelldelete'])->name('flux-schnell.delete');
         Route::get('/flux-schnell/download', [FluxController::class, 'download'])->name('flux.download');
 
+        // Runway Routes
+        Route::get('/runway', [RunwayController::class, 'index'])->name('runway');
+        Route::post('runway/queue',[RunwayController::class,'create'])->name('runway.queue');
+        Route::get('/runway/htmx', [RunwayController::class, 'gallery'])->name('runway.gallery.htmx');
+
 
         // Gallery
         Route::get('/gallery/{model}', [MainController::class, 'gallery'])->name('gallery');
 
-        // Test Routes
-        Route::get('/webp', [MidjourneyController::class, 'webp'])->name('webp');
-        Route::get('/detect', [MidjourneyController::class, 'detect'])->name('detect');
 
-
-        Route::get('php', function () {
-            return phpinfo();
-        });
-
-
+        // Intervention - webp conversion
         Route::get('encode', function () {
             $imagePath = storage_path('app/public/tmp_image_1728062379.png');
 
@@ -91,6 +92,8 @@ Route::middleware('auth')
     });
 
 
+// TESTING ROUTES
+
 Route::get('token', function () {
     $user = auth()->user();
 //    1|BsSD6oVb8wPqXjdApw4rjjbaAyFUr5aNnos7oiMG76a5d164
@@ -100,27 +103,23 @@ Route::get('token', function () {
 });
 
 
-Route::get('/flux-dev', [FluxController::class, 'promptJs'])->name('flux');
-Route::get('/fal', function () {
-    return view('fal');
-})->name('flux');
-
 Route::get('/manual', function () {
     auth()->logout();
 });
 
-Route::get('/count', function () {
-    $midjourney = Midjourney::where('id', 3)->with('media')->first();
-
-    dd($midjourney->media->count());
-});
-
 Route::get('manualbalance', function () {
     $balance           = new Balance;
-    $balance->balance  =3.81;
+    $balance->balance  = 3.81;
     $balance->provider = 'MIDJOURNEY';
-    $balance->rate=2.7136;
+    $balance->rate     = 2.7136;
     $balance->save();
+
+    $balance           = new Balance;
+    $balance->balance  = 3.81;
+    $balance->provider = 'FALAI';
+    $balance->rate     = 2.7136;
+    $balance->save();
+
 //
 //    $rate=Balance::where('provider', 'FALAI')
 //        ->whereNotNull('rate')
@@ -129,3 +128,66 @@ Route::get('manualbalance', function () {
 //    return $rate->rate;
 
 });
+
+
+//  ffmpeg
+
+Route::get('convert', function () {
+    $videoPath = public_path('videos/2.mp4');
+    WebmConversion::dispatch($videoPath);  // Pass the path, not the video object
+
+    return 'Job dispatched';
+});
+
+route::get('video', function () {
+    $video = asset('export-webm.webm');
+
+    return view('video', compact('video'));
+});
+
+
+//FAL AI TEST ENDPOINTS
+
+Route::get('manualrunway',[RunwayController::class,'manualrunway'])->name('runway.index');
+Route::post('runwayq',[RunwayController::class,'manual'])->name('runway.queue2');
+
+
+Route::post('queue', function () {
+
+    // JUST QUEUE
+
+//    $key      = config('apikeys.falAI');
+//    $response=Http::withHeaders(['Authorization'=> 'Key '. $key  ])->post('https://queue.fal.run/fal-ai/flux/schnell', [
+//
+//        'prompt' => 'A bunny eating a carrot in the field.',
+//    ]);
+
+
+//        $key      = config('apikeys.falAI');
+//    $response=Http::withHeaders(['Authorization'=> 'Key '. $key  ])->post('https://queue.fal.run/fal-ai/flux/schnell?fal_webhook=https://local.ews.ge/api/runway/webhook', [
+//        'prompt' => 'dog wearing a sunglasses chillin on the sandy beach',
+//    ]);
+
+
+    $key      = config('apikeys.falAI');
+    $response=Http::withHeaders(['Authorization'=> 'Key '. $key  ])->post('https://queue.fal.run/fal-ai/runway-gen3/turbo/image-to-video?fal_webhook=https://local.ews.ge/api/runway/webhook', [
+        'prompt' => 'dog wearing a sunglasses chillin on the sandy beach',
+    ]);
+
+
+    return $response->json();
+})->name('queue');
+
+
+
+
+Route::get('manualfetch',function(){
+
+    $key=config('apikeys.falAI');
+    $response=Http::withHeaders(['Authorization'=> 'Key '. $key])->get('https://queue.fal.run/fal-ai/runway-gen3/turbo/image-to-video/requests/bf92505f-a7dc-42f4-93fd-edb06079cff4');
+//    bf92505f-a7dc-42f4-93fd-edb06079cff4
+    return $response->json();
+})->name('manualfetch');
+
+
+

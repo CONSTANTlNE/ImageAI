@@ -51,16 +51,20 @@ class User extends Authenticatable
         return $this->hasMany(ImageGeneration::class);
     }
 
-    public function fluxes(): HasMany{
+    public function flux(): HasMany{
         return $this->hasMany(Flux::class);
     }
 
-    public function midjourneys(): HasMany
+    public function runway(): HasMany{
+        return $this->hasMany(Runway::class);
+    }
+
+    public function midjourney(): HasMany
     {
         return $this->hasMany(Midjourney::class);
     }
 
-    public function removebgs(): HasMany
+    public function removebg(): HasMany
     {
         return $this->hasMany(Removebg::class);
     }

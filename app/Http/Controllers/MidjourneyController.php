@@ -232,25 +232,6 @@ class MidjourneyController extends Controller
         }
     }
 
-    public function webhook(Request $request)
-    {
-        $secret = '1|BsSD6oVb8wPqXjdApw4rjjbaAyFUr5aNnos7oiMG76a5d164';
-
-        Log::channel('webhooks')->info('Webhook received', [
-            'headers'    => $request->headers->all(),
-            'payload'    => $request->all(),
-            'ip_address' => $request->ip(),
-        ]);
-
-
-        if ($request->header('x-webhook-secret') !== $secret) {
-            abort(403, 'Unauthorized webhook request.');
-        }
-
-
-        return response('Webhook logged', 200);
-    }
-
     public function download(Request $request){
 
         $midjourney=Midjourney::where('id',$request->id)->with('media')->first();

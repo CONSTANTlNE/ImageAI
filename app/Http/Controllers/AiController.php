@@ -93,17 +93,19 @@ class AiController extends Controller
 //            $filePath = storage_path('app/public/processed_image.png');
 //            file_put_contents($filePath, $imageData);
 
-            } else {
-                return response()->json([
-                    $response->body(),
-                ], $response->status());
             }
+
+            // send error email and log !
+
+            return response()->json([
+                $response->body(),
+            ], $response->status());
         }
 
         return back()->with('alert_error', 'გთხოვთ ატვირთეთ ფოტო');
     }
 
-    public function downloadBG(Request $request)
+    public function downloadBG(Request $request): \Symfony\Component\HttpFoundation\BinaryFileResponse
     {
 
         $removebg=Removebg::where('id',$request->id)->with('media')->first();
@@ -111,8 +113,8 @@ class AiController extends Controller
 
         $filePath = $media->getPath(); // Use getPath() to get the physical path
         // Force the download
-        return response()->download($filePath, $media->file_name);
 
+        return response()->download($filePath, $media->file_name);
 
     }
 
@@ -130,9 +132,8 @@ class AiController extends Controller
         return view('user.pages.add-bg', compact('images'));
     }
 
-    public function addBGstore(Request $request)
+    public function addBGstore(Request $request): \Illuminate\Http\RedirectResponse
     {
-
 
         $addbg = new Addbg();
         $addbg->save();
@@ -171,7 +172,8 @@ class AiController extends Controller
         return back()->with('alert_success', 'ფოტო წარმატებით შეინახა');
     }
 
-    public function addBGdelete(Addbg $addbg){
+    public function addBGdelete(Addbg $addbg): \Illuminate\Http\RedirectResponse
+    {
 
 //        dd($addbg);
         $addbg->media->each(function ($media) {
@@ -181,7 +183,7 @@ class AiController extends Controller
         return back()->with('alert_success', 'წარმატებით წაიშალა');
     }
 
-    public function  addBGdownload(Request $request)
+    public function  addBGdownload(Request $request): \Symfony\Component\HttpFoundation\BinaryFileResponse
     {
 
         $removebg=Addbg::where('id',$request->id)->with('media')->first();

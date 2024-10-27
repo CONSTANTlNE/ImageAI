@@ -58,6 +58,12 @@ return [
             'ignore_exceptions' => false,
         ],
 
+        'ffmpeg'=>[
+            'driver' => 'single',
+            'path' => storage_path('logs/ffmpeg.log'),
+            'level' => 'info',
+        ],
+
         'webhook' => [
             'driver' => 'single',
             'path' => storage_path('logs/webhooks.log'),

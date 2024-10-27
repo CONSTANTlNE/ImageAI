@@ -11,7 +11,7 @@ document.addEventListener('htmx:afterOnLoad', function (event) {
     // console.log(xhr.status)
 
 
-    if (xhr.status === 500){
+    if (xhr.status === 500 || xhr.status === 405) {
 
         document.getElementById('htmxerrors').innerHTML = response
     }

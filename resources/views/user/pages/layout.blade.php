@@ -32,7 +32,7 @@
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css"/>
     <script src="https://cdn.jsdelivr.net/gh/mcstudios/glightbox/dist/js/glightbox.min.js"></script>
-    @if(request()->routeIs('bg.remove'))
+    @if(request()->routeIs('bg.remove') || request()->routeIs('runway'))
         <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet"/>
         <link
                 href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css"
@@ -163,6 +163,7 @@
         @yield('add-color')
         @yield('removebg-gallery')
         @yield('fluxshnell')
+        @yield('runway')
         @yield('gallery')
 
     </div>

@@ -23,12 +23,12 @@
 <!-- Custom-Switcher JS -->
 <script src="{{asset('assets/js/custom-switcher.js')}}"></script>
 
-@if(request()->routeIs('midjourney') || request()->routeIs('flux-schnell'))
+@if(request()->routeIs('midjourney') || request()->routeIs('flux-schnell') || request()->routeIs('runway'))
     <!-- Chat JS -->
     <script src="{{asset('assets/js/chat.js')}}"></script>
 @endif
 
-@if(request()->routeIs('bg.remove'))
+@if(request()->routeIs('bg.remove') )
 
     <script>
 
@@ -61,6 +61,29 @@
     </script>
 
 @endif
+
+@if(request()->routeIs('runway'))
+
+    <script>
+        const runwayBtn = document.getElementById('runwayBtn');
+        const runwayFile = document.getElementById('runwayFile');
+        const runwayPhotoName = document.getElementById('runwayPhotoName');
+
+        // Trigger file selection when button is clicked
+        runwayBtn.addEventListener('click', function() {
+            runwayFile.click();
+        });
+
+        // Display the selected file name
+        runwayFile.addEventListener('change', function() {
+            const fileName = runwayFile.files[0]?.name || "No file selected";
+            runwayPhotoName.textContent = fileName;
+        });
+
+    </script>
+
+@endif
+
 
 <!-- Custom JS -->
 <script src="{{asset('assets/js/custom.js')}}"></script>
