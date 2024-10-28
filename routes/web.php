@@ -36,19 +36,19 @@ Route::middleware('auth')
         Route::post('/midjourney/delete}',
             [MidjourneyController::class, 'delete'])->name('midjourney.delete');
         Route::post('/image/create/htmx', [MidjourneyController::class, 'createHtmx'])->name('midjourney.create.htmx');
-        Route::get('/midjourney/gallery', [MidjourneyController::class, 'imagesPreview'])->name('midjourney.preview');
         Route::get('/midjourney/download', [MidjourneyController::class, 'download'])->name('midjourney.download');
 
         // Remove background routes
         Route::get('/remove-bg', [AiController::class, 'removeBGindex'])->name('bg.remove');
         Route::post('/remove-bg/create', [AiController::class, 'removeBG'])->name('remove');
         Route::get('/remove-bg/download/{id}', [AiController::class, 'downloadBG'])->name('bg.download');
+        Route::post('/remove-bg/delete/{removebg}', [AiController::class, 'delete'])->name('bg.delete');
         Route::get('/remove-bg/gallery', [AiController::class, 'galleryBG'])->name('bg.gallery');
 
         // Add background image
         Route::get('/add-bg', [AiController::class, 'addBGindex'])->name('bg.add');
         Route::post('/add-bg/save', [AiController::class, 'addBGstore'])->name('bg.save');
-        Route::post('/add-bg/delete/{addbg}', [AiController::class, 'addBGdelete'])->name('bg.delete');
+        Route::post('/add-bg/delete/{addbg}', [AiController::class, 'addBGdelete'])->name('bg.delete2');
         Route::get('/add-bg/download/{id}', [AiController::class, 'addBGdownload'])->name('bg.download2');
 
         // add background color
@@ -59,14 +59,14 @@ Route::middleware('auth')
         Route::get('/flux-schnell', [FluxController::class, 'index'])->name('flux-schnell');
         Route::post('/flux-schnell/prompt', [FluxController::class, 'schnellGenerate'])->name('flux-schnell.prompt');
         Route::post('/flux-schnell/save', [FluxController::class, 'schnellsave'])->name('flux-schnell.save');
-        Route::post('/flux-schnell/delete/{flux}',
+        Route::post('/flux-schnell/delete/{flux?}',
             [FluxController::class, 'schnelldelete'])->name('flux-schnell.delete');
         Route::get('/flux-schnell/download', [FluxController::class, 'download'])->name('flux.download');
 
         // Runway Routes
         Route::get('/runway', [RunwayController::class, 'index'])->name('runway');
         Route::post('runway/queue',[RunwayController::class,'create'])->name('runway.queue');
-        Route::get('/runway/htmx', [RunwayController::class, 'gallery'])->name('runway.gallery.htmx');
+        Route::get('/runway/htmx', [RunwayController::class, 'galleryHtmx'])->name('runway.gallery.htmx');
 
 
         // Gallery

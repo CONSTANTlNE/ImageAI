@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="htmx-config" content='{"selfRequestsOnly":false}'>
     <title> IMAGEAI</title>
     <meta name="description"
           content="A Tailwind CSS admin template is a pre-designed web page for an admin dashboard. Optimizing it for SEO includes using meta descriptions and ensuring it's responsive and fast-loading.">
@@ -14,7 +15,6 @@
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="../assets/images/brand-logos/favicon.ico">
-
 
     <!-- Main JS -->
     <script src="{{asset('assets/js/main.js')}}"></script>
@@ -58,6 +58,9 @@
     @endif
 
     <style>
+        .hideX{
+            display: none;
+        }
         .filepond--item {
             width: calc(50% - 0.5em);
         }
@@ -119,10 +122,30 @@
 
         @media only screen and (max-width: 375px) {
 
+            .hideX{
+                display: block;
+            }
             .ai-image {
                 min-height: 300px !important
             }
+
+            #runwayBtn, #choosefromgallery{
+                font-size: 13px;
+            }
         }
+
+        @media only screen and (max-width: 1400px) {
+            .hideX{
+                display: block;
+            }
+        }
+
+        .avatar::before{
+            content:none!important;
+        }
+
+        #
+
 
 
     </style>
@@ -159,6 +182,7 @@
         @yield('dashboard')
         @yield('midjourney')
         @yield('removebg')
+        @yield('remove-bg')
         @yield('addbg')
         @yield('add-color')
         @yield('removebg-gallery')

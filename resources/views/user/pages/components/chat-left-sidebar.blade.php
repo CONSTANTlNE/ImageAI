@@ -24,28 +24,29 @@
              aria-labelledby="users-item" role="tabpanel" tabindex="0">
             <ul class="list-none mb-0 mt-2 chat-users-tab" id="chat-msg-scroll">
                 <li class="!pb-0 !pt-0">
-                    <p class="text-[#8c9097] dark:text-white/50 text-[0.6875rem] font-semibold mb-2 opacity-[0.7]">
-                        ACTIVE CHATS</p>
+{{--                    <p class="text-[#8c9097] dark:text-white/50 text-[0.6875rem] font-semibold mb-2 opacity-[0.7]">--}}
+{{--                        ACTIVE CHATS</p>--}}
                 </li>
                 {{-- Midjourney--}}
                 <li class="checkforactive">
                     <a  href="{{route('midjourney')}}" onclick="changeTheInfo(this,'Midjourney','5','ფასი - 0.25 ₾')" >
                         <div class="flex items-start">
                             <div class="me-1 leading-none">
-                                                <span class="avatar avatar-md online me-2 avatar-rounded">
+                                                <span  class="avatar avatar-md online me-2 avatar-rounded">
                                                     <img src="{{asset('assets/images/midjourney.jpg')}}" alt="img">
                                                 </span>
                             </div>
                             <div class="flex-grow">
-                                <p class="mb-0 font-semibold">
-                                    MidJourney <span
-                                            class="ltr:float-right rtl:float-left text-[#8c9097] dark:text-white/50 font-normal text-[0.6875rem]">1:32PM</span>
+                                <p class="mt-3 font-semibold">
+                                    MidJourney
+{{--                                    <span--}}
+{{--                                            class="ltr:float-right rtl:float-left text-[#8c9097] dark:text-white/50 font-normal text-[0.6875rem]">1:32PM</span>--}}
                                 </p>
-                                <p class="text-[0.75rem] mb-0">
-                                    <span class="chat-msg text-truncate">Need to go for lunch?</span>
-                                    <span class="chat-read-icon ltr:float-right rtl:float-left align-middle"><i
-                                                class="ri-check-double-fill"></i></span>
-                                </p>
+{{--                                <p class="text-[0.75rem] mb-0">--}}
+{{--                                    <span class="chat-msg text-truncate">Need to go for lunch?</span>--}}
+{{--                                    <span class="chat-read-icon ltr:float-right rtl:float-left align-middle"><i--}}
+{{--                                                class="ri-check-double-fill"></i></span>--}}
+{{--                                </p>--}}
                             </div>
                         </div>
                     </a>
@@ -60,15 +61,16 @@
                                                 </span>
                             </div>
                             <div class="flex-grow">
-                                <p class="mb-0 font-semibold">
-                                    Runway <span
-                                            class="ltr:float-right rtl:float-left text-[#8c9097] dark:text-white/50 font-normal text-[0.6875rem]">1:32PM</span>
+                                <p class="mt-3 font-semibold">
+                                    Runway
+{{--                                    <span--}}
+{{--                                            class="ltr:float-right rtl:float-left text-[#8c9097] dark:text-white/50 font-normal text-[0.6875rem]">1:32PM</span>--}}
                                 </p>
-                                <p class="text-[0.75rem] mb-0">
-                                    <span class="chat-msg text-truncate">Need to go for lunch?</span>
-                                    <span class="chat-read-icon ltr:float-right rtl:float-left align-middle"><i
-                                                class="ri-check-double-fill"></i></span>
-                                </p>
+{{--                                <p class="text-[0.75rem] mb-0">--}}
+{{--                                    <span class="chat-msg text-truncate">Need to go for lunch?</span>--}}
+{{--                                    <span class="chat-read-icon ltr:float-right rtl:float-left align-middle"><i--}}
+{{--                                                class="ri-check-double-fill"></i></span>--}}
+{{--                                </p>--}}
                             </div>
                         </div>
                     </a>
@@ -76,22 +78,47 @@
                 {{-- Flux shcnell--}}
                 <li class="checkforactive">
                     <a  href="{{route('flux-schnell')}}" onclick="changeTheInfo(this,'Flux Schnell','5','ფასი - 0.03 ₾')">
-                        <div class="flex items-start">
+                        <div class="flex items-start " >
                             <div class="me-1 leading-none">
                                                 <span class="avatar avatar-md online me-2 avatar-rounded">
                                                     <img src="{{asset('assets/images/schnell.webp')}}" alt="img">
                                                 </span>
                             </div>
-                            <div class="flex-grow">
-                                <p class="mb-0 font-semibold">
-                                    Flux Schnell <span
-                                            class="ltr:float-right rtl:float-left text-[#8c9097] dark:text-white/50 font-normal text-[0.6875rem]">1:32PM</span>
+                            <div class="flex-grow ">
+                                <p  class="mt-3 font-semibold">
+                                    Flux Schnell
+{{--                                    <span--}}
+{{--                                            class="ltr:float-right rtl:float-left text-[#8c9097] dark:text-white/50 font-normal text-[0.6875rem]">1:32PM</span>--}}
                                 </p>
-                                <p class="text-[0.75rem] mb-0">
-                                    <span class="chat-msg text-truncate">Need to go for lunch?</span>
-                                    <span class="chat-read-icon ltr:float-right rtl:float-left align-middle"><i
-                                                class="ri-check-double-fill"></i></span>
+{{--                                <p class="text-[0.75rem] mb-0">--}}
+{{--                                    <span class="chat-msg text-truncate">Need to go for lunch?</span>--}}
+{{--                                    <span class="chat-read-icon ltr:float-right rtl:float-left align-middle"><i--}}
+{{--                                                class="ri-check-double-fill"></i></span>--}}
+{{--                                </p>--}}
+                            </div>
+                        </div>
+                    </a>
+                </li>
+                {{-- Remove Bg--}}
+                <li class="checkforactive">
+                    <a  href="{{route('bg.remove')}}" >
+                        <div class="flex items-start " >
+                            <div class="me-1 leading-none">
+                                                <span class="avatar avatar-md online me-2 avatar-rounded">
+                                                    <img src="{{asset('assets/images/removebg.webp')}}" alt="img">
+                                                </span>
+                            </div>
+                            <div class="flex-grow ">
+                                <p  class="mt-3 font-semibold">
+                                    Remove BG
+                                    {{--                                    <span--}}
+                                    {{--                                            class="ltr:float-right rtl:float-left text-[#8c9097] dark:text-white/50 font-normal text-[0.6875rem]">1:32PM</span>--}}
                                 </p>
+                                {{--                                <p class="text-[0.75rem] mb-0">--}}
+                                {{--                                    <span class="chat-msg text-truncate">Need to go for lunch?</span>--}}
+                                {{--                                    <span class="chat-read-icon ltr:float-right rtl:float-left align-middle"><i--}}
+                                {{--                                                class="ri-check-double-fill"></i></span>--}}
+                                {{--                                </p>--}}
                             </div>
                         </div>
                     </a>

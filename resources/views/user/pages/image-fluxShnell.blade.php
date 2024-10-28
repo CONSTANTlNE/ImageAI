@@ -24,7 +24,7 @@
                                 </a>
                             </p>
                             <p class="text-[#8c9097] dark:text-white/50 mb-0 chatpersonstatus !text-defaultsize">
-                               ფასი - 0.03 ₾
+                                ფასი - 0.03 ₾
                             </p>
                         </div>
                     </div>
@@ -129,31 +129,47 @@
                         @endforeach
                     </ul>
                 </div>
-                <form class="chat-footer" action="{{route('flux-schnell.prompt')}}"
+                <form style="height: 8rem!important;align-items: flex-end" class="chat-footer" action="{{route('flux-schnell.prompt')}}"
                       hx-post="{{route('flux-schnell.prompt')}}" hx-target="#target">
                     @csrf
-                    <input class="form-control w-full !rounded-md" name="prompt" placeholder="Type your message here..."
+                    <input class="mb-3 form-control w-full !rounded-md" name="prompt" placeholder="Type your message here..."
                            type="text">
                     {{--                        <a aria-label="anchor" class="ti-btn ti-btn-icon !mx-2 ti-btn-success"--}}
                     {{--                           href="javascript:void(0)">--}}
                     {{--                            <i class="ri-emotion-line"></i>--}}
                     {{--                        </a>--}}
-                    <button id="fetch-prompt2" aria-label="anchor"
-                            class="ti-btn bg-primary text-white !mx-2 ti-btn-icon ti-btn-send">
+                    <button style="margin-bottom: 12px" id="fetch-prompt2" aria-label="anchor"
+                            class="f ti-btn bg-primary text-white !mx-2 ti-btn-icon ti-btn-send">
                         <i class="ri-send-plane-2-line"></i>
                     </button>
+                    <div  style="position: absolute; bottom:65px;padding: 0;" class="flex justify-center w-full gap-5">
+                        <div class="text-center flex justify-center gap-2 w-full px-3">
+                            <select style="max-width: 160px" name="ratio" class="ti-form-select rounded-sm  !px-2">
+                                <option selected>ორიენტაცია</option>
+                                <option value="16:9">ლანდშაფტი (16:9)</option>
+                                <option value="16:9">ლანდშაფტი (4:3)</option>
+                                <option value="9:16">პორტრეტი (9:16)</option>
+                                <option value="9:16">პორტრეტი (3:4)</option>
+                            </select>
+                        </div>
+                    </div>
                 </form>
                 <div id="target"></div>
             </div>
             {{--Right sidebar  --}}
             <div class="chat-user-details border dark:border-defaultborder/10" id="chat-user-details">
-                <button aria-label="button" type="button"
-                        class="ti-btn ti-btn-icon ti-btn-outline-light my-1 ms-2 responsive-chat-close2"><i
-                            class="ri-close-line"></i></button>
+                <div class="hideX">
+                    <button aria-label="button" type="button"
+                            class="ti-btn ti-btn-icon ti-btn-outline-light my-1 ms-2 responsive-chat-close2"><i
+                                class="ri-close-line"></i>
+                    </button>
+                </div>
 
                 <div class="mb-0 mt-3">
-                    <div class="font-semibold mb-4 text-defaultsize dark:text-defaulttextcolor/70">Photos &amp; Media
-                        <span class="badge bg-primary/10 !rounded-full text-primary ms-1">22</span>
+                    <div class="font-semibold mb-4 text-defaultsize dark:text-defaulttextcolor/70">
+                        Gallery (last
+                        <span class="badge bg-primary/10 !rounded-full text-primary ">30</span>
+                        images)
                         <span class="ltr:float-right rtl:float-left text-[0.6875rem]">
                             <a href="javascript:void(0);" class="text-primary underline">
                                 <u>
@@ -164,16 +180,36 @@
                     </div>
                     <div class="grid grid-cols-12 gap-x-[1rem]">
                         @foreach($flux2 as $item2)
-                            @if($loop->iteration  < 20)
-                                @foreach($item2->media as $media2)
-                                    <div class="xl:col-span-4 lg:col-span-4 md:col-span-4 sm:col-span-4 col-span-4">
-                                        <a aria-label="anchor" href="{{$media2->getUrl()}}"
-                                           class="chat-media glightbox">
-                                            <img style="object-fit: cover" src="{{$media2->getUrl()}}" alt="">
-                                        </a>
+                            {{--                            @if($loop->iteration  < 20)--}}
+                            @foreach($item2->media as $index => $media2)
+                                <div class="xl:col-span-4 lg:col-span-4 md:col-span-4 sm:col-span-4 col-span-4">
+                                    <a aria-label="anchor" href="{{$media2->getUrl()}}"
+                                       class="chat-media glightbox">
+                                        <img style="object-fit: cover" src="{{$media2->getUrl()}}" alt="">
+                                    </a>
+                                    <div class="flex justify-around">
+                                        <form class="mb-2" action="{{route('flux-schnell.delete',$item2->id)}}"
+                                              method="post">
+                                            @csrf
+                                            {{--delete Modal Button--}}
+                                            <a href="javascript:void(0);"
+                                               onclick="document.getElementById('deleteId').value={{$item2->id}}"
+                                               data-hs-overlay="#staticBackdrop">
+                                                <span class="badge bg-primary/10  text-primary material-symbols-outlined">delete</span>
+                                            </a>
+
+                                        </form>
+                                        <form class="mb-2" action="{{route('flux.download')}}">
+                                            <input type="hidden" name="id" value="{{$item2->id}}">
+                                            <button>
+                                                <span class="badge bg-primary/10  text-primary material-symbols-outlined">Download</span>
+                                            </button>
+                                        </form>
                                     </div>
-                                @endforeach
-                            @endif
+                                </div>
+                            @endforeach
+
+                            {{--                            @endif--}}
                         @endforeach
                     </div>
                 </div>
@@ -181,4 +217,40 @@
         </div>
     </div>
 
+    {{--Delete Modal--}}
+    <div id="staticBackdrop" class="hs-overlay hidden ti-modal  [--overlay-backdrop:static]">
+        <div class="hs-overlay-open:mt-7 ti-modal-box mt-0 ease-out">
+            <div class="ti-modal-content">
+                <div class="ti-modal-header">
+                    <h6 class="modal-title text-[1rem] font-semibold">Delete Image</h6>
+                    <button type="button" class="hs-dropdown-toggle !text-[1rem] !font-semibold !text-defaulttextcolor"
+                            data-hs-overlay="#staticBackdrop">
+                        <span class="sr-only">Close</span>
+                        <i class="ri-close-line"></i>
+                    </button>
+                </div>
+                <div class="ti-modal-body px-4">
+                    <p>
+                        Are you sure you want to delete this image?
+                    </p>
+                </div>
+                <div class="ti-modal-footer">
+                    <button type="button"
+                            class="hs-dropdown-toggle ti-btn  ti-btn-secondary-full align-middle"
+                            data-hs-overlay="#staticBackdrop
+              ">
+                        Close
+                    </button>
+
+                    <form action="{{route('flux-schnell.delete')}}"
+                          method="post">
+                        <input type="hidden" name="id" id="deleteId">
+                        @csrf
+                        <button class="ti-btn bg-primary text-white !font-medium">Delete</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection

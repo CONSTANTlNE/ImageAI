@@ -129,7 +129,7 @@
                            type="text">
                     {{--                    <a aria-label="anchor" class="ti-btn ti-btn-icon !mx-2 ti-btn-success" href="javascript:void(0)">--}}
                     {{--                        <i class="ri-emotion-line"></i>--}}
-                    <button id="fetch-prompt2"  aria-label="anchor"
+                    <button id="fetch-prompt2" aria-label="anchor"
                             {{--                    </a>--}}
                             class="ti-btn bg-primary text-white !mx-2 ti-btn-icon ti-btn-send startSpinner">
                         <i class="ri-send-plane-2-line"></i>
@@ -138,14 +138,17 @@
             </div>
             {{--Right sidebar  --}}
             <div class="chat-user-details border dark:border-defaultborder/10" id="chat-user-details">
-                <button aria-label="button" type="button"
-                        class="ti-btn ti-btn-icon ti-btn-outline-light my-1 ms-2 responsive-chat-close2"><i
-                            class="ri-close-line"></i></button>
-
-
+                <div class="hideX">
+                    <button aria-label="button" type="button"
+                            class="ti-btn ti-btn-icon ti-btn-outline-light my-1 ms-2 responsive-chat-close2"><i
+                                class="ri-close-line"></i>
+                    </button>
+                </div>
                 <div style="margin-left: 10px" class="mb-0 mt-3">
-                    <div class="font-semibold mb-4 text-defaultsize dark:text-defaulttextcolor/70">Photos &amp; Media
-                        <span class="badge bg-primary/10 !rounded-full text-primary ms-1">22</span>
+                    <div class="font-semibold mb-4 text-defaultsize dark:text-defaulttextcolor/70">
+                        Gallery (last
+                        <span class="badge bg-primary/10 !rounded-full text-primary ">30</span>
+                        images)
                         <span class="ltr:float-right rtl:float-left text-[0.6875rem]">
                             <a href="{{route('gallery',['model'=>'midjourney'])}}" class="text-primary underline">
                                 <u>View All</u>
@@ -154,15 +157,69 @@
                     </div>
                     <div class="grid grid-cols-12 gap-x-[1rem]">
                         @foreach($midjourneys as $midjourney)
-                            @foreach($midjourney->media as $media)
-                            <div class="xl:col-span-4 lg:col-span-4 md:col-span-4 sm:col-span-4 col-span-4">
+                            @foreach($midjourney->media as $mediaindex => $media)
+                                <div class="xl:col-span-4 lg:col-span-4 md:col-span-4 sm:col-span-4 col-span-4">
                                     <a aria-label="anchor" href="{{$media->getUrl()}}" class="chat-media glightbox">
                                         <img src="{{$media->getUrl()}}" alt="">
                                     </a>
-                            </div>
+                                    <div class="flex justify-around">
+
+                                            {{--delete Modal Button--}}
+                                            <a href="javascript:void(0);"
+                                               onclick="document.getElementById('midjourneyID').value='{{$midjourney->id}}';document.getElementById('mediaindex').value='{{$mediaindex}}'"
+                                               data-hs-overlay="#staticBackdrop">
+                                                <span class="badge bg-primary/10  text-primary material-symbols-outlined">delete</span>
+                                            </a>
+
+                                        <form class="mb-2" action="{{route('midjourney.download')}}">
+                                            <input type="hidden" name="id" value="{{$midjourney->id}}">
+                                            <input type="hidden" name="index" value="{{$mediaindex}}">
+                                            <button>
+                                                <span class="badge bg-primary/10  text-primary material-symbols-outlined">Download</span>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
                             @endforeach
                         @endforeach
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{--Delete Modal--}}
+    <div id="staticBackdrop" class="hs-overlay hidden ti-modal  [--overlay-backdrop:static]">
+        <div class="hs-overlay-open:mt-7 ti-modal-box mt-0 ease-out">
+            <div class="ti-modal-content">
+                <div class="ti-modal-header">
+                    <h6 class="modal-title text-[1rem] font-semibold">Delete Image</h6>
+                    <button type="button" class="hs-dropdown-toggle !text-[1rem] !font-semibold !text-defaulttextcolor"
+                            data-hs-overlay="#staticBackdrop">
+                        <span class="sr-only">Close</span>
+                        <i class="ri-close-line"></i>
+                    </button>
+                </div>
+                <div class="ti-modal-body px-4">
+                    <p>
+                        Are you sure you want to delete this image?
+                    </p>
+                </div>
+                <div class="ti-modal-footer">
+                    <button type="button"
+                            class="hs-dropdown-toggle ti-btn  ti-btn-secondary-full align-middle"
+                            data-hs-overlay="#staticBackdrop">
+                        Close
+                    </button>
+
+                    <form class="mb-2" action="{{route('midjourney.delete')}}"
+                          method="post">
+                        @csrf
+                        <input type="hidden" name="id" id="midjourneyID" value="">
+                        <input type="hidden" name="index" id="mediaindex" value="">
+
+                        <button class="ti-btn bg-primary text-white !font-medium">Delete</button>
+                    </form>
+
                 </div>
             </div>
         </div>

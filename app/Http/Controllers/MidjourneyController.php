@@ -63,7 +63,7 @@ class MidjourneyController extends Controller
         if ($response->successful()) {
             Midjourney::create([
                 'task_id'        => $response->json()['data']['task_id'],
-                'model'          => $response->json()['data']['model'],
+                'model'          => 'midjourney',
                 'status'         => $response->json()['data']['status'],
                 'user_prompt_en' => $request->prompt,
             ]);

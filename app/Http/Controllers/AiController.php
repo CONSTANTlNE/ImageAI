@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Addbg;
+use App\Models\Flux;
 use App\Models\Removebg;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
@@ -16,21 +18,32 @@ class AiController extends Controller
     {
         $images = Removebg::whereNotNull('url')
             ->where('url', '!=', '')
+            ->whereDate('created_at', Carbon::today())
             ->with('media')
             ->get();
 
-        return view('user.pages.remove-bg', compact('images'));
+        $images2 = Removebg::whereNotNull('url')
+            ->where('url', '!=', '')
+            ->with('media')
+            ->select('id')
+            ->take(30)
+            ->orderBy('created_at', 'desc')
+            ->get();
+        return view('user.pages.remove-bg2', compact('images2','images'));
     }
 
     public function removeBG(Request $request)
     {
-        // Prepare the request data
+
+//        dd($request->all());
         $bearerToken = config('apikeys.edenapi');
 
-        if ($request->hasFile('images')) {
+//        File Upload
+        if ($request->hasFile('images') && $request->file('images')[0]!==null) {
+
             $file     = $request->file('images')[0]; // Get the first image file from the request
             $filePath = $file->path();
-//        dd(fopen($file->getPathname(), 'r'));
+
             $response = Http::withHeaders([
                 'Authorization' => 'Bearer '.$bearerToken,
             ])->attach('file', file_get_contents($filePath), $file->getClientOriginalName()) // Attach file
@@ -60,10 +73,13 @@ class AiController extends Controller
             ]);
 
 
+            // send error email and log !
+
             if ($response->successful()) {
+
                 $imageBase64 = $response->json()['microsoft']['image_b64'];
                 $cost        = $response->json()['microsoft']['cost'];
-                $url         = $response->json()['microsoft']['image_resource_url'];// Adjust this based on the structure of your response
+                $url         = $response->json()['microsoft']['image_resource_url'];
 
                 $bg           = new Removebg();
                 $bg->url      = $url;
@@ -89,18 +105,67 @@ class AiController extends Controller
 
 
                 return back()->with('alert_success', 'ფონი წარმატებით წაიშალა')->with('url', $url);
-//            $imageData = base64_decode($imageBase64);
-//            $filePath = storage_path('app/public/processed_image.png');
-//            file_put_contents($filePath, $imageData);
 
             }
-
-            // send error email and log !
-
-            return response()->json([
-                $response->body(),
-            ], $response->status());
         }
+//        if Selected from Galleries
+        if($request->has('file_url') && $request->input('file_url')){
+
+            $file_url=$request->input('file_url');
+//dd($file_url);
+            $headers = [
+                'Authorization' => 'Bearer '.$bearerToken,
+            ];
+
+            $url = 'https://api.edenai.run/v2/image/background_removal';
+
+            $jsonPayload = [
+                'providers' => 'microsoft',
+                'file_url' => $file_url,
+            ];
+
+            $response = Http::withHeaders($headers)->timeout(60)
+                ->post($url, $jsonPayload);
+
+            if ($response->successful()) {
+
+                $imageBase64 = $response->json()['microsoft']['image_b64'];
+                $cost        = $response->json()['microsoft']['cost'];
+                $url         = $response->json()['microsoft']['image_resource_url'];
+
+                $bg           = new Removebg();
+                $bg->url      = $url;
+                $bg->cost     = $cost;
+                $bg->provider = 'microsoft';
+                $bg->save();
+
+
+                $imageContents = Http::get($url)->body();
+                Storage::disk('public')->put('test.png', $imageContents);
+                $fullPath = storage_path('app/public/test.png');
+
+                $manager = new ImageManager(new Driver());
+                $image = $manager->read($fullPath);
+                $encoded = $image->toJpeg();
+                Storage::disk('public')->delete('test.png');
+
+
+                Storage::disk('public')->put('test.webp', $encoded);
+                $bg->addMedia(storage_path('app/public/test.webp'))->toMediaCollection('removebg');
+                Storage::disk('public')->delete('test.webp');
+
+
+                return back()->with('alert_success', 'ფონი წარმატებით წაიშალა')->with('url', $url);
+
+            } else {
+
+                dd($response->json());
+            }
+
+        }
+
+
+
 
         return back()->with('alert_error', 'გთხოვთ ატვირთეთ ფოტო');
     }
@@ -123,6 +188,37 @@ class AiController extends Controller
 
         return view('user.pages.remove-bg-gallery', compact('images'));
     }
+
+    public function delete(Request $request,Removebg $removebg){
+
+        if ($request->has('id')) {
+
+            $removebg2 = Removebg::where('id', $request->id)->first();
+            if($removebg2->media){
+                $removebg2->media->each(function($media){
+                    $media->delete();
+                });
+            }
+            $removebg2->delete();
+            return back()->with('alert_success', 'ფოტო წარმატებით წაიშალა');
+        }
+
+
+        if($removebg) {
+            if($removebg->media){
+                $removebg->media->each(function($media){
+                    $media->delete();
+                });
+            }
+            $removebg->delete();
+            return back()->with('alert_success', 'ფოტო წარმატებით წაიშალა');
+        }
+
+
+    }
+
+
+
 
     // Add Background
     public function addBGindex()

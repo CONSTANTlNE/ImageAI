@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Flux;
 use App\Models\Midjourney;
+use App\Models\Removebg;
 use App\Models\Runway;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -134,8 +135,11 @@ class RunwayController extends Controller
         return response('webhook received', 200);
     }
 
-    public function gallery(Request $request)
+
+    public function galleryHtmx(Request $request)
     {
+
+
         if($request->model === 'midjourney'){
 
             $midjourneys = Midjourney::where('status', '=', 'completed')
@@ -149,7 +153,7 @@ class RunwayController extends Controller
 
         if($request->model === 'flux'){
 
-            $fluxes =Flux::where('model', 'schnell')
+            $fluxes =Flux::where('model', 'flux-schnell')
                 ->where('image_url', '!=', null)
                 ->with('media')
                 ->take(30)
@@ -158,5 +162,6 @@ class RunwayController extends Controller
 
             return view('user.htmx.gallery-for-runway', compact('fluxes'));
         }
+
     }
 }

@@ -16,13 +16,16 @@ class FluxController extends Controller
 
     public function index(Request $request)
     {
-        $flux = Flux::where('model', 'schnell')
+        $flux = Flux::where('model', 'flux-schnell')
             ->whereDate('created_at', Carbon::today())
             ->with('media')
+
             ->get();
 
-        $flux2 = Flux::where('model', 'schnell')
+
+        $flux2 = Flux::where('model', 'flux-schnell')
             ->with('media')
+            ->select('id')
             ->take(30)
             ->orderBy('created_at', 'desc')
             ->get();
@@ -36,7 +39,7 @@ class FluxController extends Controller
     {
         $prompt          = $request->prompt;
         $schnell         = new Flux();
-        $schnell->model  = 'schnell';
+        $schnell->model  = 'flux-schnell';
         $schnell->prompt_en = $prompt;
         $key             = 'c4fc7928-afcd-4045-a5dc-20fdd82ed030:cc2ca7774e7cca01341794853f85f01e';
         $schnell->save();
@@ -69,6 +72,7 @@ class FluxController extends Controller
         $flux = Flux::where('prompt_en', $request->prompt)
             ->where('image_url', null)
             ->first();
+
         $flux->image_url = $request->url;
         $flux->save();
 
@@ -78,19 +82,32 @@ class FluxController extends Controller
 
         $manager = new ImageManager(new Driver());
         $image   = $manager->read($fullPath);
-        $encoded = $image->toWebp();
+        $encoded = $image->toJpeg();
         Storage::disk('public')->delete('test.png');
 
-        Storage::disk('public')->put(auth()->id().'_'.'flux-schnell'.'.webp', $encoded);
-        $flux->addMedia(storage_path('app/public/'.auth()->id().'_'.'flux-schnell'.'.webp'))->toMediaCollection('flux-schnell');
-        Storage::disk('public')->delete(auth()->id().'_'.'flux-schnell'.'.webp');
+        Storage::disk('public')->put(auth()->id().'_'.'flux-schnell'.'.jpeg', $encoded);
+        $flux->addMedia(storage_path('app/public/'.auth()->id().'_'.'flux-schnell'.'.jpeg'))->toMediaCollection('flux-schnell');
+        Storage::disk('public')->delete(auth()->id().'_'.'flux-schnell'.'.jpeg');
 
 
 
         return back();
     }
 
-    public function schnelldelete(Flux $flux){
+    public function schnelldelete(Request $request,Flux $flux){
+
+        if ($request->has('id')) {
+
+            $flux1 = Flux::where('id', $request->id)->first();
+            if($flux1->media){
+                $flux1->media->each(function($media){
+                    $media->delete();
+                });
+            }
+            $flux1->delete();
+            return back()->with('alert_success', 'ფოტო წარმატებით წაიშალა');
+        }
+
         if($flux) {
             if($flux->media){
                 $flux->media->each(function($media){
@@ -98,8 +115,9 @@ class FluxController extends Controller
                 });
             }
             $flux->delete();
+            return back()->with('alert_success', 'ფოტო წარმატებით წაიშალა');
         }
-        return back();
+        return back()->with('alert_error', 'შეცდომა');
     }
 
     public function download(Request $request){
