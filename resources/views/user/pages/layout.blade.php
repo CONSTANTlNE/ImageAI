@@ -28,8 +28,7 @@
     <!-- Color Picker Css -->
     <link rel="stylesheet" href="{{asset('assets/libs/@simonwep/pickr/themes/nano.min.css')}}">
 
-    <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css"/>
     <script src="https://cdn.jsdelivr.net/gh/mcstudios/glightbox/dist/js/glightbox.min.js"></script>
     @if(request()->routeIs('bg.remove') || request()->routeIs('runway'))
@@ -131,6 +130,9 @@
 
             #runwayBtn, #choosefromgallery{
                 font-size: 13px;
+            }
+            #customwidth{
+                width: 85% !important;
             }
         }
 

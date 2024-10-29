@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('model')->nullable();
             $table->string('status')->nullable();
             $table->string('midjourney_url')->nullable();
+            $table->float('duration')->nullable();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });

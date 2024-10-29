@@ -23,56 +23,53 @@
                                     Runway
                                 </a>
                             </p>
+                            <p class="text-[#8c9097] mb-1 dark:text-white/50 mb-0 chatpersonstatus !text-defaultsize">
+                                5წმ - 1.50 ₾
+                            </p>
                             <p class="text-[#8c9097] dark:text-white/50 mb-0 chatpersonstatus !text-defaultsize">
-                                ფასი: 5წმ - 1.50 ₾ / 10წმ - 3.00 ₾
+                                10წმ - 3.00 ₾
                             </p>
                         </div>
-                    </div>
+                        <div class="flex ms-auto">
 
-                    <div class="flex ms-auto">
-                        <button aria-label="button" type="button"
-                                class="ti-btn ti-btn-icon ti-btn-outline-light dark:border-defaultborder/10 !text-[0.95rem] !ms-2 font-semibold">
-                            <i class="ti ti-phone dark:text-defaulttextcolor/70"></i>
-                        </button>
-                        <button aria-label="button" type="button"
-                                class="ti-btn ti-btn-icon ti-btn-outline-light  !text-[0.95rem] !ms-2 font-semibold">
-                            <i class="ti ti-video dark:text-defaulttextcolor/70"></i>
-                        </button>
-                        <button aria-label="button" type="button"
-                                class="ti-btn ti-btn-icon ti-btn-outline-light  !text-[0.95rem] !ms-2 font-semibold responsive-userinfo-open">
-                            <i class="ti ti-user-circle" id="responsive-chat-close"></i>
-                        </button>
+                            <button aria-label="button" type="button"
+                                    class="ti-btn ti-btn-icon ti-btn-outline-light  !text-[0.95rem] !ms-2 font-semibold responsive-userinfo-open">
+                                <i class="ti ti-user-circle" id="responsive-chat-close"></i>
+                            </button>
 
-                        {{-- Dropdown on main chat--}}
-                        <div class="hs-dropdown ti-dropdown">
-                            <a aria-label="anchor" href="javascript:void(0);"
-                               class="ti-btn ti-btn-icon ti-btn-outline-light  !text-[0.95rem] !ms-2 font-semibold"
-                               aria-expanded="false">
-                                <i class="fe fe-more-vertical text-[0.8rem]"></i>
-                            </a>
-                            <ul class="hs-dropdown-menu ti-dropdown-menu hidden">
-                                <li>
-                                    <a class="ti-dropdown-item !py-2 !px-[0.9375rem] !text-[0.8125rem] !font-medium block"
-                                       href="javascript:void(0);">Profile</a></li>
-                                <li>
-                                    <a class="ti-dropdown-item !py-2 !px-[0.9375rem] !text-[0.8125rem] !font-medium block"
-                                       href="javascript:void(0);">Clear Chat</a></li>
-                                <li>
-                                    <a class="ti-dropdown-item !py-2 !px-[0.9375rem] !text-[0.8125rem] !font-medium block"
-                                       href="javascript:void(0);">Delete User</a></li>
-                                <li>
-                                    <a class="ti-dropdown-item !py-2 !px-[0.9375rem] !text-[0.8125rem] !font-medium block"
-                                       href="javascript:void(0);">Block User</a></li>
-                                <li>
-                                    <a class="ti-dropdown-item !py-2 !px-[0.9375rem] !text-[0.8125rem] !font-medium block"
-                                       href="javascript:void(0);">Report</a></li>
-                            </ul>
+                            {{-- Dropdown on main chat--}}
+                            <div class="hs-dropdown ti-dropdown">
+                                <a aria-label="anchor" href="javascript:void(0);"
+                                   class="ti-btn ti-btn-icon ti-btn-outline-light  !text-[0.95rem] !ms-2 font-semibold"
+                                   aria-expanded="false">
+                                    <i class="fe fe-more-vertical text-[0.8rem]"></i>
+                                </a>
+                                <ul class="hs-dropdown-menu ti-dropdown-menu hidden">
+                                    <li>
+                                        <a class="ti-dropdown-item !py-2 !px-[0.9375rem] !text-[0.8125rem] !font-medium block"
+                                           href="javascript:void(0);">Profile</a></li>
+                                    <li>
+                                        <a class="ti-dropdown-item !py-2 !px-[0.9375rem] !text-[0.8125rem] !font-medium block"
+                                           href="javascript:void(0);">Clear Chat</a></li>
+                                    <li>
+                                        <a class="ti-dropdown-item !py-2 !px-[0.9375rem] !text-[0.8125rem] !font-medium block"
+                                           href="javascript:void(0);">Delete User</a></li>
+                                    <li>
+                                        <a class="ti-dropdown-item !py-2 !px-[0.9375rem] !text-[0.8125rem] !font-medium block"
+                                           href="javascript:void(0);">Block User</a></li>
+                                    <li>
+                                        <a class="ti-dropdown-item !py-2 !px-[0.9375rem] !text-[0.8125rem] !font-medium block"
+                                           href="javascript:void(0);">Report</a></li>
+                                </ul>
+                            </div>
+                            <button aria-label="button" type="button"
+                                    class="ti-btn ti-btn-icon ti-btn-outline-light  !text-[0.95rem] !ms-2 font-semibold responsive-chat-close">
+                                <i class="ri-close-line"></i>
+                            </button>
                         </div>
-                        <button aria-label="button" type="button"
-                                class="ti-btn ti-btn-icon ti-btn-outline-light  !text-[0.95rem] !ms-2 font-semibold responsive-chat-close">
-                            <i class="ri-close-line"></i>
-                        </button>
                     </div>
+
+
                 </div>
                 <div class="chat-content" id="main-chat-contentt">
                     <ul id="chat-target" class="list-none">
@@ -260,12 +257,12 @@
                     <div style="position: absolute; bottom:70px;padding: 0;" class="flex justify-center w-full gap-5">
                         <div class="text-center flex justify-center gap-2 w-full px-3">
                             <select style="max-width: 160px" name="ratio" class="ti-form-select rounded-sm  !px-2">
-                                <option selected>ორიენტაცია</option>
+                                <option value="16:9" selected>ორიენტაცია</option>
                                 <option value="16:9">ლანდშაფტი (16:9)</option>
                                 <option value="9:16">პორტრეტი (9:16)</option>
                             </select>
                             <select style="max-width: 160px" name="duration" class="ti-form-select rounded-sm  !px-2">
-                                <option selected>ხანგრძლივობა</option>
+                                <option value="5" selected>ხანგრძლივობა</option>
                                 <option value="5">5 წამი</option>
                                 <option value="10">10 წამი</option>
                             </select>

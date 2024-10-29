@@ -1,3 +1,4 @@
+@php use Carbon\Carbon; @endphp
 @extends('user.pages.layout')
 
 
@@ -104,17 +105,69 @@
                                             {{--                                            <p class="mb-0">Here are some of them have a look</p>--}}
                                             {{--                                        </div>--}}
                                             <div>
-                                                <p class="mb-0 flex flex-wrap  justify-center">
-                                                    @foreach($image->media as $media)
-                                                        <a style="min-width: 120px!important;min-height: 120px!important"
-                                                           aria-label="anchor" href="{{$media->getUrl()}}"
-                                                           class="avatar avatar-xl m-1 glightbox">
-                                                            <img
-                                                                    src="{{$media->getUrl()}}" alt=""
-                                                                    class="rounded-md">
-                                                        </a>
+                                                <div style="padding: 0!important;"
+                                                     class="mb-0 flex flex-wrap  justify-center">
+                                                    @foreach($image->media as $indexm =>$media)
+                                                        <div style="padding: 0!important;">
+                                                            <a style="min-width: 120px!important;min-height: 120px!important"
+                                                               aria-label="anchor" href="{{$media->getUrl()}}"
+                                                               class="avatar avatar-xl m-1 glightbox">
+                                                                <img
+                                                                        src="{{$media->getUrl()}}" alt=""
+                                                                        class="rounded-md">
+                                                            </a>
+                                                            <div style="width: 100%;padding: 0!important"
+                                                                 class="flex justify-around">
+                                                                {{--delete Modal Button--}}
+                                                                <a href="javascript:void(0);"
+                                                                   onclick="document.getElementById('midjourneyID').value='{{$image->id}}';document.getElementById('mediaindex').value='{{$indexm}}'"
+                                                                   data-hs-overlay="#staticBackdrop">
+                                                                    <svg class="badge bg-primary/10  text-primary"
+                                                                         xmlns="http://www.w3.org/2000/svg" width="35"
+                                                                         height="35"
+                                                                         viewBox="0 0 24 24">
+                                                                        <path fill="currentColor"
+                                                                              d="M7 21q-.825 0-1.412-.587T5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.587 1.413T17 21zM17 6H7v13h10zM9 17h2V8H9zm4 0h2V8h-2zM7 6v13z"/>
+                                                                    </svg>
+                                                                </a>
+                                                                {{--Download--}}
+                                                                <form
+                                                                        action="{{route('midjourney.download')}}">
+                                                                    <input type="hidden" name="id"
+                                                                           value="{{$image->id}}">
+                                                                    <input type="hidden" name="index"
+                                                                           value="{{$indexm}}">
+                                                                    <button>
+                                                                        <svg class="badge bg-primary/10  text-primary"
+                                                                             xmlns="http://www.w3.org/2000/svg"
+                                                                             width="35"
+                                                                             height="35" viewBox="0 0 24 24">
+                                                                            <path fill="currentColor"
+                                                                                  d="m12 16l-5-5l1.4-1.45l2.6 2.6V4h2v8.15l2.6-2.6L17 11zm-6 4q-.825 0-1.412-.587T4 18v-3h2v3h12v-3h2v3q0 .825-.587 1.413T18 20z"/>
+                                                                        </svg>
+                                                                    </button>
+                                                                </form>
+                                                                @php
+                                                                    $time = Carbon::parse($image->created_at);
+                                                                    $true = $time->addHour()->isPast()
+                                                                @endphp
+                                                                {{--Variation and others--}}
+                                                                @if(!$true)
+                                                                    <a href="javascript:void(0);"
+                                                                       onclick="document.getElementById('midjourneyID2').value='{{$image->id}}';document.getElementById('mediaindex2').value='{{$media['collection_name']}}'"
+                                                                       data-hs-overlay="#variation">
+                                                                        <svg class="badge bg-primary/10  text-primary"
+                                                                             xmlns="http://www.w3.org/2000/svg"
+                                                                             width="35" height="35" viewBox="0 0 24 24">
+                                                                            <path fill="currentColor"
+                                                                                  d="M7 7h10v3l4-4l-4-4v3H5v6h2zm10 10H7v-3l-4 4l4 4v-3h12v-6h-2z"/>
+                                                                        </svg>
+                                                                    </a>
+                                                                @endif
+                                                            </div>
+                                                        </div>
                                                     @endforeach
-                                                </p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -123,14 +176,12 @@
                         @endforeach
                     </ul>
                 </div>
+                {{-- PROMPT FIELD--}}
                 <form class="chat-footer" action="{{route('midjourney.create')}}" method="post">
                     @csrf
                     <input name="prompt" class="form-control w-full !rounded-md" placeholder="Type your message here..."
                            type="text">
-                    {{--                    <a aria-label="anchor" class="ti-btn ti-btn-icon !mx-2 ti-btn-success" href="javascript:void(0)">--}}
-                    {{--                        <i class="ri-emotion-line"></i>--}}
                     <button id="fetch-prompt2" aria-label="anchor"
-                            {{--                    </a>--}}
                             class="ti-btn bg-primary text-white !mx-2 ti-btn-icon ti-btn-send startSpinner">
                         <i class="ri-send-plane-2-line"></i>
                     </button>
@@ -160,24 +211,36 @@
                             @foreach($midjourney->media as $mediaindex => $media)
                                 <div class="xl:col-span-4 lg:col-span-4 md:col-span-4 sm:col-span-4 col-span-4">
                                     <a aria-label="anchor" href="{{$media->getUrl()}}" class="chat-media glightbox">
-                                        <img src="{{$media->getUrl()}}" alt="">
+                                        <img style="width: 100%!important;object-fit: cover" src="{{$media->getUrl()}}"
+                                             alt="">
                                     </a>
                                     <div class="flex justify-around">
 
-                                            {{--delete Modal Button--}}
-                                            <a href="javascript:void(0);"
-                                               onclick="document.getElementById('midjourneyID').value='{{$midjourney->id}}';document.getElementById('mediaindex').value='{{$mediaindex}}'"
-                                               data-hs-overlay="#staticBackdrop">
-                                                <span class="badge bg-primary/10  text-primary material-symbols-outlined">delete</span>
-                                            </a>
+                                        {{--delete Modal Button--}}
+                                        <a href="javascript:void(0);"
+                                           onclick="document.getElementById('midjourneyID').value='{{$midjourney->id}}';document.getElementById('mediaindex').value='{{$mediaindex}}'"
+                                           data-hs-overlay="#staticBackdrop">
+                                            <svg class="badge bg-primary/10  text-primary"
+                                                 xmlns="http://www.w3.org/2000/svg" width="35" height="35"
+                                                 viewBox="0 0 24 24">
+                                                <path fill="currentColor"
+                                                      d="M7 21q-.825 0-1.412-.587T5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.587 1.413T17 21zM17 6H7v13h10zM9 17h2V8H9zm4 0h2V8h-2zM7 6v13z"/>
+                                            </svg>
+                                        </a>
 
                                         <form class="mb-2" action="{{route('midjourney.download')}}">
                                             <input type="hidden" name="id" value="{{$midjourney->id}}">
                                             <input type="hidden" name="index" value="{{$mediaindex}}">
                                             <button>
-                                                <span class="badge bg-primary/10  text-primary material-symbols-outlined">Download</span>
+                                                <svg class="badge bg-primary/10  text-primary"
+                                                     xmlns="http://www.w3.org/2000/svg" width="35" height="35"
+                                                     viewBox="0 0 24 24">
+                                                    <path fill="currentColor"
+                                                          d="m12 16l-5-5l1.4-1.45l2.6 2.6V4h2v8.15l2.6-2.6L17 11zm-6 4q-.825 0-1.412-.587T4 18v-3h2v3h12v-3h2v3q0 .825-.587 1.413T18 20z"/>
+                                                </svg>
                                             </button>
                                         </form>
+
                                     </div>
                                 </div>
                             @endforeach
@@ -187,10 +250,11 @@
             </div>
         </div>
     </div>
+
     {{--Delete Modal--}}
-    <div id="staticBackdrop" class="hs-overlay hidden ti-modal  [--overlay-backdrop:static]">
-        <div class="hs-overlay-open:mt-7 ti-modal-box mt-0 ease-out">
-            <div class="ti-modal-content">
+    <div id="staticBackdrop" class="hs-overlay hidden ti-modal  [--overlay-backdrop:static] ">
+        <div class="hs-overlay-open:mt-7 ti-modal-box mt-0 ease-out min-h-[calc(100%-3.5rem)] flex items-center" >
+            <div class="ti-modal-content w-full">
                 <div class="ti-modal-header">
                     <h6 class="modal-title text-[1rem] font-semibold">Delete Image</h6>
                     <button type="button" class="hs-dropdown-toggle !text-[1rem] !font-semibold !text-defaulttextcolor"
@@ -211,7 +275,7 @@
                         Close
                     </button>
 
-                    <form class="mb-2" action="{{route('midjourney.delete')}}"
+                    <form class="" action="{{route('midjourney.delete')}}"
                           method="post">
                         @csrf
                         <input type="hidden" name="id" id="midjourneyID" value="">
@@ -224,4 +288,42 @@
             </div>
         </div>
     </div>
+
+    {{--Variation Modal--}}
+    <div id="variation" class="hs-overlay hidden ti-modal  [--overlay-backdrop:static]">
+        <div class="hs-overlay-open:mt-7 ti-modal-box mt-0 ease-out min-h-[calc(100%-3.5rem)] flex items-center">
+            <div class="ti-modal-content w-full">
+                <div class="ti-modal-header">
+                    <h6 class="modal-title text-[1rem] font-semibold">VARIATION</h6>
+                    <button type="button" class="hs-dropdown-toggle !text-[1rem] !font-semibold !text-defaulttextcolor"
+                            data-hs-overlay="#variation">
+                        <span class="sr-only">Close</span>
+                        <i class="ri-close-line"></i>
+                    </button>
+                </div>
+                <div class="ti-modal-body px-4">
+                    <p>
+                        Are you sure you want to delete this image?
+                    </p>
+                </div>
+                <div class="ti-modal-footer">
+                    <button type="button"
+                            class="hs-dropdown-toggle ti-btn  ti-btn-secondary-full align-middle"
+                            data-hs-overlay="#variation">
+                        Close
+                    </button>
+
+                    <form class="" action="{{route('midjourney.variation')}}"
+                          method="post">
+                        @csrf
+                        <input type="hidden" name="id" id="midjourneyID2" value="">
+                        <input type="hidden" name="index" id="mediaindex2" value="">
+                        <button class="ti-btn bg-primary text-white !font-medium">Delete</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection

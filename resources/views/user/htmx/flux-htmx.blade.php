@@ -6,8 +6,13 @@
         credentials: "{{$key}}"
     });
 
-    prompt='{{$prompt}}';
-    flexCall(prompt);
+
+
+     prompt = "{{ $prompt }}";
+     width = "{{$width}}";
+     height="{{$height}}"
+    flexCall(prompt, width,height);
+
 
 </script>
 

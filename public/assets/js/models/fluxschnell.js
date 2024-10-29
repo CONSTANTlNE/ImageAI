@@ -4,12 +4,17 @@ import * as fal from "@fal-ai/serverless-client";
 
 
 
-async function flexCall(prompt) {
+async function flexCall(prompt,width,height) {
     try {
 
+        console.log(width,height)
         const result = await fal.subscribe("fal-ai/flux/schnell", {
             input: {
-                prompt: prompt
+                prompt: prompt,
+                image_size:{
+                    width:width,
+                    height:height
+                }
             },
             logs: true,
             onQueueUpdate: (update) => {

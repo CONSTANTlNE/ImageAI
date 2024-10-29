@@ -4,7 +4,7 @@
     <div class="main-content">
         <!-- Page Header -->
         <div class="block justify-center page-header md:flex mb-5">
-            <form id="modelForm" action="">
+            <form class="flex justify-center" id="modelForm" action="">
                 <select
                         onchange="document.getElementById('modelForm').action = baseUrl + '/gallery/' + this.value; document.getElementById('modelForm').submit();"
                         style="width: 150px" class="ti-form-select rounded-sm !py-2 !px-3">
@@ -26,7 +26,7 @@
                             <form class="mb-2" action="{{route('flux-schnell.delete',$flux->id)}}" method="post">
                                 @csrf
                                 <a href="javascript:void(0);" data-hs-overlay="#staticBackdrop{{$indexFlux}}">
-                                    <span class="badge bg-primary/10  text-primary material-symbols-outlined">delete</span>
+                                    <svg class="badge bg-primary/10  text-primary" xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24"><path fill="currentColor" d="M7 21q-.825 0-1.412-.587T5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.587 1.413T17 21zM17 6H7v13h10zM9 17h2V8H9zm4 0h2V8h-2zM7 6v13z"/></svg>
                                 </a>
                                 <div id="staticBackdrop{{$indexFlux}}"
                                      class="hs-overlay hidden ti-modal  [--overlay-backdrop:static]">
@@ -62,13 +62,13 @@
                             <form class="mb-2" action="{{route('flux.download')}}">
                                 <input type="hidden" name="id" value="{{$flux->id}}">
                                 <button>
-                                    <span class="badge bg-primary/10  text-primary material-symbols-outlined">Download</span>
+                                    <svg  class="badge bg-primary/10  text-primary"  xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24"><path fill="currentColor" d="m12 16l-5-5l1.4-1.45l2.6 2.6V4h2v8.15l2.6-2.6L17 11zm-6 4q-.825 0-1.412-.587T4 18v-3h2v3h12v-3h2v3q0 .825-.587 1.413T18 20z"/></svg>
                                 </button>
                             </form>
                         </div>
                         @foreach($flux->media as $media)
                             <a href="{{$media->getUrl()}}" class="glightbox box" data-gallery="gallery1">
-                                <img src="{{$media->getUrl()}}" alt="image">
+                                <img style="object-fit: cover;max-height: 290px" src="{{$media->getUrl()}}" alt="image">
                             </a>
                         @endforeach
                     </div>
@@ -84,7 +84,7 @@
                                     <input type="hidden" name="id" value="{{$midjourney->id}}">
                                     <input type="hidden" name="index" value="{{$mediaindex}}">
                                     <a href="javascript:void(0);" data-hs-overlay="#staticBackdrop2{{$mediaindex}}">
-                                        <span class="badge bg-primary/10  text-primary material-symbols-outlined">delete</span>
+                                        <svg class="badge bg-primary/10  text-primary" xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24"><path fill="currentColor" d="M7 21q-.825 0-1.412-.587T5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.587 1.413T17 21zM17 6H7v13h10zM9 17h2V8H9zm4 0h2V8h-2zM7 6v13z"/></svg>
                                     </a>
                                     <div id="staticBackdrop2{{$mediaindex}}"
                                          class="hs-overlay hidden ti-modal  [--overlay-backdrop:static]">
@@ -121,11 +121,10 @@
                                     <input type="hidden" name="id" value="{{$midjourney->id}}">
                                     <input type="hidden" name="index" value="{{$mediaindex}}">
                                     <button>
-                                        <span class="badge bg-primary/10  text-primary material-symbols-outlined">Download</span>
+                                        <svg  class="badge bg-primary/10  text-primary"  xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24"><path fill="currentColor" d="m12 16l-5-5l1.4-1.45l2.6 2.6V4h2v8.15l2.6-2.6L17 11zm-6 4q-.825 0-1.412-.587T4 18v-3h2v3h12v-3h2v3q0 .825-.587 1.413T18 20z"/></svg>
                                     </button>
                                 </form>
                             </div>
-
                             <a href="{{$media->getUrl()}}" class="glightbox box" data-gallery="gallery1">
                                 <img src="{{$media->getUrl()}}" alt="image">
                             </a>
@@ -140,7 +139,7 @@
                                 <form class="mb-2" action="{{route('bg.delete',$removebg->id)}}" method="post">
                                     @csrf
                                     <a href="javascript:void(0);" data-hs-overlay="#staticBackdrop{{$indexBg}}">
-                                        <span class="badge bg-primary/10  text-primary material-symbols-outlined">delete</span>
+                                        <svg class="badge bg-primary/10  text-primary" xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24"><path fill="currentColor" d="M7 21q-.825 0-1.412-.587T5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.587 1.413T17 21zM17 6H7v13h10zM9 17h2V8H9zm4 0h2V8h-2zM7 6v13z"/></svg>
                                     </a>
                                     <div id="staticBackdrop{{$indexBg}}"
                                          class="hs-overlay hidden ti-modal  [--overlay-backdrop:static]">
@@ -176,7 +175,7 @@
                                 <form class="mb-2" action="{{route('bg.download',$removebg->id)}}">
                                     <input type="hidden" name="id" value="{{$removebg->id}}">
                                     <button>
-                                        <span class="badge bg-primary/10  text-primary material-symbols-outlined">Download</span>
+                                        <svg  class="badge bg-primary/10  text-primary"  xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24"><path fill="currentColor" d="m12 16l-5-5l1.4-1.45l2.6 2.6V4h2v8.15l2.6-2.6L17 11zm-6 4q-.825 0-1.412-.587T4 18v-3h2v3h12v-3h2v3q0 .825-.587 1.413T18 20z"/></svg>
                                     </button>
                                 </form>
                             </div>

@@ -37,9 +37,11 @@ class RunwayController extends Controller
     public function create(Request $request)
     {
 
-        dd($request->all());
+//        dd($request->all());
 
         $key = config('apikeys.falAI');
+
+
 
         $runway           = new Runway();
         $runway->user_id  = 1;
@@ -77,7 +79,12 @@ class RunwayController extends Controller
                 $payload);
 
             if ($response->successful()) {
-                return $response->json();
+
+                $runway->task_id = $response->json()['request_id'];
+                $runway->save();
+
+                return back()->with('alert_success', 'დავალება მიღებულია! დასრულებისას მიიღებთ სმს შეტყობინებას ');
+
             }
 
             //  if error send email and log
@@ -86,9 +93,19 @@ class RunwayController extends Controller
     }
 
     public function webhook(Request $request)
+
     {
+
+        Log::channel('webhook')->info('Webhook received', [
+            'response' => $request->all(),
+        ]);
+
+
+
         $data = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
+
         if ($data['status'] === 'OK') {
+
             $runway            = Runway::where('task_id', $data['request_id'])->first();
             $runway->video_url = $data['payload']['video']['url'];
             $runway->save();
@@ -96,9 +113,6 @@ class RunwayController extends Controller
             $runway->media->first()->delete();
 
 
-            Log::channel('webhook')->info('Webhook received', [
-                'response' => $request->all(),
-            ]);
 
 
             // SEND SMS NOTIFICATION
@@ -120,7 +134,11 @@ class RunwayController extends Controller
             ];
 
             $response2 = Http::get($url, $params);
+
+
             // IF errpor send email and log
+
+
 
 
         } else {

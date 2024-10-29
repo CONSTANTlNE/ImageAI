@@ -27,52 +27,46 @@
                                 ფასი - 0.03 ₾
                             </p>
                         </div>
-                    </div>
+                        <div class="flex ms-auto">
 
-                    <div class="flex ms-auto">
-                        <button aria-label="button" type="button"
-                                class="ti-btn ti-btn-icon ti-btn-outline-light dark:border-defaultborder/10 !text-[0.95rem] !ms-2 font-semibold">
-                            <i class="ti ti-phone dark:text-defaulttextcolor/70"></i>
-                        </button>
-                        <button aria-label="button" type="button"
-                                class="ti-btn ti-btn-icon ti-btn-outline-light  !text-[0.95rem] !ms-2 font-semibold">
-                            <i class="ti ti-video dark:text-defaulttextcolor/70"></i>
-                        </button>
-                        <button aria-label="button" type="button"
-                                class="ti-btn ti-btn-icon ti-btn-outline-light  !text-[0.95rem] !ms-2 font-semibold responsive-userinfo-open">
-                            <i class="ti ti-user-circle" id="responsive-chat-close"></i>
-                        </button>
+                            <button aria-label="button" type="button"
+                                    class="ti-btn ti-btn-icon ti-btn-outline-light  !text-[0.95rem] !ms-2 font-semibold responsive-userinfo-open">
+                                <i class="ti ti-user-circle" id="responsive-chat-close"></i>
+                            </button>
 
-                        {{-- Dropdown on main chat--}}
-                        <div class="hs-dropdown ti-dropdown">
-                            <a aria-label="anchor" href="javascript:void(0);"
-                               class="ti-btn ti-btn-icon ti-btn-outline-light  !text-[0.95rem] !ms-2 font-semibold"
-                               aria-expanded="false">
-                                <i class="fe fe-more-vertical text-[0.8rem]"></i>
-                            </a>
-                            <ul class="hs-dropdown-menu ti-dropdown-menu hidden">
-                                <li>
-                                    <a class="ti-dropdown-item !py-2 !px-[0.9375rem] !text-[0.8125rem] !font-medium block"
-                                       href="javascript:void(0);">Profile</a></li>
-                                <li>
-                                    <a class="ti-dropdown-item !py-2 !px-[0.9375rem] !text-[0.8125rem] !font-medium block"
-                                       href="javascript:void(0);">Clear Chat</a></li>
-                                <li>
-                                    <a class="ti-dropdown-item !py-2 !px-[0.9375rem] !text-[0.8125rem] !font-medium block"
-                                       href="javascript:void(0);">Delete User</a></li>
-                                <li>
-                                    <a class="ti-dropdown-item !py-2 !px-[0.9375rem] !text-[0.8125rem] !font-medium block"
-                                       href="javascript:void(0);">Block User</a></li>
-                                <li>
-                                    <a class="ti-dropdown-item !py-2 !px-[0.9375rem] !text-[0.8125rem] !font-medium block"
-                                       href="javascript:void(0);">Report</a></li>
-                            </ul>
+                            {{-- Dropdown on main chat--}}
+                            <div class="hs-dropdown ti-dropdown">
+                                <a aria-label="anchor" href="javascript:void(0);"
+                                   class="ti-btn ti-btn-icon ti-btn-outline-light  !text-[0.95rem] !ms-2 font-semibold"
+                                   aria-expanded="false">
+                                    <i class="fe fe-more-vertical text-[0.8rem]"></i>
+                                </a>
+                                <ul class="hs-dropdown-menu ti-dropdown-menu hidden">
+                                    <li>
+                                        <a class="ti-dropdown-item !py-2 !px-[0.9375rem] !text-[0.8125rem] !font-medium block"
+                                           href="javascript:void(0);">Profile</a></li>
+                                    <li>
+                                        <a class="ti-dropdown-item !py-2 !px-[0.9375rem] !text-[0.8125rem] !font-medium block"
+                                           href="javascript:void(0);">Clear Chat</a></li>
+                                    <li>
+                                        <a class="ti-dropdown-item !py-2 !px-[0.9375rem] !text-[0.8125rem] !font-medium block"
+                                           href="javascript:void(0);">Delete User</a></li>
+                                    <li>
+                                        <a class="ti-dropdown-item !py-2 !px-[0.9375rem] !text-[0.8125rem] !font-medium block"
+                                           href="javascript:void(0);">Block User</a></li>
+                                    <li>
+                                        <a class="ti-dropdown-item !py-2 !px-[0.9375rem] !text-[0.8125rem] !font-medium block"
+                                           href="javascript:void(0);">Report</a></li>
+                                </ul>
+                            </div>
+                            <button aria-label="button" type="button"
+                                    class="ti-btn ti-btn-icon ti-btn-outline-light  !text-[0.95rem] !ms-2 font-semibold responsive-chat-close">
+                                <i class="ri-close-line"></i>
+                            </button>
                         </div>
-                        <button aria-label="button" type="button"
-                                class="ti-btn ti-btn-icon ti-btn-outline-light  !text-[0.95rem] !ms-2 font-semibold responsive-chat-close">
-                            <i class="ri-close-line"></i>
-                        </button>
                     </div>
+
+
                 </div>
                 <div class="chat-content" id="main-chat-contentt">
                     <ul id="chat-target" class="list-none">
@@ -142,14 +136,15 @@
                             class="f ti-btn bg-primary text-white !mx-2 ti-btn-icon ti-btn-send">
                         <i class="ri-send-plane-2-line"></i>
                     </button>
-                    <div  style="position: absolute; bottom:65px;padding: 0;" class="flex justify-center w-full gap-5">
+                    <div id="customwidth" style="position: absolute; bottom:65px;padding: 0;width: 100%;" class="flex justify-center gap-5">
                         <div class="text-center flex justify-center gap-2 w-full px-3">
                             <select style="max-width: 160px" name="ratio" class="ti-form-select rounded-sm  !px-2">
                                 <option selected>ორიენტაცია</option>
+                                <option value="HD">HD (1024x1024)</option>
                                 <option value="16:9">ლანდშაფტი (16:9)</option>
-                                <option value="16:9">ლანდშაფტი (4:3)</option>
+                                <option value="4:3">ლანდშაფტი (4:3)</option>
                                 <option value="9:16">პორტრეტი (9:16)</option>
-                                <option value="9:16">პორტრეტი (3:4)</option>
+                                <option value="3:4">პორტრეტი (3:4)</option>
                             </select>
                         </div>
                     </div>
@@ -185,7 +180,7 @@
                                 <div class="xl:col-span-4 lg:col-span-4 md:col-span-4 sm:col-span-4 col-span-4">
                                     <a aria-label="anchor" href="{{$media2->getUrl()}}"
                                        class="chat-media glightbox">
-                                        <img style="object-fit: cover" src="{{$media2->getUrl()}}" alt="">
+                                        <img  style="object-fit: cover;width: 100%!important" src="{{$media2->getUrl()}}" alt="">
                                     </a>
                                     <div class="flex justify-around">
                                         <form class="mb-2" action="{{route('flux-schnell.delete',$item2->id)}}"
@@ -195,14 +190,15 @@
                                             <a href="javascript:void(0);"
                                                onclick="document.getElementById('deleteId').value={{$item2->id}}"
                                                data-hs-overlay="#staticBackdrop">
-                                                <span class="badge bg-primary/10  text-primary material-symbols-outlined">delete</span>
+
+                                                <svg class="badge bg-primary/10  text-primary" xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24"><path fill="currentColor" d="M7 21q-.825 0-1.412-.587T5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.587 1.413T17 21zM17 6H7v13h10zM9 17h2V8H9zm4 0h2V8h-2zM7 6v13z"/></svg>
                                             </a>
 
                                         </form>
                                         <form class="mb-2" action="{{route('flux.download')}}">
                                             <input type="hidden" name="id" value="{{$item2->id}}">
                                             <button>
-                                                <span class="badge bg-primary/10  text-primary material-symbols-outlined">Download</span>
+                                                <svg  class="badge bg-primary/10  text-primary"  xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24"><path fill="currentColor" d="m12 16l-5-5l1.4-1.45l2.6 2.6V4h2v8.15l2.6-2.6L17 11zm-6 4q-.825 0-1.412-.587T4 18v-3h2v3h12v-3h2v3q0 .825-.587 1.413T18 20z"/></svg>
                                             </button>
                                         </form>
                                     </div>

@@ -285,14 +285,14 @@
                                                 <a href="javascript:void(0);"
                                                    onclick="document.getElementById('deleteId').value={{$item2->id}}"
                                                    data-hs-overlay="#staticBackdrop3">
-                                                    <span class="badge bg-primary/10  text-primary material-symbols-outlined">delete</span>
+                                                    <svg class="badge bg-primary/10  text-primary" xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24"><path fill="currentColor" d="M7 21q-.825 0-1.412-.587T5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.587 1.413T17 21zM17 6H7v13h10zM9 17h2V8H9zm4 0h2V8h-2zM7 6v13z"/></svg>
                                                 </a>
 
                                             </form>
                                             <form class="mb-2" action="{{route('bg.download',$item2->id)}}">
                                                 <input type="hidden" name="id" value="{{$item2->id}}">
                                                 <button>
-                                                    <span class="badge bg-primary/10  text-primary material-symbols-outlined">Download</span>
+                                                    <svg  class="badge bg-primary/10  text-primary"  xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24"><path fill="currentColor" d="m12 16l-5-5l1.4-1.45l2.6 2.6V4h2v8.15l2.6-2.6L17 11zm-6 4q-.825 0-1.412-.587T4 18v-3h2v3h12v-3h2v3q0 .825-.587 1.413T18 20z"/></svg>
                                                 </button>
                                             </form>
                                         </div>

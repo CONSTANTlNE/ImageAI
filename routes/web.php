@@ -32,6 +32,7 @@ Route::middleware('auth')
         //  Midjourney Routes
         Route::get('/midjourney', [MidjourneyController::class, 'index'])->name('midjourney');
         Route::post('/midjourney/create', [MidjourneyController::class, 'imagine'])->name('midjourney.create');
+        Route::post('/midjourney/variation', [MidjourneyController::class, 'variation'])->name('midjourney.variation');
         Route::get('/midjourney/fetch', [MidjourneyController::class, 'fetch'])->name('midjourney.fetch');
         Route::post('/midjourney/delete}',
             [MidjourneyController::class, 'delete'])->name('midjourney.delete');

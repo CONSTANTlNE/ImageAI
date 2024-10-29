@@ -38,6 +38,46 @@ class FluxController extends Controller
     public function schnellGenerate(Request $request)
     {
         $prompt          = $request->prompt;
+        $ratio=$request->input('ratio','4:3');
+
+        switch ($ratio) {
+            case '16:9':
+                $width = 1024; // or any preferred width
+                $height = 576; // calculates height based on width and ratio
+                break;
+
+            case '9:16':
+                $height = 1024; // or any preferred height
+                $width = 576; // calculates width based on height and ratio
+                break;
+
+            case '4:3':
+                $width = 1024; // or any preferred width
+                $height = 768; // calculates height based on width and ratio
+                break;
+
+            case '3:4':
+                $height = 1024; // or any preferred height
+                $width = 768; // calculates width based on height and ratio
+                break;
+
+            case 'HD':
+                $height = 1024; // or any preferred height
+                $width = 1024; // calculates width based on height and ratio
+                break;
+
+            default:
+                // Optional: handle unknown ratio cases
+                $width = 1024; // default width
+                $height = 768; // default to '16:9' ratio if unknown ratio is provided
+                break;
+
+        }
+
+
+
+//        dd($image_size);
+
         $schnell         = new Flux();
         $schnell->model  = 'flux-schnell';
         $schnell->prompt_en = $prompt;
@@ -63,7 +103,7 @@ class FluxController extends Controller
 
 
 
-        return view('user.htmx.flux-htmx', compact('prompt', 'key'));
+        return view('user.htmx.flux-htmx', compact('prompt', 'key','width','height'));
     }
 
     public function schnellsave(Request $request)

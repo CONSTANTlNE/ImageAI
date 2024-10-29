@@ -1,3 +1,5 @@
+<script src="https://cdn.jsdelivr.net/gh/underground-works/clockwork-browser@1/dist/toolbar.js"></script>
+
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- Switch JS -->
@@ -99,7 +101,7 @@
   </div>
     <p style="font-size:1.2rem" class="mt-2">{{session()->get('alert_error')}}</p>
   `,
-                timer: 1800,
+                timer: 2500,
                 showConfirmButton: false,
             },
         )
@@ -118,7 +120,7 @@
     <p style="font-size:1.2rem" class="mt-2">{{session()->get('alert_success')}}</p>
   `,
                 showConfirmButton: false,
-                timer: 1800,
+                timer: 2500,
                 {{--text: '{{session()->get('alert_success')}}',--}}
             },
         )
