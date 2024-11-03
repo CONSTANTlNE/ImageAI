@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Balance;
 use App\Models\Midjourney;
+use App\Services\AppBalanceService;
+use App\Services\UserBalanceService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -34,6 +36,14 @@ class MidjourneyController extends Controller
 
     public function imagine(Request $request)
     {
+
+
+        if(!(new UserBalanceService())->checkBalance('midjourney')){
+            return back()->with('alert_error','არასაკმარისი ბალანსი');
+        }
+
+
+
         if ($request->prompt == null) {
             sleep(5);
 
@@ -60,29 +70,18 @@ class MidjourneyController extends Controller
         ]);
 
         if ($response->successful()) {
-            Midjourney::create([
+           $midjourney = Midjourney::create([
                 'task_id'        => $response->json()['data']['task_id'],
                 'model'          => 'midjourney',
                 'status'         => $response->json()['data']['status'],
                 'user_prompt_en' => $request->prompt,
             ]);
 
-            $rate = Balance::where('provider', 'MIDJOURNEY')
-                ->whereNotNull('rate')
-                ->orderby('created_at', 'desc')
-                ->first();
+            // Deduct Balance from App
+            (new AppBalanceService())->appBalance('piapi', 'midjourney');
 
-            $cost = 0.04 * $rate->rate;
-
-            $balance           = new Balance;
-            $balance->user_id  = auth()->id();
-            $balance->provider = 'MIDJOURNEY';
-            $balance->balance  = -0.04;
-            $balance->cost_gel = $cost;
-            $balance->sell     = 0.25;
-            $balance->profit   = 0.25 - $cost;
-            $balance->save();
-
+            // Deduct Balance from User
+            (new UserBalanceService)->deductBalance('midjourney', $midjourney->id, config('variables.midjourney-price'));
 
             return back()->with('alert_success', 'დავალება მიღებულია! დასრულებისას მიიღებთ სმს შეტყობინებას ');
         } else {
@@ -131,28 +130,18 @@ class MidjourneyController extends Controller
             ]);
 
             if ($response->successful()) {
-                Midjourney::create([
+                $midjourney = Midjourney::create([
                     'task_id'        => $response->json()['data']['task_id'],
                     'model'          => 'midjourney',
                     'status'         => $response->json()['data']['status'],
                     'user_prompt_en' => $task_id->user_prompt_en,
                 ]);
 
-                $rate = Balance::where('provider', 'MIDJOURNEY')
-                    ->whereNotNull('rate')
-                    ->orderby('created_at', 'desc')
-                    ->first();
+                // Deduct Balance from App
+                (new AppBalanceService())->appBalance('piapi', 'midjourney');
 
-                $cost = 0.03 * $rate->rate;
-
-                $balance           = new Balance;
-                $balance->user_id  = auth()->id();
-                $balance->provider = 'MIDJOURNEY';
-                $balance->balance  = -0.03;
-                $balance->cost_gel = $cost;
-                $balance->sell     = 0.25;
-                $balance->profit   = 0.25 - $cost;
-                $balance->save();
+                // Deduct Balance from User
+                (new UserBalanceService)->deductBalance('midjourney', $midjourney->id, config('variables.midjourney-price'));
 
 
                 return back()->with('alert_success', 'დავალება მიღებულია! დასრულებისას მიიღებთ სმს შეტყობინებას ');
@@ -208,9 +197,9 @@ class MidjourneyController extends Controller
 
                 if ($response->json()['data']['status'] === 'completed') {
 
-                    $created_at=$response->json()['data']['meta']['created_at'];
-                    $ended_at=$response->json()['data']['meta']['ended_at'];
-                    $duration= $created_at->diffInSeconds($ended_at);
+                    $created_at = Carbon::parse($response->json()['data']['meta']['created_at']);
+                    $ended_at = Carbon::parse($response->json()['data']['meta']['ended_at']);
+                    $duration = $created_at->diffInSeconds($ended_at);
 
                     $task->update([
                         'midjourney_url' => $response->json()['data']['output']['image_url'],
@@ -282,9 +271,9 @@ class MidjourneyController extends Controller
                         'stopList' => false,
                     ];
 
-                    dd($response->json());
-
                     $response2 = Http::get($url, $params);
+
+                    dd($response->json());
                 } else {
                     return $response->json()['data']['status'];
                 }

@@ -3,11 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Addbg;
+use App\Models\Balance;
 use App\Models\Flux;
 use App\Models\Removebg;
+use App\Models\UserBalance;
+use App\Services\AppBalanceService;
+use App\Services\UserBalanceService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
@@ -35,7 +40,10 @@ class AiController extends Controller
     public function removeBG(Request $request)
     {
 
-//        dd($request->all());
+        if(!(new UserBalanceService())->checkBalance('removebg')){
+            return back()->with('alert_error','არასაკმარისი ბალანსი');
+        }
+
         $bearerToken = config('apikeys.edenapi');
 
 //        File Upload
@@ -97,22 +105,56 @@ class AiController extends Controller
                 $encoded = $image->toWebp(60);
                 Storage::disk('public')->delete('test.png');
 
+                $random=random_int(0,10000);
+
+                Storage::disk('public')->put(auth()->id().'_'.'removebg'.$random.'.jpeg', $encoded);
+                $bg->addMedia(storage_path('app/public/'.auth()->id().'_'.'removebg'.$random.'.jpeg'))->toMediaCollection('removebg');
+                Storage::disk('public')->delete(auth()->id().'_'.'removebg'.$random.'.jpeg');
 
 
-                Storage::disk('public')->put('test.webp', $encoded);
-                $bg->addMedia(storage_path('app/public/test.webp'))->toMediaCollection('removebg');
-                Storage::disk('public')->delete('test.webp');
+
+
+//                $rate = Balance::where('provider', 'edenai')
+//                    ->whereNotNull('rate')
+//                    ->orderby('created_at', 'desc')
+//                    ->first();
+//
+//                $cost = 0.001 * $rate->rate;
+//
+//                $balance           = new Balance;
+//                $balance->user_id  = auth()->id();
+//                $balance->provider = 'edenai';
+//                $balance->balance  = -0.001;
+//                $balance->cost_gel = $cost;
+//                $balance->sell     = config('variables.removebg-price');
+//                $balance->profit   = config('variables.removebg-price') - $cost;
+//                $balance->save();
+
+
+                // Deduct Balance from App
+                (new AppBalanceService())->appBalance('edenai', 'removebg');
+
+                // Deduct Balance from User
+                (new UserBalanceService)->deductBalance('removebg', $bg->id, config('variables.removebg-price'));
 
 
                 return back()->with('alert_success', 'ფონი წარმატებით წაიშალა')->with('url', $url);
 
             }
+
+            Log::channel('ai_errors')->info('Eden AI', [
+                'response' => $request->all(),
+
+            ]);
+
+            return back()->with('alert_error', 'ბოდიშს გიხდით, დაფიქსირდა ტექნიკური ხარვეზი');
         }
+
 //        if Selected from Galleries
         if($request->has('file_url') && $request->input('file_url')){
 
             $file_url=$request->input('file_url');
-//dd($file_url);
+
             $headers = [
                 'Authorization' => 'Bearer '.$bearerToken,
             ];
@@ -149,22 +191,23 @@ class AiController extends Controller
                 $encoded = $image->toJpeg();
                 Storage::disk('public')->delete('test.png');
 
+                $random=random_int(0,10000);
 
-                Storage::disk('public')->put('test.webp', $encoded);
-                $bg->addMedia(storage_path('app/public/test.webp'))->toMediaCollection('removebg');
-                Storage::disk('public')->delete('test.webp');
+                Storage::disk('public')->put('removebg'.$random.'.jpeg', $encoded);
+                $bg->addMedia(storage_path('removebg'.$random.'.jpeg'))->toMediaCollection('removebg');
+                Storage::disk('public')->delete('removebg'.$random.'.jpeg');
 
 
                 return back()->with('alert_success', 'ფონი წარმატებით წაიშალა')->with('url', $url);
 
-            } else {
-
-                dd($response->json());
             }
 
+            Log::channel('ai_errors')->info('Eden AI', [
+                'response' => $request->all(),
+            ]);
+
+            return back()->with('alert_error', 'ბოდიშს გიხდით, დაფიქსირდა ტექნიკური ხარვეზი');
         }
-
-
 
 
         return back()->with('alert_error', 'გთხოვთ ატვირთეთ ფოტო');
@@ -217,6 +260,12 @@ class AiController extends Controller
 
     }
 
+
+    // Resize images
+    public function resizeIndex(){
+
+        return view('user.pages.resize');
+    }
 
 
 

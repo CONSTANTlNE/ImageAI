@@ -19,6 +19,7 @@
 
 
 <script type="module">
+    document.getElementById('spinnerOverlay').style.display = 'block';
     import {Spinner} from '../../../../assets/js/spin.js';
 
 
@@ -46,4 +47,6 @@
     var target = document.getElementById('foo');
 
     spinner = new Spinner(opts).spin(target);
+
+
 </script>

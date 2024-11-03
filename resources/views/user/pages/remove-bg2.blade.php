@@ -68,7 +68,7 @@
 
 
                 </div>
-                <div class="chat-content" id="main-chat-contentt">
+                <div class="chat-content" id="main-chat-content">
                     <ul id="chat-target" class="list-none">
                         <li class="chat-day-label">
                             <span>Today</span>
@@ -120,7 +120,7 @@
                         @endforeach
                     </ul>
                 </div>
-                <form action="{{route('remove')}}" method="post" enctype="multipart/form-data">
+                <form action="{{route('remove')}}" method="post"  enctype="multipart/form-data">
                     @csrf
                     <div style="height: 8rem!important;align-items: flex-end" class="chat-footer mb-3 justify-center">
                         {{-- Submit Button--}}
@@ -138,7 +138,7 @@
                             </button>
                             <div style="color:#845ADF" id="runwayPhotoName"></div>
                         </div>
-                        <input id="runwayFile" name="images[]" type="file" style="display: none">
+                        <input id="runwayFile" accept="image/jpeg,image/png,image/jpg" name="images[]" type="file" style="display: none">
                         {{--Choose From Gallery --}}
                         <div class="text-center">
                             {{--Models Modal--}}
@@ -263,7 +263,7 @@
                         <span class="ltr:float-right rtl:float-left text-[0.6875rem]">
                             <a href="javascript:void(0);" class="text-primary underline">
                                 <u>
-                                    <a href="{{route('gallery',['model'=>'removebg'])}}">  View All</a>
+                                    <a  class="startSpinner" href="{{route('gallery',['model'=>'removebg'])}}">  View All</a>
                                 </u>
                             </a>
                         </span>

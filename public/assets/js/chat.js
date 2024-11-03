@@ -17,21 +17,35 @@
     }
 
     var myElement5 = document.getElementById('chat-user-details');
-    new SimpleBar(myElement5, { autoHide: true });
-
-
-    document.querySelector(".responsive-chat-close").addEventListener("click", () => {
-        document.querySelector(".main-chart-wrapper").classList.remove("responsive-chat-open")
-    })
+    if (myElement5){
+        new SimpleBar(myElement5, { autoHide: true });
+    }
 
     document.querySelectorAll(".responsive-userinfo-open").forEach((ele) => {
         ele.addEventListener("click", () => {
             document.querySelector("#chat-user-details").classList.add("open")
+            console.log('click')
         })
     })
-    document.querySelector(".responsive-chat-close2").addEventListener("click",() =>{
-        document.querySelector("#chat-user-details").classList.remove("open")
-    })
+
+    const responsivechatclose = document.querySelector(".responsive-chat-close");
+    if (responsivechatclose) {
+        responsivechatclose.addEventListener("click", () => {
+            document.querySelector(".main-chart-wrapper").classList.remove("responsive-chat-open")
+            console.log('click')
+        })
+    }
+    const responsivechatclose2= document.querySelectorAll(".responsive-chat-close2");
+
+    if (responsivechatclose2) {
+        responsivechatclose2.forEach((ele) => {
+            ele.addEventListener("click", () => {
+                document.querySelector("#chat-user-details").classList.remove("open")
+            })
+        })
+    }
+
+
 
     document.querySelector(".chat-info").addEventListener("click", () => {
         document.querySelector("#chat-user-details").classList.remove("open")

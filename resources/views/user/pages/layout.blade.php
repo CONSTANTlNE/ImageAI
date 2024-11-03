@@ -31,18 +31,18 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css"/>
     <script src="https://cdn.jsdelivr.net/gh/mcstudios/glightbox/dist/js/glightbox.min.js"></script>
-    @if(request()->routeIs('bg.remove') || request()->routeIs('runway'))
-        <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet"/>
-        <link
-                href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css"
-                rel="stylesheet"
-        />
-        <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
-        <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
-        <script src="https://unpkg.com/filepond-plugin-image-validate-size/dist/filepond-plugin-image-validate-size.js"></script>
-        <script src="https://unpkg.com/filepond-plugin-image-exif-orientation/dist/filepond-plugin-image-exif-orientation.js"></script>
+{{--    @if(request()->routeIs('bg.remove') || request()->routeIs('runway'))--}}
+{{--        <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet"/>--}}
+{{--        <link--}}
+{{--                href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css"--}}
+{{--                rel="stylesheet"--}}
+{{--        />--}}
+{{--        <script src="https://unpkg.com/filepond/dist/filepond.js"></script>--}}
+{{--        <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>--}}
+{{--        <script src="https://unpkg.com/filepond-plugin-image-validate-size/dist/filepond-plugin-image-validate-size.js"></script>--}}
+{{--        <script src="https://unpkg.com/filepond-plugin-image-exif-orientation/dist/filepond-plugin-image-exif-orientation.js"></script>--}}
 
-    @endif
+{{--    @endif--}}
     <script src="https://unpkg.com/htmx.org@2.0.3"
             integrity="sha384-0895/pl2MU10Hqc6jd4RvrthNlDiE9U1tWmX7WRESftEDRosgxNsQG/Ze9YMRzHq"
             crossorigin="anonymous"></script>
@@ -57,9 +57,21 @@
     @endif
 
     <style>
-        .hideX{
+        .spinner-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+            z-index: 1999999999; /* Behind the spinner's z-index */
+            display: none; /* Hidden by default */
+        }
+
+        .hideX {
             display: none;
         }
+
         .filepond--item {
             width: calc(50% - 0.5em);
         }
@@ -121,44 +133,94 @@
 
         @media only screen and (max-width: 375px) {
 
-            .hideX{
+            .hideX {
                 display: block;
             }
+
             .ai-image {
                 min-height: 300px !important
             }
 
-            #runwayBtn, #choosefromgallery{
+            #runwayBtn, #choosefromgallery {
                 font-size: 13px;
             }
-            #customwidth{
+
+            #customwidth {
                 width: 85% !important;
             }
         }
 
         @media only screen and (max-width: 1400px) {
-            .hideX{
+            .hideX {
                 display: block;
             }
         }
 
-        .avatar::before{
-            content:none!important;
+        .avatar::before {
+            content: none !important;
         }
 
-        #
+        @media only screen and (max-width: 990px) {
 
+            .main-chart-wrapper {
+                flex-grow: 1 !important;
+                display: flex !important;
+                flex-direction: column
+            }
+
+            .main-content {
+                display: flex !important;
+                flex-direction: column !important;
+                flex-grow: 1 !important;
+            }
+
+            #main-chat {
+                flex-grow: 1 !important;
+            }
+        }
+
+        .custom-chat-content{
+            max-height: calc(100vh - 11.5rem) !important;
+        }
+
+        .responcive-image-history{
+            max-width: 250px;
+        }
+
+
+        @media only screen and (max-width: 400px) {
+            .responcive-image-history{
+                max-width: 100px;
+            }
+
+        }
 
 
     </style>
 
+    @if(request()->routeIs('userbalance.history'))
+        <style>
+            .simplebar-content {
+                padding: 0px!important;
+
+            }
+
+            @media only screen and (max-width: 465px) {
+                #answer {
+                    width: 94% !important;
+                }
+            }
+
+        </style>
+    @endif
+
     <link rel="stylesheet" href="{{asset('assets/css/spin.css')}}">
 
-    @vite('resources/js/app.js')
+
 
 </head>
 
-<body   id="foo">
+<body id="foo">
 <div id="htmxerrors"></div>
 <!-- ========== Switcher  ========== -->
 @include('user.pages.components.switcher')
@@ -179,9 +241,8 @@
     <!-- End::app-sidebar -->
 
     <!-- Start::content  -->
-    <div class="content">
+    <div style="flex-grow: 1!important;display: flex;flex-direction: column" class="content">
 
-        @yield('dashboard')
         @yield('midjourney')
         @yield('removebg')
         @yield('remove-bg')
@@ -190,7 +251,9 @@
         @yield('removebg-gallery')
         @yield('fluxshnell')
         @yield('runway')
+        @yield('resize')
         @yield('gallery')
+        @yield('history')
 
     </div>
     <!-- End::content  -->
@@ -200,7 +263,7 @@
     <!-- ========== END Search Modal ========== -->
 
     <!-- Footer Start -->
-    @include('user.pages.components.footer')
+    {{--    @include('user.pages.components.footer')--}}
     <!-- Footer End -->
 
 </div>
@@ -212,7 +275,7 @@
 </div>
 
 <div id="responsive-overlay"></div>
-
+<div id="spinnerOverlay" class="spinner-overlay"></div>
 @include('user.pages.components.scripts')
 </body>
 

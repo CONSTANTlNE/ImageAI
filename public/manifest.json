@@ -1,0 +1,84 @@
+{
+  "short_name": "Your App",
+  "name": "Your Application Name",
+  "start_url": "https://local.ews.ge/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "https://local.ews.ge/pwaicons/72x72.jpeg",
+      "sizes": "72x72",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "https://local.ews.ge/pwaicons/96x96.jpeg",
+      "sizes": "96x96",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "https://local.ews.ge/pwaicons/120x120.jpeg",
+      "sizes": "120x120",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "https://local.ews.ge/pwaicons/128x128.jpeg",
+      "sizes": "128x128",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "https://local.ews.ge/pwaicons/144x144.jpeg",
+      "sizes": "144x144",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "https://local.ews.ge/pwaicons/152x152.jpeg",
+      "sizes": "152x152",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "https://local.ews.ge/pwaicons/180x180.jpeg",
+      "sizes": "180x180",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "https://local.ews.ge/pwaicons/192x192.jpeg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "https://local.ews.ge/pwaicons/384x384.jpeg",
+      "sizes": "384x384",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "https://local.ews.ge/pwaicons/512x512.jpeg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+
+  ],
+  "description": "image and video generation with the help of AI",
+  "id": "6c51578cafcbf2f5e90fbf568a61ab8f",
+  "launch_handler": {
+    "client_mode": ["navigate-existing", "auto"]
+  },
+  "orientation": "portrait",
+  "screenshots" : [
+    {
+      "src": "screenshot.jpg",
+      "sizes": "1280x720",
+      "type": "image/jpg",
+      "platform": "wide"
+    }
+  ],
+  "categories": [
+      "images","videos","ai","artificial intelligence"
+  ],
+  "dir": "auto",
+  "lang": "ka"
+
+
+
+
+}

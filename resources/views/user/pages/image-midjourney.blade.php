@@ -9,7 +9,7 @@
             {{--Left Sidebar--}}
             @include('user.pages.components.chat-left-sidebar')
             {{--Main Chat--}}
-            <div class="main-chat-area border dark:border-defaultborder/10">
+            <div  id="main-chat" class="main-chat-area border dark:border-defaultborder/10">
                 <div class="sm:flex items-center p-2 border-b dark:border-defaultborder/10">
                     <div class="flex items-center leading-none">
                             <span class="avatar avatar-lg online me-4 avatar-rounded chatstatusperson">
@@ -94,16 +94,8 @@
                             {{-- Answer--}}
                             <li class="chat-item-start flex justify-center text-center">
                                 <div class="chat-list-inner">
-
                                     <div class="ms-3">
-                                        {{--                                    <span class="chatting-user-info">--}}
-                                        {{--                                        <span class="chatnameperson">Sujika</span>--}}
-                                        {{--                                        <span class="msg-sent-time">11:55PM</span> --}}
-                                        {{--                                    </span>--}}
                                         <div class="main-chat-msg text-center">
-                                            {{--                                        <div style="width: 100%">--}}
-                                            {{--                                            <p class="mb-0">Here are some of them have a look</p>--}}
-                                            {{--                                        </div>--}}
                                             <div>
                                                 <div style="padding: 0!important;"
                                                      class="mb-0 flex flex-wrap  justify-center">
@@ -112,7 +104,7 @@
                                                             <a style="min-width: 120px!important;min-height: 120px!important"
                                                                aria-label="anchor" href="{{$media->getUrl()}}"
                                                                class="avatar avatar-xl m-1 glightbox">
-                                                                <img
+                                                                <img    style="object-fit: cover"
                                                                         src="{{$media->getUrl()}}" alt=""
                                                                         class="rounded-md">
                                                             </a>

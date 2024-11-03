@@ -69,9 +69,14 @@ class User extends Authenticatable
         return $this->hasMany(Removebg::class);
     }
 
-    public function balances(): HasMany{
+    public function userbalanace(): HasMany{
+        return $this->hasMany(UserBalance::class);
+    }
 
+    public function balance(): HasMany{
         return $this->hasMany(Balance::class);
     }
+
+
 
 }

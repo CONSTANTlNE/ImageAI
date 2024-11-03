@@ -8,8 +8,10 @@ use App\Http\Controllers\RunwayController;
 use App\Jobs\WebmConversion;
 use App\Models\Balance;
 use App\Models\Midjourney;
+use App\Models\Runway;
 use FFMpeg\FFMpeg;
 use FFMpeg\Format\Video\WebM;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
@@ -69,10 +71,17 @@ Route::middleware('auth')
         Route::post('runway/queue',[RunwayController::class,'create'])->name('runway.queue');
         Route::get('/runway/htmx', [RunwayController::class, 'galleryHtmx'])->name('runway.gallery.htmx');
 
+        // Resize images
+        Route::get('resize',[AiController::class,'resizeIndex'])->name('resize.index');
 
         // Gallery
         Route::get('/gallery/{model}', [MainController::class, 'gallery'])->name('gallery');
 
+        // User Balance
+        Route::post('/balance/check/htmx',[MainController::class,'checkUserBalance'])->name('userbalance.check');
+        Route::get('/balance/history',[MainController::class,'checkUserBalanceHistory'])->name('userbalance.history');
+
+        // ==================== some random tests and playground ====================
 
         // Intervention - webp conversion
         Route::get('encode', function () {
@@ -90,10 +99,34 @@ Route::middleware('auth')
 
             Storage::disk('public')->put('test.webp', $encoded);
         });
+
+        // test
+        Route::get('/taskid',function (){
+             $runway            = Runway::where('task_id', '6043f181-54be-4071-a96c-ff0b8cc87970')->first();
+             return $runway;
+        });
+
+
+        Route::get('userbalanceman', function () {
+            $balance           = new \App\Models\UserBalance();
+            $balance->balance  = 1;
+            $balance->save();
+
+//
+//    $rate=Balance::where('provider', 'FALAI')
+//        ->whereNotNull('rate')
+//        ->orderby('created_at', 'desc')
+//        ->first();
+//    return $rate->rate;
+
+        });
+
+
+
     });
 
 
-// TESTING ROUTES
+// ==================TESTING ROUTES=========================
 
 Route::get('token', function () {
     $user = auth()->user();
@@ -109,16 +142,22 @@ Route::get('/manual', function () {
 });
 
 Route::get('manualbalance', function () {
-    $balance           = new Balance;
-    $balance->balance  = 3.81;
-    $balance->provider = 'MIDJOURNEY';
-    $balance->rate     = 2.7136;
-    $balance->save();
+//    $balance           = new Balance;
+//    $balance->balance  = 7.38;
+//    $balance->provider = 'falai';
+//    $balance->rate     = 2.805;
+//    $balance->save();
+
+//    $balance           = new Balance;
+//    $balance->balance  = 5.89;
+//    $balance->provider = 'midjourney';
+//    $balance->rate     = 2.805;
+//    $balance->save();
 
     $balance           = new Balance;
-    $balance->balance  = 3.81;
-    $balance->provider = 'FALAI';
-    $balance->rate     = 2.7136;
+    $balance->balance  = 13.53;
+    $balance->provider = 'edenai';
+    $balance->rate     = 2.805;
     $balance->save();
 
 //
@@ -129,6 +168,7 @@ Route::get('manualbalance', function () {
 //    return $rate->rate;
 
 });
+
 
 
 //  ffmpeg
@@ -145,13 +185,6 @@ route::get('video', function () {
 
     return view('video', compact('video'));
 });
-
-
-//FAL AI TEST ENDPOINTS
-
-Route::get('manualrunway',[RunwayController::class,'manualrunway'])->name('runway.index');
-Route::post('runwayq',[RunwayController::class,'manual'])->name('runway.queue2');
-
 
 Route::post('queue', function () {
 
@@ -179,9 +212,6 @@ Route::post('queue', function () {
     return $response->json();
 })->name('queue');
 
-
-
-
 Route::get('manualfetch',function(){
 
     $key=config('apikeys.falAI');
@@ -191,4 +221,55 @@ Route::get('manualfetch',function(){
 })->name('manualfetch');
 
 
+
+// RESIZE IMAGES WITH INTERVENTION
+Route::get('/resizetest', function () {
+    return view('resizetest');
+});
+
+Route::post('/resize2', function (Request $request) {
+
+    $uploadedFile = $request->file('file');
+
+    $manager = new ImageManager(new Driver());
+    $image = $manager->read($uploadedFile);
+
+    $image->resize($request->width, $request->height);
+
+// resize only image height to 200 pixel
+//    $image->resize(height: 200);
+
+    $resizedPath = $request->width . 'x' . $request->height .'.'. $uploadedFile->getClientOriginalExtension();
+    Storage::disk('public')->put($resizedPath, (string) $image->encode());
+
+    // Return the resized image as a download
+    return response()->download(storage_path('app/public/' . $resizedPath))->deleteFileAfterSend(true);
+
+})->name('resize2');
+
+
+// GOOGLE TRANSLATE
+
+Route::get('/detect', function () {
+
+    $token=config('apikeys.google');
+    $response = Http::post('https://translation.googleapis.com/language/translate/v2/detect?key='.$token, [
+        'q' => 'გამარჯობა',
+    ]);
+
+    return $response->json();
+
+});
+
+Route::get('/translate', function () {
+
+    $token=config('apikeys.google');
+    $response = Http::post('https://translation.googleapis.com/language/translate/v2?key='.$token, [
+        'q' => 'ძაღლლის მზის სათვალეებში პლიაჟზე',
+        'target' => 'en',
+    ]);
+
+    return $response->json();
+
+});
 

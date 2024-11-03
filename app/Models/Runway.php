@@ -30,4 +30,5 @@ class Runway extends Model implements HasMedia
             $builder->where('user_id', auth()->id());
         });
     }
+
 }

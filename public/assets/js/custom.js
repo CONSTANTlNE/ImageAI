@@ -10,7 +10,10 @@
   /* page loader */
 
   /* footer year */
+  const year = document.getElementById("year");
+  if(year){
   document.getElementById("year").innerHTML = new Date().getFullYear();
+  }
   /* footer year */
   /*Start Sidemenu Scroll */
   var myElement = document.getElementById("sidebar-scroll");

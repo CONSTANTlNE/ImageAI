@@ -70,6 +70,12 @@ return [
             'level' => 'info',
         ],
 
+        'ai_errors' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/ai.log'),
+            'level' => 'info',
+        ],
+
         'single' => [
             'driver' => 'single',
             'path' => storage_path('logs/laravel.log'),

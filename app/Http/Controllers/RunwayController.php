@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 
+use App\Http\Requests\RunwayRequest;
 use App\Models\Flux;
 use App\Models\Midjourney;
 use App\Models\Removebg;
 use App\Models\Runway;
+use App\Services\UserBalanceService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -29,26 +31,24 @@ class RunwayController extends Controller
         return view('user.pages.runway', compact('runway', 'runway2'));
     }
 
-    public function manualrunway()
-    {
-        return view('runwaytest');
-    }
-
-    public function create(Request $request)
+    public function create(Request $request,RunwayRequest $runwayRequest)
     {
 
-//        dd($request->all());
+        $data = $runwayRequest->validated();
+
+
+        if (!(new UserBalanceService())->checkBalance('runway'.$data['duration'])) {
+            return back()->with('alert_error', 'არასაკმარისი ბალანსი');
+        }
 
         $key = config('apikeys.falAI');
 
+            $runway           = new Runway();
+            $runway->prompt   = $data['prompt'];
+            $runway->duration = $data['duration'];
+            $runway->ratio    = $data['ratio'];
+            $runway->save();
 
-
-        $runway           = new Runway();
-        $runway->user_id  = 1;
-        $runway->prompt   = $request->prompt;
-        $runway->duration = $request->duration;
-        $runway->ratio    = $request->ratio;
-        $runway->save();
 
         if($request->hasFile('runwayUpload')){
             $runway->addMediaFromRequest('runwayUpload')->toMediaCollection('runway_image');
@@ -56,39 +56,14 @@ class RunwayController extends Controller
             $url   = $media->getUrl();
         }
 
-        if($request->has('imageUrl')){
-            $url = $request->imageUrl;
-        }
-
-
-
-        if ($url !== null) {
-//            dd($url);
-
-            $payload = [
-                'image_url' => $url,
-                'prompt'    => $runway->prompt,
-                'duration'  => $runway->duration,
-                'ratio'     => $runway->ratio,
-            ];
-
-            $response = Http::withHeaders([
-                'Authorization' => 'Key '.$key,
-                'Content-Type'  => 'application/json',
-            ])->post('https://queue.fal.run/fal-ai/runway-gen3/turbo/image-to-video?fal_webhook=https://local.ews.ge/api/runway/webhook',
-                $payload);
-
-            if ($response->successful()) {
-
-                $runway->task_id = $response->json()['request_id'];
-                $runway->save();
-
-                return back()->with('alert_success', 'დავალება მიღებულია! დასრულებისას მიიღებთ სმს შეტყობინებას ');
-
+        if($data['imageUrl'] !== null){
+            $checkurl=HTTP::get($data['imageUrl']);
+            if($checkurl->successful()){
+                $url = $data['imageUrl'];
+                $runway->addMediaFromUrl($url)->toMediaCollection('runway_image');
+            } else {
+                return back()->with('error', 'Chosen image is invalid');
             }
-
-            //  if error send email and log
-
         }
     }
 
@@ -100,20 +75,17 @@ class RunwayController extends Controller
             'response' => $request->all(),
         ]);
 
-
-
         $data = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         if ($data['status'] === 'OK') {
 
-            $runway            = Runway::where('task_id', $data['request_id'])->first();
+            $runway            = Runway::withoutGlobalScopes()->where('task_id', $data['request_id'])->first();
             $runway->video_url = $data['payload']['video']['url'];
             $runway->save();
-            // delete Photo if provided by upload
-            $runway->media->first()->delete();
 
-
-
+//            if ($runway->media->first()){
+//                $runway->media->first()->delete();
+//            }
 
             // SEND SMS NOTIFICATION
 
@@ -139,20 +111,18 @@ class RunwayController extends Controller
             // IF errpor send email and log
 
 
-
-
         } else {
             $runway         = Runway::where('task_id', $data['request_id'])->first();
             $runway->status = $data['status'];
             $runway->error  = $data['error'];
             $runway->save();
-            // Send email error too
-        }
 
+            // Send email error too
+
+        }
 
         return response('webhook received', 200);
     }
-
 
     public function galleryHtmx(Request $request)
     {

@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="{{asset('landingassets/css/plugins.css')}}">
     <link rel="stylesheet" href="{{asset('landingassets/css/ff-1.css')}}">
     <link rel="stylesheet" href="{{asset('landingassets/css/style.css')}}">
+{{--    <link rel="stylesheet" href="{{asset('landingassets/css/particles.css')}}">--}}
     <link
             rel="stylesheet"
             href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
@@ -26,16 +27,33 @@
             }
         }
 
+        .logo{
+            height: 60px!important;
+        }
+
+        #particles-js, #particles-js2 {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1; /* Set behind the content */
+        }
     </style>
+    <link rel="manifest" href="{{ asset('manifest.json') }}">
+
+
 </head>
 <body>
-<div class="preloader">
-    <div class="preloader__img"><img src="{{asset('landingassets/img/logo-light.png')}}" alt="image"></div>
-</div>
+{{--<div class="preloader">--}}
+{{--    <div class="preloader__img"><img src="{{asset('landingassets/img/logo-light.png')}}" alt="image"></div>--}}
+{{--</div>--}}
 <div class="bg-dark">
     <nav class="navbar navbar-expand-lg navbar-overlay z-3 navbar--dark">
-        <div class="container"><a href="index.html" class="logo d-block"><img
-                        src="{{asset('landingassets/img/logo-light.png')}}" alt="logo"
+        <div class="container">
+            <a href="index.html" class="logo d-block">
+                <img
+                        src="{{asset('landingassets/img/onix.jpeg')}}" alt="logo"
                         class="logo__img"> </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#primaryMenu"
                     aria-controls="primaryMenu" aria-expanded="false" aria-label="Toggle navigation"><span
@@ -111,8 +129,7 @@
                                  data-cue="fadeIn">
                             </div>
                             <h1 style="font-size: 2.5rem; font-family: FiraGO,serif!important;text-align: center"
-                                class="text-light"
-                                data-cue="fadeIn">შექმენი უნიკალური ფოტო-ვიდეო
+                                class="text-light">შექმენი უნიკალური ფოტო-ვიდეო
                                 <span class="text-gradient-primary">ხელოვნური ინტელექტის დახმარებით</span>
                             </h1>
                             {{--                            <p class="text-light mb-8 max-text-11" data-cue="fadeIn">It is a long established fact that--}}
@@ -212,9 +229,11 @@
         </div><!-- /Hero 1 --><!-- Trusted Brand  -->
 
     </section>
+    <button id="install-button" >Install App</button>
 
     <!-- Midjourney Section -->
-    <section class="section-space-md-y">
+    <section  style="position: relative"  class="section-space-md-y">
+        <div id="particles-js"></div>
         <div class="container">
             <div class="row g-4 justify-content-xxl-between align-items-center">
                 <div class="col-lg-6 col-xxl-5">
@@ -328,7 +347,8 @@
         </div>
     </section>
     <!-- Flux-schnell Section -->
-    <section class="section-space-md-y">
+    <section  style="position: relative" class="section-space-md-y">
+        <div id="particles-js2"></div>
         <div class="container">
             <div class="row g-4 justify-content-xxl-between align-items-center">
                 <div class="col-lg-6">
@@ -1202,7 +1222,12 @@
 <script src="{{asset('landingassets/js/bootstrap.bundle.js')}}"></script>
 <script src="{{asset('landingassets/js/plugins.js')}}"></script>
 <script src="{{asset('landingassets/js/app.js')}}"></script>
+<script src="{{asset('landingassets/js/particles/particles.min.js')}}"></script>
+<script src="{{asset('landingassets/js/particles/particles2.js')}}"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+
 
 <script>
 
@@ -1224,6 +1249,55 @@
 <script>
     const lightbox = GLightbox({
         selector: '.glightbox'
+    });
+</script>
+
+
+{{--SERVICE WORKER FOR PWA--}}
+<script>
+
+
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('{{asset('service-worker.js')}}')
+                .then((registration) => {
+                    console.log('Service Worker registered with scope:', registration.scope);
+                })
+                .catch((error) => {
+                    console.error('Service Worker registration failed:', error);
+                });
+        });
+    }
+
+</script>
+
+{{--Install button for pwa--}}
+<script>
+    let deferredPrompt; // Variable to hold the event
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+        // Prevent the mini-info bar from appearing on mobile
+        e.preventDefault();
+        // Stash the event so it can be triggered later
+        deferredPrompt = e;
+        // Show the install button
+        document.getElementById('install-button').style.display = 'block';
+    });
+
+    document.getElementById('install-button').addEventListener('click', (e) => {
+        // Hide the button
+        document.getElementById('install-button').style.display = 'none';
+        // Show the prompt
+        deferredPrompt.prompt();
+        // Wait for the user to respond to the prompt
+        deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+                console.log('User accepted the install prompt');
+            } else {
+                console.log('User dismissed the install prompt');
+            }
+            deferredPrompt = null; // Clear the stored event
+        });
     });
 </script>
 

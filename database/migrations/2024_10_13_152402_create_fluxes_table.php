@@ -16,6 +16,7 @@ return new class extends Migration
             $table->text('prompt_en')->nullable();
             $table->text('prompt_ka')->nullable();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->boolean('public')->default(false);
             $table->string('image_url')->nullable();
             $table->string('model')->nullable();
             $table->timestamps();
