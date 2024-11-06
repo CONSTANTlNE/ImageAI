@@ -39,6 +39,16 @@
             left: 0;
             z-index: 1; /* Set behind the content */
         }
+
+           #particlesjs3, #particlesjs4 {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1; /* Set behind the content */
+        }
+
     </style>
     <link rel="manifest" href="{{ asset('manifest.json') }}">
 
@@ -93,19 +103,18 @@
                             <li class="sub-menu__list"><a href="faq.html" class="link sub-menu__link fs-14">FAQ</a></li>
                         </ul>
                     </li>
-                    <li class="nav-item"><a class="nav-link fs-14" href="{{route('login')}}">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link fs-14">Contact</a></li>
                     <li class="nav-item ms-lg-auto">
                         <ul class="list list-row gap-2">
                             <li>
                                 @auth()
-                                    <a href="{{route('flux-schnell')}}"
+                                    <a href="{{route('flux-schnell',['locale'=>app()->getLocale()])}}"
                                        class="btn btn-primary-gradient text-white fs-14 border-0 rounded-pill">
                                         <span
                                                 class="d-inline-block">Dashboard</span>
-
                                     </a>
                                 @else
-                                    <a href="{{route('login')}}"
+                                    <a href="{{route('login',['locale'=>app()->getLocale()])}}"
                                        class="btn btn-primary-gradient text-white fs-14 border-0 rounded-pill">
                                         <span
                                                 class="d-inline-block">Login
@@ -463,7 +472,8 @@
         </div>
     </section>
     <!-- Remove BG Section -->
-    <section class="section-space-md-y">
+    <section  style="position: relative" class="section-space-md-y">
+        <div id="particlesjs3"></div>
         <div class="container">
             <div class="row g-4 justify-content-xxl-between align-items-center">
                 <div class="col-lg-6 col-xxl-5">
@@ -585,226 +595,8 @@
         </div>
     </section>
 
-    <section class="section-space-md-y">
-        <div class="section-space-sm-bottom">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-md-10 col-lg-8 col-xl-6">
-                        <div class="d-flex justify-content-center align-items-center flex-wrap row-gap-2 column-gap-4"
-                             data-cue="fadeIn">
-                            <div class="flex-shrink-0 d-inline-block w-10 h-2px bg-primary-gradient"></div>
-                            <span class="d-block fw-medium text-light fs-20">How It Works</span></div>
-                        <h2 class="text-light text-center" data-cue="fadeIn">Elevate Your Craft With Our Suggestion</h2>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="row g-4" data-cues="fadeIn">
-                <div class="col-md-6 col-lg-4">
-                    <div class="process-card rounded-5 p-6 p-xl-10"><span
-                                class="d-inline-block h2 mb-8 text-light process-card__icon"><i
-                                    class="bi bi-people"></i></span><h5 class="text-light process-card__title">Human
-                            Like Intelligence</h5>
-                        <p class="mb-8">Sed ut perspiciatis unde omnis iste ab illo inventore veritatis et quasi
-                            architecto vitae explicabo.</p><a href="about.html"
-                                                              class="btn process-card__btn text-white fs-14 border-0 rounded-pill"><span
-                                    class="d-inline-block">Discover </span><span class="d-inline-block"><i
-                                        class="bi bi-arrow-right"></i></span></a></div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="process-card rounded-5 p-6 p-xl-10"><span
-                                class="d-inline-block h2 mb-8 text-light process-card__icon"><i
-                                    class="bi bi-translate"></i></span><h5 class="text-light process-card__title">
-                            Natural Language</h5>
-                        <p class="mb-8">Sed ut perspiciatis unde omnis iste ab illo inventore veritatis et quasi
-                            architecto vitae explicabo.</p><a href="about.html"
-                                                              class="btn process-card__btn text-white fs-14 border-0 rounded-pill"><span
-                                    class="d-inline-block">Discover </span><span class="d-inline-block"><i
-                                        class="bi bi-arrow-right"></i></span></a></div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="process-card rounded-5 p-6 p-xl-10"><span
-                                class="d-inline-block h2 mb-8 text-light process-card__icon"><i
-                                    class="bi bi-gear-wide-connected"></i></span><h5
-                                class="text-light process-card__title">Customizable Interface</h5>
-                        <p class="mb-8">Sed ut perspiciatis unde omnis iste ab illo inventore veritatis et quasi
-                            architecto vitae explicabo.</p><a href="about.html"
-                                                              class="btn process-card__btn text-white fs-14 border-0 rounded-pill"><span
-                                    class="d-inline-block">Discover </span><span class="d-inline-block"><i
-                                        class="bi bi-arrow-right"></i></span></a></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-
-    <section class="section-space-md-y">
-        <div class="section-space-sm-bottom">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-10 col-lg-8">
-                        <div class="d-inline-flex align-items-center flex-wrap row-gap-2 column-gap-4"
-                             data-cue="fadeIn">
-                            <div class="flex-shrink-0 d-inline-block w-20 h-2px bg-primary-gradient"></div>
-                            <span class="d-block fw-medium text-light fs-20">How Chatbot Help you</span></div>
-                        <h2 class="text-light" data-cue="fadeIn">Experience The Full Power</h2>
-                        <p class="text-light mb-0 max-text-11" data-cue="fadeIn">There are many variations of passage
-                            available, but the majority have suffered words which don't look even slightly
-                            believable.</p></div>
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="row g-4" data-cues="fadeIn">
-                <div class="col-md-6">
-                    <div class="process-card rounded-5 p-6 p-xl-10"><span
-                                class="d-inline-block h2 mb-8 text-light process-card__icon"><i class="bi bi-robot"></i></span>
-                        <h5 class="text-light process-card__title">Virtual Assistants</h5>
-                        <p class="mb-8">There are many variations of passage available, but the majority have suffered
-                            words which don't look even slightly believable.</p><a href="contact.html"
-                                                                                   class="btn process-card__btn text-white fs-14 border-0 rounded-pill"><span
-                                    class="d-inline-block">Get Answer </span><span class="d-inline-block"><i
-                                        class="bi bi-arrow-right"></i></span></a></div>
-                </div>
-                <div class="col-md-6">
-                    <div class="process-card rounded-5 p-6 p-xl-10"><span
-                                class="d-inline-block h2 mb-8 text-light process-card__icon"><i
-                                    class="bi bi-headset"></i></span><h5 class="text-light process-card__title">Live
-                            Chat</h5>
-                        <p class="mb-8">There are many variations of passage available, but the majority have suffered
-                            words which don't look even slightly believable.</p><a href="contact.html"
-                                                                                   class="btn process-card__btn text-white fs-14 border-0 rounded-pill"><span
-                                    class="d-inline-block">Get Answer </span><span class="d-inline-block"><i
-                                        class="bi bi-arrow-right"></i></span></a></div>
-                </div>
-            </div>
-        </div>
-        <div class="section-space-sm-top" data-cue="fadeIn">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12"><h6 class="text-center mb-0 text-light">What Is Zenith Ai Chatbot Used For? For
-                            More Details. <span class="text-gradient-primary">Explore More Service !</span></h6></div>
-                </div>
-            </div>
-        </div>
-    </section><!-- /Help Section  --><!-- Info Section  -->
-    <section class="section-space-md-y info-section">
-        <div class="container">
-            <div class="row g-4 align-items-center">
-                <div class="col-lg-5">
-                    <div class="pe-xl-12" data-cue="slideInUp"><img
-                                src="{{asset('landingassets/img/info-section-img.png')}}" alt="image"
-                                class="img-fluid"></div>
-                </div>
-                <div class="col-lg-7"><h2 class="h4 text-light mb-6" data-cue="fadeIn">‘’Ai Chat Doesn't plagiarized,
-                        but Draws From Billions of Facts, Figures and Data Points’’</h2>
-                    <div class="d-flex align-items-center gap-5" data-cue="fadeIn">
-                        <div class="d-grid place-content-center w-15 h-15 rounded-circle overflow-hidden flex-shrink-0">
-                            <img src="{{asset('landingassets/img/user-img-1.png')}}" alt="image"
-                                 class="w-100 h-100 object-fit-cover"></div>
-                        <div class="flex-grow-1"><h6 class="mb-0 text-light">Kristin Mansion</h6><span
-                                    class="d-block fs-14 text-light text-opacity-50">Product Manager</span></div>
-                    </div>
-                    <div class="bg-dark-gradient p-4 p-sm-6 p-md-10 p-lg-6 p-xl-8 p-xxl-10 rounded-5" data-cue="fadeIn">
-                        <ul class="list list-row flex-wrap info-list">
-                            <li>
-                                <div class="d-flex align-items-center gap-6 p-4 p-md-6"><h3
-                                            class="mb-0 text-light flex-shrink-0">75%</h3>
-                                    <p class="mb-0 text-opacity-50 flex-grow-1">In time saved on prospecting</p></div>
-                            </li>
-                            <li>
-                                <div class="d-flex align-items-center gap-6 p-4 p-md-6"><h3
-                                            class="mb-0 text-light flex-shrink-0">70%</h3>
-                                    <p class="mb-0 text-opacity-50 flex-grow-1">Reduction in editing time</p></div>
-                            </li>
-                            <li>
-                                <div class="d-flex align-items-center gap-6 p-4 p-md-6"><h3
-                                            class="mb-0 text-light flex-shrink-0">40%</h3>
-                                    <p class="mb-0 text-opacity-50 flex-grow-1">Increase in content output</p></div>
-                            </li>
-                            <li>
-                                <div class="d-flex align-items-center gap-6 p-4 p-md-6"><h3
-                                            class="mb-0 text-light flex-shrink-0">60%</h3>
-                                    <p class="mb-0 text-opacity-50 flex-grow-1">Increase in content output</p></div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section><!-- /Info Section  --><!-- App Section  -->
-    <section class="section-space-md-y">
-        <div class="section-space-sm-bottom">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-10 col-lg-8">
-                        <div class="d-inline-flex align-items-center flex-wrap row-gap-2 column-gap-4"
-                             data-cue="fadeIn">
-                            <div class="flex-shrink-0 d-inline-block w-20 h-2px bg-primary-gradient"></div>
-                            <span class="d-block fw-medium text-light fs-20">Welcome</span></div>
-                        <h2 class="mb-0 text-light" data-cue="fadeIn">Use The Apps That Were Designed With AI</h2></div>
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="row g-4" data-cues="fadeIn">
-                <div class="col-md-6 col-lg-4 col-xl-3">
-                    <div class="process-card rounded-5 p-6 p-xl-8"><span class="d-inline-block h2 mb-8"><img
-                                    src="{{asset('landingassets/img/icon-messenger.png')}}" alt="image"
-                                    class="img-fluid"></span><h5
-                                class="text-light mb-12">Messenger</h5><a href="service-details.html"
-                                                                          class="btn process-card__btn text-white fs-14 border-0 rounded-pill"><span
-                                    class="d-inline-block">Install Now </span><span class="d-inline-block"><i
-                                        class="bi bi-arrow-right"></i></span></a></div>
-                </div>
-                <div class="col-md-6 col-lg-4 col-xl-3">
-                    <div class="process-card rounded-5 p-6 p-xl-8"><span class="d-inline-block h2 mb-8"><img
-                                    src="{{asset('landingassets/img/icon-intercom.png')}}" alt="image"
-                                    class="img-fluid"></span><h5
-                                class="text-light mb-12">Intercom</h5><a href="service-details.html"
-                                                                         class="btn process-card__btn text-white fs-14 border-0 rounded-pill"><span
-                                    class="d-inline-block">Install Now </span><span class="d-inline-block"><i
-                                        class="bi bi-arrow-right"></i></span></a></div>
-                </div>
-                <div class="col-md-6 col-lg-4 col-xl-3">
-                    <div class="process-card rounded-5 p-6 p-xl-8"><span class="d-inline-block h2 mb-8"><img
-                                    src="{{asset('landingassets/img/icon-whatsapp.png')}}" alt="image"
-                                    class="img-fluid"></span><h5
-                                class="text-light mb-12">Whatsapp</h5><a href="service-details.html"
-                                                                         class="btn process-card__btn text-white fs-14 border-0 rounded-pill"><span
-                                    class="d-inline-block">Install Now </span><span class="d-inline-block"><i
-                                        class="bi bi-arrow-right"></i></span></a></div>
-                </div>
-                <div class="col-md-6 col-lg-4 col-xl-3">
-                    <div class="process-card rounded-5 p-6 p-xl-8"><span class="d-inline-block h2 mb-8"><img
-                                    src="{{asset('landingassets/img/icon-slack.png')}}" alt="image"
-                                    class="img-fluid"></span><h5
-                                class="text-light mb-12">Slack</h5><a href="service-details.html"
-                                                                      class="btn process-card__btn text-white fs-14 border-0 rounded-pill"><span
-                                    class="d-inline-block">Install Now </span><span class="d-inline-block"><i
-                                        class="bi bi-arrow-right"></i></span></a></div>
-                </div>
-            </div>
-        </div>
-        <div class="section-space-sm-top" data-cue="fadeIn">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12 text-center"><a href="service.html"
-                                                       class="btn btn-primary-gradient text-white fs-14 border-0 rounded-pill"><span
-                                    class="d-inline-block">AI Powered Apps </span><span class="d-inline-block"><i
-                                        class="bi bi-arrow-right"></i></span></a></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="video-section position-relative z-1">
-            <div class="rounded-circle position-absolute top-50 start-50 translate-middle z-1 animate-pulse">
-                <button class="btn btn-lg btn-icon btn-primary text-light rounded-circle"><i
-                            class="bi bi-play-fill"></i>
-                </button>
-            </div>
-        </div><!-- /Video Section  --><!-- Pricing -->
+    <section  style="position: relative" class="section-space-md-y">
+        <div id="particlesjs4"></div>
         <div class="section-space-top section-space-md-bottom">
             <div class="section-space-sm-bottom">
                 <div class="container">
@@ -909,6 +701,7 @@
                 </div>
             </div>
         </div><!-- /Pricing --><!-- FAQ  -->
+        <!-- /FAQ  -->
         <div class="section-space-md-y">
             <div class="container">
                 <div class="row g-4">
@@ -1003,7 +796,8 @@
                     </div>
                 </div>
             </div>
-        </div><!-- /FAQ  --><!-- Blog -->
+        </div>
+        <!-- Blog -->
         <div class="section-space-md-y">
             <div class="section-space-sm-bottom">
                 <div class="container">
@@ -1068,33 +862,8 @@
                                         class="bi bi-arrow-right"></i></span></a></div>
                 </div>
             </div>
-        </div><!-- /Blog --><!-- Instagram -->
-        <div class="section-space-md-top section-space-bottom">
-            <div class="section-space-sm-bottom">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-12"><h2 class="text-center text-light mb-0" data-cue="fadeIn">Zenith Ai Chatbots
-                                On
-                                Instagram</h2></div>
-                    </div>
-                </div>
-            </div>
-            <div class="container">
-                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-4 align-items-center justify-content-center"
-                     data-cues="fadeIn">
-                    <div class="col text-center"><img src="{{asset('landingassets/img/ins-img-1.png')}}" alt="image"
-                                                      class="img-fluid"></div>
-                    <div class="col text-center"><img src="{{asset('landingassets/img/ins-img-2.png')}}" alt="image"
-                                                      class="img-fluid"></div>
-                    <div class="col text-center"><img src="{{asset('landingassets/img/ins-img-3.png')}}" alt="image"
-                                                      class="img-fluid"></div>
-                    <div class="col text-center"><img src="{{asset('landingassets/img/ins-img-4.png')}}" alt="image"
-                                                      class="img-fluid"></div>
-                    <div class="col text-center"><img src="{{asset('landingassets/img/ins-img-5.png')}}" alt="image"
-                                                      class="img-fluid"></div>
-                </div>
-            </div>
-        </div><!-- /Instagram --><!-- Footer  -->
+        </div>
+
         <footer class="footer-1">
             <div class="section-space-md-y">
                 <div class="container">

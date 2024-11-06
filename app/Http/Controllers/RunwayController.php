@@ -31,9 +31,8 @@ class RunwayController extends Controller
         return view('user.pages.runway', compact('runway', 'runway2'));
     }
 
-    public function create(Request $request,RunwayRequest $runwayRequest)
+    public function create(Request $request, RunwayRequest $runwayRequest)
     {
-
         $data = $runwayRequest->validated();
 
 
@@ -43,22 +42,22 @@ class RunwayController extends Controller
 
         $key = config('apikeys.falAI');
 
-            $runway           = new Runway();
-            $runway->prompt   = $data['prompt'];
-            $runway->duration = $data['duration'];
-            $runway->ratio    = $data['ratio'];
-            $runway->save();
+        $runway           = new Runway();
+        $runway->prompt   = $data['prompt'];
+        $runway->duration = $data['duration'];
+        $runway->ratio    = $data['ratio'];
+        $runway->save();
 
 
-        if($request->hasFile('runwayUpload')){
+        if ($request->hasFile('runwayUpload')) {
             $runway->addMediaFromRequest('runwayUpload')->toMediaCollection('runway_image');
             $media = $runway->media()->first();
             $url   = $media->getUrl();
         }
 
-        if($data['imageUrl'] !== null){
-            $checkurl=HTTP::get($data['imageUrl']);
-            if($checkurl->successful()){
+        if ($data['imageUrl'] !== null) {
+            $checkurl = HTTP::get($data['imageUrl']);
+            if ($checkurl->successful()) {
                 $url = $data['imageUrl'];
                 $runway->addMediaFromUrl($url)->toMediaCollection('runway_image');
             } else {
@@ -67,10 +66,43 @@ class RunwayController extends Controller
         }
     }
 
-    public function webhook(Request $request)
-
+    public function delete(Request $request)
     {
+        $runway = Runway::find($request->id);
 
+        if ($runway) {
+            if ($runway->media) {
+                foreach ($runway->media as $media) {
+                    $media->delete();
+                }
+            }
+            $runway->delete();
+
+            return back()->with('alert_success', 'ვიდეო წარმატებით წაიშალა');
+        }
+
+        return back()->with('alert_error', 'ვიდეო არ მოიძებნა');
+    }
+
+    public function download(Request $request) {
+
+        $runway = Runway::find($request->id);
+
+        if ($runway && $runway->video_url) {
+            $random = random_int(100000, 900000);
+            $url = $runway->video_url;
+            $fileName = 'runway'.'_'.$random.'.mp4';
+
+            return response()->streamDownload(function () use ($url) {
+                echo Http::get($url)->body();
+            }, $fileName);
+        }
+
+        return back()->with('alert_error', 'ვიდეო არ მოიძებნა');
+    }
+
+    public function webhook(Request $request)
+    {
         Log::channel('webhook')->info('Webhook received', [
             'response' => $request->all(),
         ]);
@@ -78,7 +110,6 @@ class RunwayController extends Controller
         $data = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         if ($data['status'] === 'OK') {
-
             $runway            = Runway::withoutGlobalScopes()->where('task_id', $data['request_id'])->first();
             $runway->video_url = $data['payload']['video']['url'];
             $runway->save();
@@ -106,8 +137,6 @@ class RunwayController extends Controller
             ];
 
             $response2 = Http::get($url, $params);
-
-
             // IF errpor send email and log
 
 
@@ -116,7 +145,6 @@ class RunwayController extends Controller
             $runway->status = $data['status'];
             $runway->error  = $data['error'];
             $runway->save();
-
             // Send email error too
 
         }
@@ -126,10 +154,7 @@ class RunwayController extends Controller
 
     public function galleryHtmx(Request $request)
     {
-
-
-        if($request->model === 'midjourney'){
-
+        if ($request->model === 'midjourney') {
             $midjourneys = Midjourney::where('status', '=', 'completed')
                 ->with('media')
                 ->take(30)
@@ -139,9 +164,8 @@ class RunwayController extends Controller
             return view('user.htmx.gallery-for-runway', compact('midjourneys'));
         }
 
-        if($request->model === 'flux'){
-
-            $fluxes =Flux::where('model', 'flux-schnell')
+        if ($request->model === 'flux') {
+            $fluxes = Flux::where('model', 'flux-schnell')
                 ->where('image_url', '!=', null)
                 ->with('media')
                 ->take(30)
@@ -150,6 +174,5 @@ class RunwayController extends Controller
 
             return view('user.htmx.gallery-for-runway', compact('fluxes'));
         }
-
     }
 }

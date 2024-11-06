@@ -5,6 +5,7 @@ use App\Http\Controllers\FluxController;
 use App\Http\Controllers\MidjourneyController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\RunwayController;
+use App\Http\Controllers\SocialiteController;
 use App\Jobs\WebmConversion;
 use App\Models\Balance;
 use App\Models\Midjourney;
@@ -22,15 +23,15 @@ use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 
 
-Route::get('/', function () {
+Route::get('/{locale?}', function () {
     return view('index');
 })->name('index');
 
 
-Route::middleware('auth')
+Route::prefix('{locale}')
+    ->where(['locale' => '[a-zA-Z]{2}'])
+    ->middleware(['localization', 'auth',])
     ->group(function () {
-        Route::get('/flux-schnell', [MainController::class, 'index'])->name('dashboard');
-
         //  Midjourney Routes
         Route::get('/midjourney', [MidjourneyController::class, 'index'])->name('midjourney');
         Route::post('/midjourney/create', [MidjourneyController::class, 'imagine'])->name('midjourney.create');
@@ -44,8 +45,8 @@ Route::middleware('auth')
         // Remove background routes
         Route::get('/remove-bg', [AiController::class, 'removeBGindex'])->name('bg.remove');
         Route::post('/remove-bg/create', [AiController::class, 'removeBG'])->name('remove');
-        Route::get('/remove-bg/download/{id}', [AiController::class, 'downloadBG'])->name('bg.download');
-        Route::post('/remove-bg/delete/{removebg}', [AiController::class, 'delete'])->name('bg.delete');
+        Route::get('/remove-bg/download/{id?}', [AiController::class, 'downloadBG'])->name('bg.download');
+        Route::post('/remove-bg/delete/{removebg?}', [AiController::class, 'delete'])->name('bg.delete');
         Route::get('/remove-bg/gallery', [AiController::class, 'galleryBG'])->name('bg.gallery');
 
         // Add background image
@@ -68,18 +69,21 @@ Route::middleware('auth')
 
         // Runway Routes
         Route::get('/runway', [RunwayController::class, 'index'])->name('runway');
-        Route::post('runway/queue',[RunwayController::class,'create'])->name('runway.queue');
+        Route::post('runway/queue', [RunwayController::class, 'create'])->name('runway.queue');
+        Route::post('runway/delete', [RunwayController::class, 'delete'])->name('runway.delete');
+        Route::get('runway/download', [RunwayController::class, 'download'])->name('runway.download');
         Route::get('/runway/htmx', [RunwayController::class, 'galleryHtmx'])->name('runway.gallery.htmx');
 
         // Resize images
-        Route::get('resize',[AiController::class,'resizeIndex'])->name('resize.index');
+        Route::get('resize', [AiController::class, 'resizeIndex'])->name('resize.index');
 
         // Gallery
         Route::get('/gallery/{model}', [MainController::class, 'gallery'])->name('gallery');
 
         // User Balance
-        Route::post('/balance/check/htmx',[MainController::class,'checkUserBalance'])->name('userbalance.check');
-        Route::get('/balance/history',[MainController::class,'checkUserBalanceHistory'])->name('userbalance.history');
+        Route::post('/balance/check/htmx', [MainController::class, 'checkUserBalance'])->name('userbalance.check');
+        Route::get('/balance/history', [MainController::class, 'checkUserBalanceHistory'])->name('userbalance.history');
+
 
         // ==================== some random tests and playground ====================
 
@@ -101,15 +105,16 @@ Route::middleware('auth')
         });
 
         // test
-        Route::get('/taskid',function (){
-             $runway            = Runway::where('task_id', '6043f181-54be-4071-a96c-ff0b8cc87970')->first();
-             return $runway;
+        Route::get('/taskid', function () {
+            $runway = Runway::where('task_id', '6043f181-54be-4071-a96c-ff0b8cc87970')->first();
+
+            return $runway;
         });
 
 
         Route::get('userbalanceman', function () {
-            $balance           = new \App\Models\UserBalance();
-            $balance->balance  = 1;
+            $balance          = new \App\Models\UserBalance();
+            $balance->balance = 1;
             $balance->save();
 
 //
@@ -120,10 +125,15 @@ Route::middleware('auth')
 //    return $rate->rate;
 
         });
-
-
-
     });
+
+
+// Socialite GOOGLE
+
+Route::get('auth/google/redirect', [SocialiteController::class, 'googleredirect'])->name('google.login');
+Route::get('auth/google/callback', [SocialiteController::class, 'googlecallback']);
+Route::get('auth/facebook/redirect', [SocialiteController::class, 'facebookedirect'])->name('facebook.login');
+Route::get('auth/facebook/callback', [SocialiteController::class, 'facebookcallback']);
 
 
 // ==================TESTING ROUTES=========================
@@ -170,7 +180,6 @@ Route::get('manualbalance', function () {
 });
 
 
-
 //  ffmpeg
 
 Route::get('convert', function () {
@@ -187,7 +196,6 @@ route::get('video', function () {
 });
 
 Route::post('queue', function () {
-
     // JUST QUEUE
 
 //    $key      = config('apikeys.falAI');
@@ -204,72 +212,88 @@ Route::post('queue', function () {
 
 
     $key      = config('apikeys.falAI');
-    $response=Http::withHeaders(['Authorization'=> 'Key '. $key  ])->post('https://queue.fal.run/fal-ai/runway-gen3/turbo/image-to-video?fal_webhook=https://local.ews.ge/api/runway/webhook', [
-        'prompt' => 'dog wearing a sunglasses chillin on the sandy beach',
-    ]);
+    $response = Http::withHeaders(['Authorization' => 'Key '.$key])->post('https://queue.fal.run/fal-ai/runway-gen3/turbo/image-to-video?fal_webhook=https://local.ews.ge/api/runway/webhook',
+        [
+            'prompt' => 'dog wearing a sunglasses chillin on the sandy beach',
+        ]);
 
 
     return $response->json();
 })->name('queue');
 
-Route::get('manualfetch',function(){
+Route::get('manualfetch', function () {
+    $key      = config('apikeys.falAI');
+    $response = Http::withHeaders(['Authorization' => 'Key '.$key])->get('https://queue.fal.run/fal-ai/runway-gen3/turbo/image-to-video/requests/bf92505f-a7dc-42f4-93fd-edb06079cff4');
 
-    $key=config('apikeys.falAI');
-    $response=Http::withHeaders(['Authorization'=> 'Key '. $key])->get('https://queue.fal.run/fal-ai/runway-gen3/turbo/image-to-video/requests/bf92505f-a7dc-42f4-93fd-edb06079cff4');
 //    bf92505f-a7dc-42f4-93fd-edb06079cff4
     return $response->json();
 })->name('manualfetch');
 
 
-
 // RESIZE IMAGES WITH INTERVENTION
-Route::get('/resizetest', function () {
-    return view('resizetest');
+Route::get('{locale}/resizetest', function (Request $request) {
+
+
+    return view('resize');
 });
 
 Route::post('/resize2', function (Request $request) {
-
     $uploadedFile = $request->file('file');
 
     $manager = new ImageManager(new Driver());
-    $image = $manager->read($uploadedFile);
+    $image   = $manager->read($uploadedFile);
 
     $image->resize($request->width, $request->height);
 
 // resize only image height to 200 pixel
 //    $image->resize(height: 200);
 
-    $resizedPath = $request->width . 'x' . $request->height .'.'. $uploadedFile->getClientOriginalExtension();
+    $resizedPath = $request->width.'x'.$request->height.'.'.$uploadedFile->getClientOriginalExtension();
     Storage::disk('public')->put($resizedPath, (string) $image->encode());
 
     // Return the resized image as a download
-    return response()->download(storage_path('app/public/' . $resizedPath))->deleteFileAfterSend(true);
-
+    return response()->download(storage_path('app/public/'.$resizedPath))->deleteFileAfterSend(true);
 })->name('resize2');
+
+
+Route::post('/convert', function (Request $request) {
+    $uploadedFile = $request->file('file');
+
+    $manager = new ImageManager(new Driver());
+    $image   = $manager->read($uploadedFile);
+
+    $encoded = $image->toPng();
+
+// resize only image height to 200 pixel
+//    $image->resize(height: 200);
+
+    $resizedPath = 'png'.'.'.'png';
+    Storage::disk('public')->put($resizedPath, (string) $encoded);
+
+    // Return the resized image as a download
+    return response()->download(storage_path('app/public/'.$resizedPath))->deleteFileAfterSend(true);
+})->name('convert');
+
 
 
 // GOOGLE TRANSLATE
 
-Route::get('/detect', function () {
-
-    $token=config('apikeys.google');
+Route::get('{locale}/detect', function () {
+    $token    = config('apikeys.google');
     $response = Http::post('https://translation.googleapis.com/language/translate/v2/detect?key='.$token, [
         'q' => 'გამარჯობა',
     ]);
 
     return $response->json();
-
 });
 
-Route::get('/translate', function () {
-
-    $token=config('apikeys.google');
+Route::get('{locale}/translate', function () {
+    $token    = config('apikeys.google');
     $response = Http::post('https://translation.googleapis.com/language/translate/v2?key='.$token, [
-        'q' => 'ძაღლლის მზის სათვალეებში პლიაჟზე',
+        'q'      => 'ძაღლლის მზის სათვალეებში პლიაჟზე',
         'target' => 'en',
     ]);
 
     return $response->json();
-
 });
 

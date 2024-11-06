@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Balance;
 use App\Models\Flux;
+use App\Models\Language;
+use App\Models\UserBalance;
 use App\Services\AppBalanceService;
 use App\Services\UserBalanceService;
 use Carbon\Carbon;
@@ -32,6 +34,8 @@ class FluxController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
+        $languages=Language::all();
+
 //        dd($flux[0]);
 
         return view('user.pages.image-fluxShnell', compact('flux', 'flux2'));
@@ -40,9 +44,11 @@ class FluxController extends Controller
     public function schnellGenerate(Request $request)
     {
 
-        if (!(new UserBalanceService())->checkBalance('flux-shcnell')) {
+        if (!(new UserBalanceService())->checkBalance('flux-schnell')) {
+
             return back()->with('alert_error', 'არასაკმარისი ბალანსი');
         }
+
 
         $prompt = $request->prompt;
         $ratio  = $request->input('ratio', '4:3');
@@ -98,7 +104,6 @@ class FluxController extends Controller
 
         if ($response->successful()) {
             $data=$response->json();
-//            dd($data);
 
             $flux            = new Flux();
             $flux->model     = 'flux-schnell';
@@ -180,8 +185,12 @@ class FluxController extends Controller
                     $media->delete();
                 });
             }
+            $userBalance = UserBalance::where('flux_id', $flux1->id)->first();
+            if ($userBalance) {
+                $userBalance->flux_id = null;
+                $userBalance->save();
+            }
             $flux1->delete();
-
             return back()->with('alert_success', 'ფოტო წარმატებით წაიშალა');
         }
 
@@ -191,12 +200,16 @@ class FluxController extends Controller
                     $media->delete();
                 });
             }
+            $userBalance = UserBalance::where('flux_id', $flux->id)->first();
+            if ($userBalance) {
+                $userBalance->flux_id = null;
+                $userBalance->save();
+            }
             $flux->delete();
-
             return back()->with('alert_success', 'ფოტო წარმატებით წაიშალა');
         }
 
-        return back()->with('alert_error', 'შეცდომა');
+        return back()->with('alert_error', 'ფოტო არ მოიძებნდა');
     }
 
     public function download(Request $request)

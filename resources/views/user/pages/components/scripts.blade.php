@@ -1,21 +1,27 @@
+
+
+
+
 <script src="https://cdn.jsdelivr.net/gh/underground-works/clockwork-browser@1/dist/toolbar.js"></script>
-
-
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<!-- Switch JS -->
-<script src="{{asset('assets/js/switch.js')}}"></script>
-<!-- Preline JS -->
-<script src="{{asset('assets/libs/preline/preline.js')}}"></script>
-<!-- popperjs -->
-<script src="{{asset('assets/libs/@popperjs/core/umd/popper.min.js')}}"></script>
-<!-- Color Picker JS -->
-<script src="{{asset('assets/libs/@simonwep/pickr/pickr.es5.min.js')}}"></script>
-<!-- sidebar JS -->
-<script src="{{asset('assets/js/defaultmenu.js')}}"></script>
-<!-- sticky JS -->
-<script src="{{asset('assets/js/sticky.js')}}"></script>
-<!-- Simplebar JS -->
-<script src="{{asset('assets/libs/simplebar/simplebar.min.js')}}"></script>
+
+
+{{--<script src="{{asset('assets/js/switch.js')}}"></script>--}}
+
+{{--<script src="{{asset('assets/libs/preline/preline.js')}}"></script>--}}
+
+{{--<script src="{{asset('assets/libs/@popperjs/core/umd/popper.min.js')}}"></script>--}}
+
+{{--<script src="{{asset('assets/libs/@simonwep/pickr/pickr.es5.min.js')}}"></script>--}}
+
+{{--<script src="{{asset('assets/js/defaultmenu.js')}}"></script>--}}
+
+{{--<script src="{{asset('assets/js/sticky.js')}}"></script>--}}
+
+{{--<script src="{{asset('assets/libs/simplebar/simplebar.min.js')}}"></script>--}}
+
+{{--<script src="{{asset('assets/js/custom.js')}}"></script>--}}
+
 <!-- Apex Charts JS -->
 {{--<script src="../assets/libs/apexcharts/apexcharts.min.js"></script>--}}
 
@@ -26,7 +32,8 @@
 <script src="{{asset('assets/js/custom-switcher.js')}}"></script>
 
 
-<script src="{{asset('assets/js/chat.js')}}"></script>
+
+{{--<script src="{{asset('assets/js/chat.js')}}"></script>--}}
 
 
 @if(request()->routeIs('bg.remove') )
@@ -86,8 +93,7 @@
 @endif
 
 
-<!-- Custom JS -->
-<script src="{{asset('assets/js/custom.js')}}"></script>
+
 <script src="{{asset('assets/js/custom-htmx.js')}}"></script>
 
 
@@ -170,13 +176,7 @@
     });
 
 </script>
-{{-- SIMPLEBAR scroll to bottom--}}
-<script>
-    // const chatscroll = document.querySelector('.custom-chat-content')
-    // console.log(chatscroll)
-    // const chatsimplebar = new SimpleBar(chatscroll);
-    // chatsimplebar.getScrollElement().scrollTop = chatsimplebar.getScrollElement().scrollHeight
-</script>
+
 {{--Spinner--}}
 <script type="module">
     import {Spinner} from '../../../../assets/js/spin.js';

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained();
             $table->float('balance');
             $table->boolean('return_amount')->default(false);
-            $table->string('model')->nullable();
+            $table->string('model')->index()->nullable();
             $table->foreignId('flux_id')->nullable()->constrained();
             $table->foreignId('midjourney_id')->nullable()->constrained();
             $table->foreignId('removebg_id')->nullable()->constrained();

@@ -1,3 +1,6 @@
+import SimpleBar from 'simplebar'; // Import SimpleBar
+import 'simplebar/dist/simplebar.css'; // Import SimpleBar CSS
+
 (function () {
   "use strict";
 

@@ -197,7 +197,7 @@ return [
         'display_type'             => 'ჩვენების ტიპი',
         'district'                 => 'რაიონი',
         'duration'                 => 'ხანგრძლივობა',
-        'email'                    => 'ელ',
+        'email'                    => 'მეილი',
         'excerpt'                  => 'ამონაწერი',
         'filter'                   => 'ფილტრი',
         'finished_at'              => 'დასრულდა',

@@ -6,13 +6,13 @@
                 <!-- Start::header-element -->
                 <div class="header-element">
                     <div class="horizontal-logo">
-                        <a href="index.html" class="header-logo">
-                            <img src="../assets/images/brand-logos/desktop-logo.png" alt="logo" class="desktop-logo">
-                            <img src="../assets/images/brand-logos/toggle-logo.png" alt="logo" class="toggle-logo">
-                            <img src="../assets/images/brand-logos/desktop-dark.png" alt="logo" class="desktop-dark">
-                            <img src="../assets/images/brand-logos/toggle-dark.png" alt="logo" class="toggle-dark">
-                            <img src="../assets/images/brand-logos/desktop-white.png" alt="logo" class="desktop-white">
-                            <img src="../assets/images/brand-logos/toggle-white.png" alt="logo" class="toggle-white">
+                        <a href="{{route('flux-schnell')}}" class="header-logo">
+                            <img src="{{asset('landingassets/img/onix.jpeg')}}" alt="logo" class="desktop-logo">
+                            <img src="{{asset('landingassets/img/onix.jpeg')}}" alt="logo" class="toggle-logo">
+                            <img src="{{asset('landingassets/img/onix.jpeg')}}" alt="logo" class="desktop-dark">
+                            <img src="{{asset('landingassets/img/onix.jpeg')}}" alt="logo" class="toggle-dark">
+                            <img src="{{asset('landingassets/img/onix.jpeg')}}" alt="logo" class="desktop-white">
+                            <img src="{{asset('landingassets/img/onix.jpeg')}}" alt="logo" class="toggle-white">
                         </a>
                     </div>
                 </div>
@@ -39,98 +39,44 @@
                 </div>
 
                 <!-- start header country -->
-                <div class="header-element py-[1rem] md:px-[0.65rem] px-2  header-country hs-dropdown ti-dropdown  hidden sm:block [--placement:bottom-right] rtl:[--placement:bottom-left]">
-                    <button id="dropdown-flag" type="button"
-                            class="hs-dropdown-toggle ti-dropdown-toggle !p-0 flex-shrink-0  !border-0 !rounded-full !shadow-none">
-                        <img src="../assets/images/flags/us_flag.jpg" alt="flag-img"
-                             class="h-[1.25rem] w-[1.25rem] rounded-full">
-                    </button>
 
-                    <div class="hs-dropdown-menu ti-dropdown-menu min-w-[10rem] hidden !-mt-3"
-                         aria-labelledby="dropdown-flag">
-                        <div class="ti-dropdown-divider divide-y divide-gray-200 dark:divide-white/10">
-                            <div class="py-2 first:pt-0 last:pb-0">
-                                <div class="ti-dropdown-item !p-[0.65rem] ">
-                                    <div class="flex items-center space-x-2 rtl:space-x-reverse w-full">
-                                        <div class="h-[1.375rem] flex items-center w-[1.375rem] rounded-full">
-                                            <img src="../assets/images/flags/us_flag.jpg" alt="flag-img"
-                                                 class="h-[1rem] w-[1rem] rounded-full">
-                                        </div>
-                                        <div>
-                                            <p class="!text-[0.8125rem] font-medium">
-                                                English
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="ti-dropdown-item !p-[0.65rem]">
-                                    <div class="flex items-center space-x-2 rtl:space-x-reverse w-full">
-                                        <div class="h-[1.375rem] w-[1.375rem] flex items-center rounded-full">
-                                            <img src="../assets/images/flags/spain_flag.jpg" alt="flag-img"
-                                                 class="h-[1rem] w-[1rem] rounded-full">
-                                        </div>
-                                        <div>
-                                            <p class="!text-[0.8125rem] font-medium">
-                                                Spanish
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="ti-dropdown-item !p-[0.65rem]">
-                                    <div class="flex items-center space-x-2 rtl:space-x-reverse w-full">
-                                        <div class="h-[1.375rem] w-[1.375rem] flex items-center rounded-full">
-                                            <img src="../assets/images/flags/french_flag.jpg" alt="flag-img"
-                                                 class="h-[1rem] w-[1rem] rounded-full">
-                                        </div>
-                                        <div>
-                                            <p class="!text-[0.8125rem] font-medium">
-                                                French
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="ti-dropdown-item !p-[0.65rem]">
-                                    <div class="flex items-center space-x-2 rtl:space-x-reverse w-full">
-                                        <div class="h-[1.375rem] w-[1.375rem] flex items-center rounded-full">
-                                            <img src="../assets/images/flags/germany_flag.jpg" alt="flag-img"
-                                                 class="h-[1rem] w-[1rem] rounded-full">
-                                        </div>
-                                        <div>
-                                            <p class="!text-[0.8125rem] font-medium">
-                                                German
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="ti-dropdown-item !p-[0.65rem]">
-                                    <div class="flex items-center space-x-2 rtl:space-x-reverse w-full">
-                                        <div class="h-[1.375rem] w-[1.375rem] flex items-center rounded-full">
-                                            <img src="../assets/images/flags/italy_flag.jpg" alt="flag-img"
-                                                 class="h-[1rem] w-[1rem] rounded-full">
-                                        </div>
-                                        <div>
-                                            <p class="!text-[0.8125rem] font-medium">
-                                                Italian
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="ti-dropdown-item !p-[0.65rem]">
-                                    <div class="flex items-center space-x-2 rtl:space-x-reverse w-full">
-                                        <div class="h-[1.375rem] w-[1.375rem] flex items-center  rounded-sm">
-                                            <img src="../assets/images/flags/russia_flag.jpg" alt="flag-img"
-                                                 class="h-[1rem] w-[1rem] rounded-full">
-                                        </div>
-                                        <div>
-                                            <p class="!text-[0.8125rem] font-medium">
-                                                Russian
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="header-element py-[1rem] md:px-[0.65rem] px-2  header-country hs-dropdown ti-dropdown  hidden sm:block [--placement:bottom-right] rtl:[--placement:bottom-left]">
+
+                    @php
+                        $currentUrl = request()->getRequestUri();
+                        $segments = explode('/', $currentUrl);
+                    @endphp
+
+                     @if(request()->segment(1)==='ka')
+                      @foreach($languages as $language)
+                          @if($language->abbr==='ka')
+                                @php
+                                    $segments[1] = 'en';
+                                    $newUrl = implode('/', $segments);
+                                @endphp
+                            <a href="{{ $newUrl }}" id="dropdown-flag"
+                                    class="hs-dropdown-toggle ti-dropdown-toggle !p-0 flex-shrink-0  !border-0 !rounded-full !shadow-none">
+                              {!!$language->icon!!}
+                            </a>
+                            @endif
+                    @endforeach
+                    @endif
+                         @if(request()->segment(1)==='en')
+                             @foreach($languages as $language)
+
+                                 @if($language->abbr==='en')
+                                @php
+                                    $segments[1] = 'ka';
+                                    $newUrl = implode('/', $segments);
+                                @endphp
+                                     <a href="{{ $newUrl }}" id="dropdown-flag"
+                                        class="hs-dropdown-toggle ti-dropdown-toggle !p-0 flex-shrink-0  !border-0 !rounded-full !shadow-none">
+                                         {!!$language->icon!!}
+                                     </a>
+                                 @endif
+                             @endforeach
+                         @endif
+
                 </div>
                 <!-- end header country -->
 
@@ -602,36 +548,26 @@
                             aria-labelledby="dropdown-profile">
 
                         <ul class="text-defaulttextcolor font-medium dark:text-[#8c9097] dark:text-white/50">
-                            <li>
-                                <a class="w-full ti-dropdown-item !text-[0.8125rem] !gap-x-0  !p-[0.65rem] !inline-flex"
-                                   href="profile.html">
-                                    <i class="ti ti-user-circle text-[1.125rem] me-2 opacity-[0.7]"></i>Profile
-                                </a>
-                            </li>
-                            <li>
-                                <a class="w-full ti-dropdown-item !text-[0.8125rem] !gap-x-0  !p-[0.65rem] !inline-flex"
-                                   href="mail.html"><i
-                                            class="ti ti-inbox text-[1.125rem] me-2 opacity-[0.7]"></i>Inbox <span
-                                            class="!py-1 !px-[0.45rem] !font-semibold !rounded-sm text-success text-[0.75em] bg-success/10 ms-auto">25</span>
-                                </a>
-                            </li>
-                            <li><a class="w-full ti-dropdown-item !text-[0.8125rem] !gap-x-0 !p-[0.65rem] !inline-flex"
-                                   href="todo.html"><i
-                                            class="ti ti-clipboard-check text-[1.125rem] me-2 opacity-[0.7]"></i>Task
-                                    Manager</a></li>
-                            <li><a class="w-full ti-dropdown-item !text-[0.8125rem] !gap-x-0 !p-[0.65rem] !inline-flex"
-                                   href="mail-settings.html"><i
-                                            class="ti ti-adjustments-horizontal text-[1.125rem] me-2 opacity-[0.7]"></i>Settings</a>
-                            </li>
+
                             <li id="userbalance">
                                 <span class="w-full ti-dropdown-item !text-[0.8125rem] !gap-x-0 !p-[0.65rem] !inline-flex "
                                       href="{{route('userbalance.history')}}"><i
                                             class="ti ti-wallet text-[1.125rem] me-2 opacity-[0.7]"></i>Bal:0.00 ₾
                                 </span>
                             </li>
-                            <li><a class="w-full ti-dropdown-item !text-[0.8125rem] !p-[0.65rem] !gap-x-0 !inline-flex"
-                                   href="chat.html"><i
-                                            class="ti ti-headset text-[1.125rem] me-2 opacity-[0.7]"></i>Support</a>
+                            <li>
+                                <a class="w-full ti-dropdown-item !text-[0.8125rem] !p-[0.65rem] !gap-x-0 !inline-flex"
+                                   href="chat.html">
+                                    <i class="ti  text-[1.125rem] me-2 opacity-[0.7]">₾</i>შევსება
+                                </a>
+                            </li>
+                            <li>
+                                <a class="w-full ti-dropdown-item !text-[0.8125rem] !p-[0.65rem] !gap-x-0 !inline-flex"
+                                   href="{{route('userbalance.history')}}">
+                                    <i class="ti  text-[1.125rem] me-2 opacity-[0.7]">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M13 3a9 9 0 0 0-9 9H1l3.89 3.89l.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7s-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.95 8.95 0 0 0 13 21a9 9 0 0 0 0-18m-1 5v5l4.25 2.52l.77-1.29l-3.52-2.09V8z"/></svg>
+                                    </i>ისტორია
+                                </a>
                             </li>
                             <li>
                                 <form action="{{route('logout')}}" method="post">

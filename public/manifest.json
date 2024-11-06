@@ -1,7 +1,7 @@
 {
-  "short_name": "Your App",
-  "name": "Your Application Name",
-  "start_url": "https://local.ews.ge/",
+  "short_name": "ONIX",
+  "name": "ONIX AI",
+  "start_url": "https://local.ews.ge/en/register",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#000000",
@@ -52,7 +52,7 @@
       "type": "image/jpeg"
     },
     {
-      "src": "https://local.ews.ge/pwaicons/512x512.jpeg",
+      "src": "https://local.ews.ge/pwaicons/512x512.png",
       "sizes": "512x512",
       "type": "image/jpeg"
     }

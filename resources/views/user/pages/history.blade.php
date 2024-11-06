@@ -3,7 +3,8 @@
 @section('history')
     <div class="main-content">
         <div>
-            <div class="main-chart-wrapper p-2 gap-2 lg:flex responsive-chat-open">
+            <div style="height: 100%!important;max-height: calc(100vh - 12rem) !important;"
+                 class="main-chart-wrapper p-2 gap-2 lg:flex responsive-chat-open">
                 {{--Left Sidebar--}}
                 @include('user.pages.components.chat-left-sidebar')
                 {{--Main Chat--}}
@@ -14,20 +15,50 @@
                                 <form action="{{route('userbalance.history')}}?{{ http_build_query(request()->query()) }}">
                                     <select
                                             onchange="this.form.submit();"
-                                            style="min-width: 115px!important;padding-bottom: 2px;padding-top:2px" name="model"
+                                            style="min-width: 115px!important;padding-bottom: 2px;padding-top:2px"
+                                            name="model"
                                             class="ti-form-select rounded-sm  !px-2">
                                         <option selected value="all">All</option>
-                                        <option @selected(request()->query('model') === 'fill') value="fill">Only Fill</option>
-                                        <option @selected(request()->query('model') === 'flux') value="flux">Flux Schnell</option>
-                                        <option @selected(request()->query('model') === 'midjourney') value="midjourney">Midjourney</option>
-                                        <option @selected(request()->query('model') === 'removebg') value="removebg">Remove BG</option>
-                                        <option @selected(request()->query('model') === 'runway') value="runway">Runway</option>
+                                        <option @selected(request()->query('model') === 'fill') value="fill">Only Fill
+                                        </option>
+                                        <option @selected(request()->query('model') === 'flux') value="flux">Flux
+                                            Schnell
+                                        </option>
+                                        <option @selected(request()->query('model') === 'midjourney') value="midjourney">
+                                            Midjourney
+                                        </option>
+                                        <option @selected(request()->query('model') === 'removebg') value="removebg">
+                                            Remove BG
+                                        </option>
+                                        <option @selected(request()->query('model') === 'runway') value="runway">
+                                            Runway
+                                        </option>
                                     </select>
                                 </form>
+                                @if(isset($totabymodel) && request()->query('model') !== 'fill')
+                                    <div style="align-items: center" class="flex justify-center gap-3">
+                                        <p style="font-size: 1rem">Total Spent: <span
+                                                    class="badge bg-danger/10 text-danger ">{{$totabymodel}}</span></p>
+                                    </div>
+                                @endif
+                                @if(request()->query('model') === 'fill')
+                                    <div style="align-items: center" class="flex justify-center gap-3">
+                                        <p style="font-size: 1rem">Total Fill: <span
+                                                    class="badge bg-success/10 text-success">{{$totalfill}}</span></p>
+                                    </div>
+                                @endif
+                                @if(isset($totalspent))
+                                    <div style="align-items: center" class="flex justify-center gap-3">
+                                        <p style="font-size: 1rem">Total Fill: <span
+                                                    class="badge bg-success/10 text-success">{{$totalfill}}</span></p>
+                                        <p style="font-size: 1rem">Total Spent: <span
+                                                    class="badge bg-danger/10 text-danger ">{{$totalspent}}</span></p>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>
-                    <div style="height: 100%!important" class="chat-content custom-chat-content" id="main-chat-content">
+                    <div style="height: 85%!important" id="main-chat-content">
                         <ul id="chat-target" class="list-none">
                             {{-- Answer--}}
                             <li class="chat-item-start flex justify-center text-center">
@@ -38,63 +69,93 @@
                                                 <table class="table whitespace-nowrap table-bordered table-bordered-primary border-primary/10 min-w-full">
                                                     <thead>
                                                     <tr class="border-b border-primary/10">
-                                                        <th scope="col" class="text-start">#</th>
-                                                        <th scope="col" class="text-start">Date</th>
-                                                        <th scope="col" class="text-start">Description</th>
-                                                        <th scope="col" class="text-start">Amount</th>
-                                                        <th scope="col" class="text-start">Media</th>
+                                                        <th scope="col" style="text-align: center">#</th>
+                                                        <th scope="col" style="text-align: center">Date</th>
+                                                        <th scope="col" style="text-align: center">Description</th>
+                                                        <th scope="col" style="text-align: center">Amount</th>
+                                                        <th scope="col" style="text-align: center">Media</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
                                                     @foreach($history as $index=> $transaction)
                                                         <tr class="border-b border-primary/10">
-                                                            <td class="text-start">
-                                                                <p>  {{$index+1}}</p>
+                                                            <td>
+                                                                <p class="text-center">  {{$index+1}}</p>
+                                                            </td>
+                                                            <td>
+                                                                <p class="text-center">{{$transaction->created_at}}</p>
+                                                            </td>
+                                                            <td>
+                                                                <p class="text-center">   {{$transaction->model}}</p>
 
                                                             </td>
                                                             <td>
-                                                                <p>{{$transaction->created_at}}</p>
+                                                                <p class="text-center">  {{$transaction->balance}}</p>
                                                             </td>
-                                                            <td>
-                                                                <p>   {{$transaction->model}}</p>
-
-                                                            </td>
-                                                            <td>
-                                                                <p>  {{$transaction->balance}}</p>
-                                                            </td>
-                                                            <td>
+                                                            <td class="td-width">
                                                                 @if($transaction->model==='flux')
-                                                                    {{--                                                                @dd($transaction->flux())--}}
-                                                                    @foreach($transaction->flux->media as $media)
-                                                                        <a
-                                                                                href="{{$media->getUrl()}}"
-                                                                                class="glightbox box responcive-image-history"
-                                                                                data-gallery="gallery1">
-                                                                            <img src="{{$media->getUrl()}}" alt="image">
-                                                                        </a>
-                                                                    @endforeach
+                                                                    @if($transaction->flux)
+                                                                        @foreach($transaction->flux->media as $media)
+                                                                            <a
+                                                                                    href="{{$media->getUrl()}}"
+                                                                                    class="glightbox box responcive-image-history"
+                                                                                    data-gallery="gallery1">
+                                                                                <img src="{{$media->getUrl()}}"
+                                                                                     alt="image">
+                                                                            </a>
+                                                                        @endforeach
+                                                                    @else
+                                                                        <p>Image Was Deleted By User</p>
+                                                                    @endif
                                                                 @endif
                                                                 @if($transaction->model==='removebg')
-                                                                    @foreach($transaction->removebg->media as $media)
-                                                                        <a
-                                                                                href="{{$media->getUrl()}}"
-                                                                                class="glightbox box responcive-image-history"
-                                                                                data-gallery="gallery1">
-                                                                            <img src="{{$media->getUrl()}}" alt="image">
-                                                                        </a>
-                                                                    @endforeach
+                                                                    @if($transaction->removebg)
+                                                                        @foreach($transaction->removebg->media as $media)
+                                                                            <a
+                                                                                    href="{{$media->getUrl()}}"
+                                                                                    class="glightbox box responcive-image-history"
+                                                                                    data-gallery="gallery1">
+                                                                                <img src="{{$media->getUrl()}}"
+                                                                                     alt="image">
+                                                                            </a>
+                                                                        @endforeach
+                                                                    @else
+                                                                        <p>Image Was Deleted By User</p>
+                                                                    @endif
                                                                 @endif
-
                                                                 @if($transaction->model==='midjourney')
-                                                                    @foreach($transaction->midjourney->media as $media)
-                                                                        <a aria-label="anchor"
-                                                                           href="{{$media->getUrl()}}"
-                                                                           class="glightbox box responcive-image-history">
-                                                                            <img style="margin-top: 10px"
-                                                                                 src="{{$media->getUrl()}}"
-                                                                                 alt="">
-                                                                        </a>
-                                                                    @endforeach
+                                                                    <div class="grid grid-cols-2 gap-2">
+                                                                        @if($transaction->midjourney)
+                                                                            @foreach($transaction->midjourney->media as $media)
+                                                                                <a aria-label="anchor"
+                                                                                   href="{{$media->getUrl()}}"
+                                                                                   class="glightbox box responcive-image-history">
+                                                                                    <img style="margin-top: 10px"
+                                                                                         src="{{$media->getUrl()}}"
+                                                                                         alt="">
+                                                                                </a>
+                                                                            @endforeach
+                                                                        @else
+                                                                            <p>Image Was Deleted By User</p>
+                                                                        @endif
+                                                                    </div>
+                                                                @endif
+                                                                @if($transaction->model==='runway')
+                                                                        <div class="grid grid-cols-2 gap-2">
+                                                                            @if($transaction->runway)
+                                                                                @foreach($transaction->runway->media as $media)
+                                                                                    <a aria-label="anchor"
+                                                                                       href="{{$media->getUrl()}}"
+                                                                                       class="glightbox box responcive-image-history">
+                                                                                        <img style="margin-top: 10px"
+                                                                                             src="{{$media->getUrl()}}"
+                                                                                             alt="">
+                                                                                    </a>
+                                                                                @endforeach
+                                                                            @else
+                                                                                <p>Video Was Deleted By User</p>
+                                                                            @endif
+                                                                        </div>
                                                                 @endif
                                                             </td>
                                                         </tr>
@@ -111,7 +172,7 @@
                 </div>
             </div>
             {{--PAGINATION--}}
-            <div class="grid justify-center sm:flex sm:items-center gap-2 flex-wrap">
+            <div class="history-pagination grid justify-center sm:flex sm:items-center gap-2 flex-wrap">
                 <!-- Pagination Wrapper -->
                 <nav class="flex items-center justify-center -space-x-px mb-3">
 
@@ -150,7 +211,6 @@
                         <span aria-hidden="true" class="sr-only">Next</span>
                         <i class="ri-arrow-right-s-line align-middle rtl:rotate-180"></i>
                     </a>
-
                 </nav>
                 {{-- PER PAGE AND GO TO PAGE--}}
                 <div class="flex justify-center items-center gap-x-5 mb-3">
@@ -215,7 +275,6 @@
                     </form>
                     <!-- End Go To Page -->
                 </div>
-
             </div>
         </div>
     </div>

@@ -16,5 +16,12 @@
     <input type="number" name="height" placeholder="height">
     <button>Resize</button>
 </form>
+
+
+<form action="{{route('convert')}}" method="post" enctype="multipart/form-data">
+    @csrf
+    <input type="file" name="file">
+    <button>Resize</button>
+</form>
 </body>
 </html>

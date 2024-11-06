@@ -25,10 +25,8 @@ class UserBalanceService
     }
 
     public function checkBalance(string $modelname){
-
-        $balance = Userbalance::sum('balance');
+        $balance = round(Userbalance::sum('balance'), 2, PHP_ROUND_HALF_DOWN);
         $cost = config('variables.'.$modelname.'-price');
-
         if($balance > $cost){
             return true;
         }else{

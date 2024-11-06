@@ -8,7 +8,7 @@
             {{--            Left Sidebar--}}
             @include('user.pages.components.chat-left-sidebar')
             {{--            Main Chat--}}
-            <div id="main-chat" class="main-chat-area border dark:border-defaultborder/10">
+            <div id="main-chat" class="main-chat-area  custom-height border dark:border-defaultborder/10">
                 <div class="sm:flex items-center p-2 border-b dark:border-defaultborder/10">
                     <div class="flex items-center leading-none">
                             <span class="avatar avatar-lg online me-4 avatar-rounded chatstatusperson">
@@ -26,43 +26,29 @@
                             </p>
                         </div>
                         <div class="flex ms-auto">
-                            <button aria-label="button" type="button"
-                                    class="ti-btn ti-btn-icon ti-btn-outline-light  !text-[0.95rem] !ms-2 font-semibold responsive-userinfo-open">
-                                <i class="ti ti-user-circle" id="responsive-chat-close"></i>
+                            <button style="display: flex;justify-content: center;align-items: center;padding: 2px"
+                                    aria-label="button" type="button"
+                                    class="ti-btn hide-gallery ti-btn-icon ti-btn-outline-light  !text-[0.95rem] !ms-2 font-semibold responsive-userinfo-open">
+                                <svg class="ti ti-user-circle" id="responsive-chat-close"
+                                     xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                                    <g fill="none" stroke="currentColor" stroke-width="1.5">
+                                        <path d="M2 14c0-3.771 0-5.657 1.172-6.828S6.229 6 10 6h4c3.771 0 5.657 0 6.828 1.172S22 10.229 22 14s0 5.657-1.172 6.828S17.771 22 14 22h-4c-3.771 0-5.657 0-6.828-1.172S2 17.771 2 14Z"/>
+                                        <path d="m4 7l-.012-1c.112-.931.347-1.574.837-2.063C5.765 3 7.279 3 10.307 3h3.211c3.028 0 4.541 0 5.482.937c.49.489.725 1.132.837 2.063v1"/>
+                                        <circle cx="17.5" cy="10.5" r="1.5"/>
+                                        <path stroke-linecap="round"
+                                              d="m2 14.5l1.752-1.533a2.3 2.3 0 0 1 3.14.105l4.29 4.29a2 2 0 0 0 2.564.222l.299-.21a3 3 0 0 1 3.731.225L21 20.5"/>
+                                    </g>
+                                </svg>
                             </button>
-                            {{-- Dropdown on main chat--}}
-                            <div class="hs-dropdown ti-dropdown">
-                                <a aria-label="anchor" href="javascript:void(0);"
-                                   class="ti-btn ti-btn-icon ti-btn-outline-light  !text-[0.95rem] !ms-2 font-semibold"
-                                   aria-expanded="false">
-                                    <i class="fe fe-more-vertical text-[0.8rem]"></i>
-                                </a>
-                                <ul class="hs-dropdown-menu ti-dropdown-menu hidden">
-                                    <li>
-                                        <a class="ti-dropdown-item !py-2 !px-[0.9375rem] !text-[0.8125rem] !font-medium block"
-                                           href="javascript:void(0);">Profile</a></li>
-                                    <li>
-                                        <a class="ti-dropdown-item !py-2 !px-[0.9375rem] !text-[0.8125rem] !font-medium block"
-                                           href="javascript:void(0);">Clear Chat</a></li>
-                                    <li>
-                                        <a class="ti-dropdown-item !py-2 !px-[0.9375rem] !text-[0.8125rem] !font-medium block"
-                                           href="javascript:void(0);">Delete User</a></li>
-                                    <li>
-                                        <a class="ti-dropdown-item !py-2 !px-[0.9375rem] !text-[0.8125rem] !font-medium block"
-                                           href="javascript:void(0);">Block User</a></li>
-                                    <li>
-                                        <a class="ti-dropdown-item !py-2 !px-[0.9375rem] !text-[0.8125rem] !font-medium block"
-                                           href="javascript:void(0);">Report</a></li>
-                                </ul>
-                            </div>
                             <button aria-label="button" type="button"
                                     class="ti-btn ti-btn-icon ti-btn-outline-light  !text-[0.95rem] !ms-2 font-semibold responsive-chat-close">
                                 <i class="ri-close-line"></i>
                             </button>
                         </div>
                     </div>
+
                 </div>
-                <div class="chat-content" id="main-chat-content">
+                <div class="chat-content custom-chat-content" id="main-chat-content">
                     <ul id="chat-target" class="list-none">
                         <li class="chat-day-label">
                             <span>Today</span>
@@ -88,7 +74,7 @@
                                 <div class="chat-list-inner w-full">
                                     <div class="ms-3 w-full">
                                         <div class="main-chat-msg text-center w-full">
-                                            <div style="width: 100%!important;">
+                                            <div style="width: 100%!important;padding: 0">
                                                 <div style="justify-content: center!important;width: 100%!important;"
                                                      class="mb-0 flex flex-wrap  justify-center">
                                                     @foreach($item->media as $index => $media)
@@ -136,7 +122,18 @@
                                                                        navigator.clipboard.writeText('{{$media->getUrl()}}')
                                                                        copyUrl2()
                                                             ">
-                                                                <svg class="badge bg-primary/10  text-primary" xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 512 512"><rect width="336" height="336" x="128" y="128" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32" rx="57" ry="57"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="m383.5 128l.5-24a56.16 56.16 0 0 0-56-56H112a64.19 64.19 0 0 0-64 64v216a56.16 56.16 0 0 0 56 56h24"/></svg>
+                                                                <svg class="badge bg-primary/10  text-primary"
+                                                                     xmlns="http://www.w3.org/2000/svg" width="35"
+                                                                     height="35" viewBox="0 0 512 512">
+                                                                    <rect width="336" height="336" x="128" y="128"
+                                                                          fill="none" stroke="currentColor"
+                                                                          stroke-linejoin="round" stroke-width="32"
+                                                                          rx="57" ry="57"/>
+                                                                    <path fill="none" stroke="currentColor"
+                                                                          stroke-linecap="round" stroke-linejoin="round"
+                                                                          stroke-width="32"
+                                                                          d="m383.5 128l.5-24a56.16 56.16 0 0 0-56-56H112a64.19 64.19 0 0 0-64 64v216a56.16 56.16 0 0 0 56 56h24"/>
+                                                                </svg>
                                                             </button>
                                                         </div>
                                                     @endforeach
@@ -149,36 +146,39 @@
                         @endforeach
                     </ul>
                 </div>
-                <form style="height: 6.7rem!important;align-items: flex-end" class="chat-footer"
+                <form style="height: 6.7rem!important;align-items: center;display: flex;flex-direction: column;gap: 10px;justify-content: center"
+                      class="chat-footer"
                       action="{{route('flux-schnell.prompt')}}" method="post"
                         {{--                      hx-post="{{route('flux-schnell.prompt')}}" hx-target="#target"--}}
                 >
                     @csrf
-                    <input class="mb-3 form-control w-full !rounded-md" name="prompt"
-                           placeholder="Type your message here..."
-                           type="text">
-                    <button style="margin-bottom: 12px" id="fetch-prompt2" aria-label="anchor"
-                            class="f ti-btn bg-primary text-white !mx-2 ti-btn-icon ti-btn-send startSpinner">
-                        <i class="ri-send-plane-2-line"></i>
-                    </button>
-                    <div id="customwidth" style="position: absolute; bottom:65px;padding: 0;width: 100%;"
-                         class="flex justify-center gap-5">
+                    <div  style="padding: 0;width: 190px!important"
+                         class="flex justify-center gap-5 mt-3">
                         <div class="text-center flex justify-center gap-2 w-full px-3">
-                            <select style="max-width: 160px;padding-bottom: 2px;padding-top:2px" name="ratio"
+                            <select style="max-width: 190px;padding-bottom: 2px;padding-top:2px" name="ratio"
                                     class="ti-form-select rounded-sm  !px-2">
-                                <option selected>ორიენტაცია</option>
                                 <option value="HD">HD (1024x1024)</option>
                                 <option value="16:9">ლანდშაფტი (16:9)</option>
-                                <option value="4:3">ლანდშაფტი (4:3)</option>
+                                <option selected value="4:3">ლანდშაფტი (4:3)</option>
                                 <option value="9:16">პორტრეტი (9:16)</option>
                                 <option value="3:4">პორტრეტი (3:4)</option>
                             </select>
                         </div>
                     </div>
+                    <div class="flex gap-3 w-full">
+                        <input class="mb-3 form-control w-full !rounded-md" name="prompt"
+                               placeholder="Type your message here..."
+                               type="text">
+                        <button style="margin-bottom: 8px" id="fetch-prompt2" aria-label="anchor"
+                                class="f ti-btn bg-primary text-white !mx-2 ti-btn-icon ti-btn-send startSpinner">
+                            <i class="ri-send-plane-2-line"></i>
+                        </button>
+                    </div>
+
                 </form>
             </div>
             {{--Right sidebar  --}}
-            <div class="chat-user-details border dark:border-defaultborder/10" id="chat-user-details">
+            <div class="chat-user-details custom-height border dark:border-defaultborder/10" id="chat-user-details">
                 <div class="hideX">
                     <button aria-label="button" type="button"
                             class="ti-btn ti-btn-icon ti-btn-outline-light my-1 ms-2  responsive-chat-close2"><i
@@ -236,8 +236,8 @@
 
     {{--Delete Modal--}}
     <div id="staticBackdrop" class="hs-overlay hidden ti-modal  [--overlay-backdrop:static]">
-        <div class="hs-overlay-open:mt-7 ti-modal-box mt-0 min-h-[calc(100%-3.5rem)] ease-out flex items-center">
-            <div class="ti-modal-content">
+        <div class="hs-overlay-open:mt-7 ti-modal-box mt-0 ease-out min-h-[calc(100%-3.5rem)] flex items-center">
+            <div class="ti-modal-content w-full">
                 <div class="ti-modal-header">
                     <h6 class="modal-title text-[1rem] font-semibold">Delete Image</h6>
                     <button type="button" class="hs-dropdown-toggle !text-[1rem] !font-semibold !text-defaulttextcolor"
@@ -316,8 +316,15 @@
                         </form>
                         {{--share Button--}}
                         <input id="shareId" type="hidden">
-                        <button data-hs-overlay="#actionsmodal"  onclick="copyUrl()">
-                            <svg class="badge bg-primary/10  text-primary" xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 512 512"><rect width="336" height="336" x="128" y="128" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32" rx="57" ry="57"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="m383.5 128l.5-24a56.16 56.16 0 0 0-56-56H112a64.19 64.19 0 0 0-64 64v216a56.16 56.16 0 0 0 56 56h24"/></svg>
+                        <button data-hs-overlay="#actionsmodal" onclick="copyUrl()">
+                            <svg class="badge bg-primary/10  text-primary" xmlns="http://www.w3.org/2000/svg" width="35"
+                                 height="35" viewBox="0 0 512 512">
+                                <rect width="336" height="336" x="128" y="128" fill="none" stroke="currentColor"
+                                      stroke-linejoin="round" stroke-width="32" rx="57" ry="57"/>
+                                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                      stroke-width="32"
+                                      d="m383.5 128l.5-24a56.16 56.16 0 0 0-56-56H112a64.19 64.19 0 0 0-64 64v216a56.16 56.16 0 0 0 56 56h24"/>
+                            </svg>
                         </button>
                     </div>
                 </div>
@@ -325,7 +332,7 @@
         </div>
     </div>
 
-{{--    Copy link functionality--}}
+    {{--    Copy link functionality--}}
     <script>
         function copyUrl() {
             const input = document.getElementById('shareId');

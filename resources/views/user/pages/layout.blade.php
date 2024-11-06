@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr" data-nav-layout="vertical" class="light" data-header-styles="light" data-menu-styles="dark"
+<html lang="en" dir="ltr" data-nav-layout="vertical" class="dark" data-header-styles="dark" data-menu-styles="dark"
       data-toggled="close">
 
 <head>
@@ -22,8 +22,6 @@
     <!-- Style Css -->
     <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
 
-    <!-- Simplebar Css -->
-    <link rel="stylesheet" href="{{asset('assets/libs/simplebar/simplebar.min.css')}}">
 
     <!-- Color Picker Css -->
     <link rel="stylesheet" href="{{asset('assets/libs/@simonwep/pickr/themes/nano.min.css')}}">
@@ -31,18 +29,18 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css"/>
     <script src="https://cdn.jsdelivr.net/gh/mcstudios/glightbox/dist/js/glightbox.min.js"></script>
-{{--    @if(request()->routeIs('bg.remove') || request()->routeIs('runway'))--}}
-{{--        <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet"/>--}}
-{{--        <link--}}
-{{--                href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css"--}}
-{{--                rel="stylesheet"--}}
-{{--        />--}}
-{{--        <script src="https://unpkg.com/filepond/dist/filepond.js"></script>--}}
-{{--        <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>--}}
-{{--        <script src="https://unpkg.com/filepond-plugin-image-validate-size/dist/filepond-plugin-image-validate-size.js"></script>--}}
-{{--        <script src="https://unpkg.com/filepond-plugin-image-exif-orientation/dist/filepond-plugin-image-exif-orientation.js"></script>--}}
+    {{--    @if(request()->routeIs('bg.remove') || request()->routeIs('runway'))--}}
+    {{--        <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet"/>--}}
+    {{--        <link--}}
+    {{--                href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css"--}}
+    {{--                rel="stylesheet"--}}
+    {{--        />--}}
+    {{--        <script src="https://unpkg.com/filepond/dist/filepond.js"></script>--}}
+    {{--        <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>--}}
+    {{--        <script src="https://unpkg.com/filepond-plugin-image-validate-size/dist/filepond-plugin-image-validate-size.js"></script>--}}
+    {{--        <script src="https://unpkg.com/filepond-plugin-image-exif-orientation/dist/filepond-plugin-image-exif-orientation.js"></script>--}}
 
-{{--    @endif--}}
+    {{--    @endif--}}
     <script src="https://unpkg.com/htmx.org@2.0.3"
             integrity="sha384-0895/pl2MU10Hqc6jd4RvrthNlDiE9U1tWmX7WRESftEDRosgxNsQG/Ze9YMRzHq"
             crossorigin="anonymous"></script>
@@ -145,20 +143,26 @@
                 font-size: 13px;
             }
 
-            #customwidth {
-                width: 85% !important;
-            }
+
         }
 
+        .hide-gallery{
+            display: none!important;
+        }
         @media only screen and (max-width: 1400px) {
             .hideX {
                 display: block;
+            }
+
+            .hide-gallery{
+                display: flex!important;
             }
         }
 
         .avatar::before {
             content: none !important;
         }
+
 
         @media only screen and (max-width: 990px) {
 
@@ -177,31 +181,47 @@
             #main-chat {
                 flex-grow: 1 !important;
             }
+
         }
 
-        .custom-chat-content{
-            max-height: calc(100vh - 11.5rem) !important;
+        .custom-chat-content {
+            max-height: calc(100vh - 14rem) !important;
         }
 
-        .responcive-image-history{
-            max-width: 250px;
+        .responcive-image-history {
+            max-width: 250px !important;
+        }
+
+        .td-width {
+            width: 250px !important;
+        }
+
+        .history-pagination {
+            margin-top: 10px;
         }
 
 
         @media only screen and (max-width: 400px) {
-            .responcive-image-history{
-                max-width: 100px;
+            .responcive-image-history {
+                max-width: 190px !important;
             }
 
+            .td-width {
+                width: 100px !important;
+            }
         }
 
+        .custom-height {
+            height: calc(100vh - 5rem) !important;
+
+        }
 
     </style>
 
     @if(request()->routeIs('userbalance.history'))
         <style>
             .simplebar-content {
-                padding: 0px!important;
+                padding: 0px !important;
 
             }
 
@@ -216,7 +236,7 @@
 
     <link rel="stylesheet" href="{{asset('assets/css/spin.css')}}">
 
-
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 </head>
 

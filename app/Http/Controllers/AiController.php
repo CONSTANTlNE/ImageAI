@@ -34,6 +34,8 @@ class AiController extends Controller
             ->take(30)
             ->orderBy('created_at', 'desc')
             ->get();
+//        dd($images,$images2);
+
         return view('user.pages.remove-bg2', compact('images2','images'));
     }
 
@@ -213,16 +215,20 @@ class AiController extends Controller
         return back()->with('alert_error', 'გთხოვთ ატვირთეთ ფოტო');
     }
 
-    public function downloadBG(Request $request): \Symfony\Component\HttpFoundation\BinaryFileResponse
+    public function downloadBG(Request $request)
     {
 
         $removebg=Removebg::where('id',$request->id)->with('media')->first();
-        $media = $removebg->media->first(); // Replace with your logic to find media
+        if ($removebg) {
+            $media = $removebg->media->first(); // Replace with your logic to find media
 
-        $filePath = $media->getPath(); // Use getPath() to get the physical path
-        // Force the download
+            $filePath = $media->getPath(); // Use getPath() to get the physical path
+            // Force the download
 
-        return response()->download($filePath, $media->file_name);
+            return response()->download($filePath, $media->file_name);
+        }
+
+        return back()->with('alert_error', 'ფოტო არ მოიძებნდა');
 
     }
 
@@ -234,13 +240,18 @@ class AiController extends Controller
 
     public function delete(Request $request,Removebg $removebg){
 
-        if ($request->has('id')) {
 
+        if ($request->has('id')) {
             $removebg2 = Removebg::where('id', $request->id)->first();
             if($removebg2->media){
                 $removebg2->media->each(function($media){
                     $media->delete();
                 });
+            }
+            $userBalance = UserBalance::where('removebg_id', $removebg2->id)->first();
+            if ($userBalance) {
+                $userBalance->removebg_id = null;
+                $userBalance->save();
             }
             $removebg2->delete();
             return back()->with('alert_success', 'ფოტო წარმატებით წაიშალა');
@@ -253,10 +264,18 @@ class AiController extends Controller
                     $media->delete();
                 });
             }
+            $userBalance = UserBalance::where('removebg_id', $removebg->id)->first();
+            if ($userBalance) {
+                $userBalance->removebg_id = null;
+                $userBalance->save();
+            }
             $removebg->delete();
             return back()->with('alert_success', 'ფოტო წარმატებით წაიშალა');
         }
 
+        // log and email
+
+        return back()->with('alert_error', 'ფოტო არ მოიძებნა');
 
     }
 

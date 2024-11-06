@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->float('balance')->nullable();
             $table->float('rate')->nullable();
-            $table->string('provider')->nullable();
-            $table->string('model')->nullable();
+            $table->string('provider')->index()->nullable();
+            $table->string('model')->index()->nullable();
             $table->float('cost')->nullable();
             $table->float('cost_gel')->nullable();
             $table->float('sell')->nullable();
