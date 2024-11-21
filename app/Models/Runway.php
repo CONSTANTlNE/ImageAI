@@ -15,6 +15,8 @@ class Runway extends Model implements HasMedia
 {
     use HasFactory,InteractsWithMedia;
 
+    protected $guarded = [];
+
 
     public function user():BelongsTo{
         return $this->belongsTo(User::class);

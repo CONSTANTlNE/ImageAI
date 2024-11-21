@@ -48,7 +48,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="chat-content" id="main-chat-content">
+                <div class="chat-content custom-chat-content" id="main-chat-content">
                     <ul class="list-none">
                         <li class="chat-day-label">
                             <span>Today</span>
@@ -144,6 +144,19 @@
                                 </div>
                             </li>
                         @endforeach
+                        @if($pending)
+                        <li>
+                            <div class="flex justify-center">
+                                <button onclick="location.reload();" type="button" class="ti-btn ti-btn-primary-full !rounded-full ti-btn-wave">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24">
+                                        <path fill="none" stroke="white" stroke-linecap="round" stroke-linejoin="round"
+                                              stroke-width="2"
+                                              d="M20 11A8.1 8.1 0 0 0 4.5 9M4 5v4h4m-4 4a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </li>
+                        @endif
                     </ul>
                 </div>
                 {{-- PROMPT FIELD--}}
@@ -167,9 +180,7 @@
                 </div>
                 <div style="margin-left: 10px" class="mb-0 mt-3">
                     <div class="font-semibold mb-4 text-defaultsize dark:text-defaulttextcolor/70">
-                        Gallery (last
-                        <span class="badge bg-primary/10 !rounded-full text-primary ">30</span>
-                        images)
+                        Gallery
                         <span class="ltr:float-right rtl:float-left text-[0.6875rem]">
                             <a href="{{route('gallery',['model'=>'midjourney'])}}" class="text-primary underline">
                                 <u>View All</u>

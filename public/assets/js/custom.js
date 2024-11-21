@@ -20,12 +20,18 @@ import 'simplebar/dist/simplebar.css'; // Import SimpleBar CSS
   /* footer year */
   /*Start Sidemenu Scroll */
   var myElement = document.getElementById("sidebar-scroll");
-  // new SimpleBar(myElement, { autoHide: true });
+  if (myElement) {
+    new SimpleBar(myElement, { autoHide: true });
+
+  }
   /*End Sidemenu Scroll */
 
   /*Start Sidemenu Scroll */
-  // var myElement = document.getElementById("header-notification-scroll");
-  // new SimpleBar(myElement, { autoHide: true });
+  var myElement = document.getElementById("header-notification-scroll");
+  if (myElement) {
+    new SimpleBar(myElement, { autoHide: true });
+
+  }
   /*End Sidemenu Scroll */
 
   /* header dropdowns scroll */

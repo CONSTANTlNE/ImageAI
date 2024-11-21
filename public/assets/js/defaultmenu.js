@@ -8,11 +8,11 @@ let mainContentDiv = document.querySelector(".main-content");
 const slideHasSub = document.querySelectorAll(".nav > ul > .slide.has-sub");
 
 const firstLevelItems = document.querySelectorAll(
-  ".nav > ul > .slide.has-sub > a"
+    ".nav > ul > .slide.has-sub > a"
 );
 
 const innerLevelItems = document.querySelectorAll(
-  ".nav > ul > .slide.has-sub .slide.has-sub > a"
+    ".nav > ul > .slide.has-sub .slide.has-sub > a"
 );
 
 class PopperObject {
@@ -42,9 +42,9 @@ class PopperObject {
     });
 
     document.addEventListener(
-      "click",
-      (e) => this.clicker(e, this.popperTarget, this.reference),
-      false
+        "click",
+        (e) => this.clicker(e, this.popperTarget, this.reference),
+        false
     );
 
     const ro = new ResizeObserver(() => {
@@ -57,9 +57,9 @@ class PopperObject {
 
   clicker(event, popperTarget, reference) {
     if (
-      sidebar.classList.contains("collapsed") &&
-      !popperTarget.contains(event.target) &&
-      !reference.contains(event.target)
+        sidebar.classList.contains("collapsed") &&
+        !popperTarget.contains(event.target) &&
+        !reference.contains(event.target)
     ) {
       this.hide();
     }
@@ -80,7 +80,7 @@ class Poppers {
   init() {
     slideHasSub.forEach((element) => {
       this.subMenuPoppers.push(
-        new PopperObject(element, element.lastElementChild)
+          new PopperObject(element, element.lastElementChild)
       );
       this.closePoppers();
     });
@@ -88,8 +88,8 @@ class Poppers {
 
   togglePopper(target) {
     if (
-      window.getComputedStyle(target).visibility === "hidden" &&
-      window.getComputedStyle(target).visibility === undefined
+        window.getComputedStyle(target).visibility === "hidden" &&
+        window.getComputedStyle(target).visibility === undefined
     )
       target.style.visibility = "visible";
     else target.style.visibility = "hidden";
@@ -217,16 +217,16 @@ const slideDown = (target, duration = ANIMATION_DURATION) => {
 const slideToggle = (target, duration = ANIMATION_DURATION) => {
   let html = document.querySelector("html");
   if (
-    !(
-      (html.getAttribute("data-nav-style") === "menu-hover" &&
-        html.getAttribute("data-toggled") === "menu-hover-closed" &&
-        window.innerWidth >= 992) ||
-      (html.getAttribute("data-nav-style") === "icon-hover" &&
-        html.getAttribute("data-toggled") === "icon-hover-closed" &&
-        window.innerWidth >= 992)
-    ) &&
-    target &&
-    target.nodeType != 3
+      !(
+          (html.getAttribute("data-nav-style") === "menu-hover" &&
+              html.getAttribute("data-toggled") === "menu-hover-closed" &&
+              window.innerWidth >= 992) ||
+          (html.getAttribute("data-nav-style") === "icon-hover" &&
+              html.getAttribute("data-toggled") === "icon-hover-closed" &&
+              window.innerWidth >= 992)
+      ) &&
+      target &&
+      target.nodeType != 3
   ) {
     if (window.getComputedStyle(target).display === "none")
       return slideDown(target, duration);
@@ -261,16 +261,16 @@ firstLevelItems.forEach((element) => {
       const parentMenu = element.closest(".nav.sub-open");
       if (parentMenu)
         parentMenu
-          .querySelectorAll(":scope > ul > .slide.has-sub > a")
-          .forEach((el) => {
-            // window.getComputedStyle(el.nextElementSibling).display !== "none" &&
-            if (
-              el.nextElementSibling.style.display === "block" ||
-              window.getComputedStyle(el.nextElementSibling).display === "block"
-            ) {
-              slideUp(el.nextElementSibling);
-            }
-          });
+            .querySelectorAll(":scope > ul > .slide.has-sub > a")
+            .forEach((el) => {
+              // window.getComputedStyle(el.nextElementSibling).display !== "none" &&
+              if (
+                  el.nextElementSibling.style.display === "block" ||
+                  window.getComputedStyle(el.nextElementSibling).display === "block"
+              ) {
+                slideUp(el.nextElementSibling);
+              }
+            });
       slideToggle(element.nextElementSibling);
     }
   });
@@ -283,22 +283,22 @@ innerLevelItems.forEach((element) => {
   let html = document.querySelector("html");
   // if ((html.getAttribute('data-nav-style') !== "menu-hover" || html.getAttribute('data-nav-style') !== "icon-hover") ) {
   element.addEventListener("click", () => {
-   
+
     if ((html.getAttribute("data-nav-style") != "menu-hover" && html.getAttribute("data-nav-style") != "icon-hover") || window.innerWidth < 992 || ( !html.getAttribute("data-toggled") && html.getAttribute("data-nav-layout") != "horizontal")) {
       const innerMenu = element.closest(".slide-menu");
       if (innerMenu)
         innerMenu
-          .querySelectorAll(":scope .slide.has-sub > a")
-          .forEach((el) => {
-            // window.getComputedStyle(el.nextElementSibling).display !== "none" &&
-            // ref || window.getComputedStyle(el.nextElementSibling).display === "block"
-            if (
-              el.nextElementSibling &&
-              el.nextElementSibling?.style.display === "block"
-            ) {
-              slideUp(el.nextElementSibling);
-            }
-          });
+            .querySelectorAll(":scope .slide.has-sub > a")
+            .forEach((el) => {
+              // window.getComputedStyle(el.nextElementSibling).display !== "none" &&
+              // ref || window.getComputedStyle(el.nextElementSibling).display === "block"
+              if (
+                  el.nextElementSibling &&
+                  el.nextElementSibling?.style.display === "block"
+              ) {
+                slideUp(el.nextElementSibling);
+              }
+            });
       slideToggle(element.nextElementSibling);
     }
   });
@@ -333,7 +333,9 @@ let headerToggleBtn, WindowPreSize;
 (() => {
   let html = document.querySelector("html");
   headerToggleBtn = document.querySelector(".sidemenu-toggle");
-  // headerToggleBtn.addEventListener("click", toggleSidemenu);
+  if (headerToggleBtn){
+    headerToggleBtn.addEventListener("click", toggleSidemenu);
+  }
   let mainContent = document.querySelector(".main-content");
   if (window.innerWidth <= 992) {
     mainContent.addEventListener("click", menuClose);
@@ -344,8 +346,8 @@ let headerToggleBtn, WindowPreSize;
   WindowPreSize = [window.innerWidth];
   setNavActive();
   if (
-    html.getAttribute("data-nav-layout") === "horizontal" &&
-    window.innerWidth >= 992
+      html.getAttribute("data-nav-layout") === "horizontal" &&
+      window.innerWidth >= 992
   ) {
     clearNavDropdown();
     mainContent.addEventListener("click", clearNavDropdown);
@@ -357,12 +359,12 @@ let headerToggleBtn, WindowPreSize;
   switcherArrowFn();
 
   if (
-    !localStorage.getItem("ynexlayout") &&
-    !localStorage.getItem("ynexnavstyles") &&
-    !localStorage.getItem("ynexverticalstyles") &&
-    !document.querySelector(".landing-body") &&
-    document.querySelector("html").getAttribute("data-nav-layout") !==
-    "horizontal"
+      !localStorage.getItem("ynexlayout") &&
+      !localStorage.getItem("ynexnavstyles") &&
+      !localStorage.getItem("ynexverticalstyles") &&
+      !document.querySelector(".landing-body") &&
+      document.querySelector("html").getAttribute("data-nav-layout") !==
+      "horizontal"
   ) {
     // To enable sidemenu layout styles
     // iconTextFn();
@@ -370,8 +372,8 @@ let headerToggleBtn, WindowPreSize;
     // closedSidemenuFn();
     // doubletFn();
     if (
-      !html.getAttribute("data-vertical-style") &&
-      !html.getAttribute("data-nav-style")
+        !html.getAttribute("data-vertical-style") &&
+        !html.getAttribute("data-nav-style")
     ) {
       iconOverayFn();
     }
@@ -381,11 +383,11 @@ let headerToggleBtn, WindowPreSize;
     let html = document.querySelector("html");
     html.setAttribute("dir", "rtl");
     document
-      .querySelector("#style")
-      ?.setAttribute(
-        "href",
-        "../assets/libs/bootstrap/css/bootstrap.rtl.min.css"
-      );
+        .querySelector("#style")
+        ?.setAttribute(
+            "href",
+            "../assets/libs/bootstrap/css/bootstrap.rtl.min.css"
+        );
     //RTL
     if (localStorage.getItem("ynexrtl")) {
       document.querySelector("#switcher-rtl").checked = true;
@@ -400,8 +402,8 @@ let headerToggleBtn, WindowPreSize;
 
   /* Horizontal Start */
   if (
-    html.getAttribute("data-nav-layout") === "horizontal" &&
-    !document.querySelector(".landing-body") == true
+      html.getAttribute("data-nav-layout") === "horizontal" &&
+      !document.querySelector(".landing-body") == true
   ) {
     setTimeout(() => {
       horizontalClickFn();
@@ -415,9 +417,9 @@ let headerToggleBtn, WindowPreSize;
   }
 
   if (
-    (html.getAttribute("data-nav-style") === "menu-hover" ||
-      html.getAttribute("data-nav-style") === "icon-hover") &&
-    window.innerWidth >= 992
+      (html.getAttribute("data-nav-style") === "menu-hover" ||
+          html.getAttribute("data-nav-style") === "icon-hover") &&
+      window.innerWidth >= 992
   ) {
     clearNavDropdown();
   }
@@ -436,8 +438,8 @@ function ResizeMenu() {
   }
   if (WindowPreSize.length > 1) {
     if (
-      WindowPreSize[WindowPreSize.length - 1] < 992 &&
-      WindowPreSize[WindowPreSize.length - 2] >= 992
+        WindowPreSize[WindowPreSize.length - 1] < 992 &&
+        WindowPreSize[WindowPreSize.length - 2] >= 992
     ) {
       // less than 992;
       mainContent.addEventListener("click", menuClose);
@@ -447,8 +449,8 @@ function ResizeMenu() {
     }
 
     if (
-      WindowPreSize[WindowPreSize.length - 1] >= 992 &&
-      WindowPreSize[WindowPreSize.length - 2] < 992
+        WindowPreSize[WindowPreSize.length - 1] >= 992 &&
+        WindowPreSize[WindowPreSize.length - 2] < 992
     ) {
       // greater than 992
       mainContent.removeEventListener("click", menuClose);
@@ -460,8 +462,8 @@ function ResizeMenu() {
         mainContent.removeEventListener("click", clearNavDropdown);
       }
       if (
-        document.documentElement.getAttribute("data-vertical-style") ==
-        "doublemenu"
+          document.documentElement.getAttribute("data-vertical-style") ==
+          "doublemenu"
       ) {
         if (document.querySelector(".double-menu-active")) {
           html.setAttribute("data-toggled", "double-menu-open");
@@ -491,20 +493,23 @@ function toggleSidemenu() {
 
   if (window.innerWidth >= 992) {
     if (sidemenuType === "vertical") {
-      // sidebar.removeEventListener("mouseenter", mouseEntered);
-      // sidebar.removeEventListener("mouseleave", mouseLeave);
-      // sidebar.removeEventListener("click", icontextOpen);
+      if(sidebar){
+        sidebar.removeEventListener("mouseenter", mouseEntered);
+        sidebar.removeEventListener("mouseleave", mouseLeave);
+        sidebar.removeEventListener("click", icontextOpen);
+      }
+
       mainContentDiv.removeEventListener("click", icontextClose);
       let sidemenulink = document.querySelectorAll(
-        ".main-menu li > .side-menu__item"
+          ".main-menu li > .side-menu__item"
       );
       sidemenulink.forEach((ele) =>
-        ele.removeEventListener("click", doubleClickFn)
+          ele.removeEventListener("click", doubleClickFn)
       );
 
       let verticalStyle = html.getAttribute("data-vertical-style");
       switch (verticalStyle) {
-        // closed
+          // closed
         case "closed":
           html.removeAttribute("data-nav-style");
           if (html.getAttribute("data-toggled") === "close-menu-close") {
@@ -513,44 +518,51 @@ function toggleSidemenu() {
             html.setAttribute("data-toggled", "close-menu-close");
           }
           break;
-        // icon-overlay
+          // icon-overlay
         case "overlay":
           html.removeAttribute("data-nav-style");
           if (html.getAttribute("data-toggled") === "icon-overlay-close") {
             html.removeAttribute("data-toggled", "icon-overlay-close");
-            // sidebar.removeEventListener("mouseenter", mouseEntered);
-            // sidebar.removeEventListener("mouseleave", mouseLeave);
+            if(sidebar){
+              sidebar.removeEventListener("mouseenter", mouseEntered);
+              sidebar.removeEventListener("mouseleave", mouseLeave);
+            }
+
           } else {
             if (window.innerWidth >= 992) {
               html.setAttribute("data-toggled", "icon-overlay-close");
-              //
-              // sidebar.addEventListener("mouseenter", mouseEntered);
-              // sidebar.addEventListener("mouseleave", mouseLeave);
+             if (sidebar){
+               sidebar.addEventListener("mouseenter", mouseEntered);
+               sidebar.addEventListener("mouseleave", mouseLeave);
+             }
+
             } else {
-              // sidebar.removeEventListener("mouseenter", mouseEntered);
-              // sidebar.removeEventListener("mouseleave", mouseLeave);
+              if(sidebar){
+                sidebar.removeEventListener("mouseenter", mouseEntered);
+                sidebar.removeEventListener("mouseleave", mouseLeave);
+              }
             }
           }
           break;
-        // icon-text
+          // icon-text
         case "icontext":
           html.removeAttribute("data-nav-style");
           if (html.getAttribute("data-toggled") === "icon-text-close") {
             html.removeAttribute("data-toggled", "icon-text-close");
-            // sidebar.removeEventListener("click", icontextOpen);
+            sidebar.removeEventListener("click", icontextOpen);
             mainContentDiv.removeEventListener("click", icontextClose);
           } else {
             html.setAttribute("data-toggled", "icon-text-close");
             if (window.innerWidth >= 992) {
-              // sidebar.addEventListener("click", icontextOpen);
+              sidebar.addEventListener("click", icontextOpen);
               mainContentDiv.addEventListener("click", icontextClose);
             } else {
-              // sidebar.removeEventListener("click", icontextOpen);
+              sidebar.removeEventListener("click", icontextOpen);
               mainContentDiv.removeEventListener("click", icontextClose);
             }
           }
           break;
-        // doublemenu
+          // doublemenu
         case "doublemenu":
           html.removeAttribute("data-nav-style");
           if (html.getAttribute("data-toggled") === "double-menu-open") {
@@ -571,15 +583,15 @@ function toggleSidemenu() {
                 sidemenu.nextElementSibling.classList.add("double-menu-active");
               } else {
                 document
-                  .querySelector("html")
-                  .setAttribute("data-toggled", "double-menu-close");
+                    .querySelector("html")
+                    .setAttribute("data-toggled", "double-menu-close");
               }
             }
           }
 
           doublemenu();
           break;
-        // detached
+          // detached
         case "detached":
           if (html.getAttribute("data-toggled") === "detached-close") {
             html.removeAttribute("data-toggled", "detached-close");
@@ -596,7 +608,7 @@ function toggleSidemenu() {
             }
           }
           break;
-        // default
+          // default
         case "default":
           iconOverayFn();
           html.removeAttribute("data-toggled");
@@ -636,7 +648,7 @@ function toggleSidemenu() {
             clearNavDropdown();
           }
           break;
-        //for making any horizontal style as default
+          //for making any horizontal style as default
         default:
       }
     }
@@ -647,23 +659,23 @@ function toggleSidemenu() {
       i.id = "responsive-overlay";
       setTimeout(() => {
         if (
-          document.querySelector("html").getAttribute("data-toggled") == "open"
+            document.querySelector("html").getAttribute("data-toggled") == "open"
         ) {
           document.querySelector("#responsive-overlay").classList.add("active");
           document
-            .querySelector("#responsive-overlay")
-            .addEventListener("click", () => {
-              document
-                .querySelector("#responsive-overlay")
-                .classList.remove("active");
-              menuClose();
-            });
+              .querySelector("#responsive-overlay")
+              .addEventListener("click", () => {
+                document
+                    .querySelector("#responsive-overlay")
+                    .classList.remove("active");
+                menuClose();
+              });
         }
         window.addEventListener("resize", () => {
           if (window.innerWidth >= 992) {
             document
-              .querySelector("#responsive-overlay")
-              .classList.remove("active");
+                .querySelector("#responsive-overlay")
+                .classList.remove("active");
           }
         });
       }, 100);
@@ -726,7 +738,7 @@ function doubletFn() {
   toggleSidemenu();
 
   const menuSlideItem = document.querySelectorAll(
-    ".main-menu > li > .side-menu__item"
+      ".main-menu > li > .side-menu__item"
   );
 
   // Create the tooltip element
@@ -791,7 +803,7 @@ function setNavActive() {
   let currentPath = window.location.pathname.split("/")[0];
 
   currentPath =
-    location.pathname == "/" ? "index.html" : location.pathname.substring(1);
+      location.pathname == "/" ? "index.html" : location.pathname.substring(1);
   currentPath = currentPath.substring(currentPath.lastIndexOf("/") + 1);
   let sidemenuItems = document.querySelectorAll(".side-menu__item");
   sidemenuItems.forEach((e) => {
@@ -879,165 +891,174 @@ function switcherArrowFn() {
 
   checkHoriMenu();
 
-  // slideLeft.addEventListener("click", () => {
-  //   let menuNav = document.querySelector(".main-menu");
-  //   let mainContainer1 = document.querySelector(".main-sidebar");
-  //   let marginLeftValue = Math.ceil(
-  //     Number(window.getComputedStyle(menuNav).marginLeft.split("px")[0])
-  //   );
-  //   let marginRightValue = Math.ceil(
-  //     Number(window.getComputedStyle(menuNav).marginRight.split("px")[0])
-  //   );
-  //   let mainContainer1Width = mainContainer1.offsetWidth;
-  //   if (menuNav.scrollWidth > mainContainer1.offsetWidth) {
-  //     if (!(document.querySelector("html").getAttribute("dir") === "rtl")) {
-  //       if (
-  //         marginLeftValue < 0 &&
-  //         !(Math.abs(marginLeftValue) < mainContainer1Width)
-  //       ) {
-  //         menuNav.style.marginRight = 0;
-  //         menuNav.style.marginLeft =
-  //           Number(menuNav.style.marginLeft.split("px")[0]) +
-  //           Math.abs(mainContainer1Width) +
-  //           "px";
-  //         slideRight.classList.remove("hidden");
-  //       } else if (marginLeftValue >= 0) {
-  //         menuNav.style.marginLeft = "0px";
-  //         slideLeft.classList.add("hidden");
-  //         slideRight.classList.remove("hidden");
-  //       } else {
-  //         menuNav.style.marginLeft = "0px";
-  //         slideLeft.classList.add("hidden");
-  //         slideRight.classList.remove("hidden");
-  //       }
-  //     } else {
-  //       if (
-  //         marginRightValue < 0 &&
-  //         !(Math.abs(marginRightValue) < mainContainer1Width)
-  //       ) {
-  //         menuNav.style.marginLeft = 0;
-  //         menuNav.style.marginRight =
-  //           Number(menuNav.style.marginRight.split("px")[0]) +
-  //           Math.abs(mainContainer1Width) +
-  //           "px";
-  //         slideRight.classList.remove("hidden");
-  //       } else if (marginRightValue >= 0) {
-  //         menuNav.style.marginRight = "0px";
-  //         slideLeft.classList.add("hidden");
-  //         slideRight.classList.remove("hidden");
-  //       } else {
-  //         menuNav.style.marginRight = "0px";
-  //         slideLeft.classList.add("hidden");
-  //         slideRight.classList.remove("hidden");
-  //       }
-  //     }
-  //   } else {
-  //     document.querySelector(".main-menu").style.marginLeft = "0px";
-  //     document.querySelector(".main-menu").style.marginRight = "0px";
-  //     slideLeft.classList.add("hidden");
-  //   }
-  //
-  //   let element = document.querySelector(".main-menu > .slide.open");
-  //   let element1 = document.querySelector(".main-menu > .slide.open >ul");
-  //   if (element) {
-  //     element.classList.remove("open");
-  //   }
-  //   if (element1) {
-  //     element1.style.display = "none";
-  //   }
-  //
-  //   slideClick();
-  //   return;
-  //   //
-  // });
-  // slideRight.addEventListener("click", () => {
-  //   let menuNav = document.querySelector(".main-menu");
-  //   let mainContainer1 = document.querySelector(".main-sidebar");
-  //   let marginLeftValue = Math.ceil(
-  //     Number(window.getComputedStyle(menuNav).marginLeft.split("px")[0])
-  //   );
-  //   let marginRightValue = Math.ceil(
-  //     Number(window.getComputedStyle(menuNav).marginRight.split("px")[0])
-  //   );
-  //   let check = menuNav.scrollWidth - mainContainer1.offsetWidth;
-  //   let mainContainer1Width = mainContainer1.offsetWidth;
-  //
-  //   if (menuNav.scrollWidth > mainContainer1.offsetWidth) {
-  //     if (!(document.querySelector("html").getAttribute("dir") === "rtl")) {
-  //       if (Math.abs(check) > Math.abs(marginLeftValue)) {
-  //         menuNav.style.marginRight = 0;
-  //         if (
-  //           !(Math.abs(check) > Math.abs(marginLeftValue) + mainContainer1Width)
-  //         ) {
-  //           mainContainer1Width = Math.abs(check) - Math.abs(marginLeftValue);
-  //           slideRight.classList.add("hidden");
-  //         }
-  //         menuNav.style.marginLeft =
-  //           Number(menuNav.style.marginLeft.split("px")[0]) -
-  //           Math.abs(mainContainer1Width) +
-  //           "px";
-  //         slideLeft.classList.remove("hidden");
-  //       }
-  //     } else {
-  //       if (Math.abs(check) > Math.abs(marginRightValue)) {
-  //         menuNav.style.marginLeft = 0;
-  //         if (
-  //           !(
-  //             Math.abs(check) >
-  //             Math.abs(marginRightValue) + mainContainer1Width
-  //           )
-  //         ) {
-  //           mainContainer1Width = Math.abs(check) - Math.abs(marginRightValue);
-  //           slideRight.classList.add("hidden");
-  //         }
-  //         menuNav.style.marginRight =
-  //           Number(menuNav.style.marginRight.split("px")[0]) -
-  //           Math.abs(mainContainer1Width) +
-  //           "px";
-  //         slideLeft.classList.remove("hidden");
-  //       }
-  //     }
-  //   }
-  //
-  //   let element = document.querySelector(".main-menu > .slide.open");
-  //   let element1 = document.querySelector(".main-menu > .slide.open >ul");
-  //   if (element) {
-  //     element.classList.remove("open");
-  //   }
-  //   if (element1) {
-  //     element1.style.display = "none";
-  //   }
-  //
-  //   slideClick();
-  //   return;
-  // });
+  if (slideLeft){
+    slideLeft.addEventListener("click", () => {
+      let menuNav = document.querySelector(".main-menu");
+      let mainContainer1 = document.querySelector(".main-sidebar");
+      let marginLeftValue = Math.ceil(
+          Number(window.getComputedStyle(menuNav).marginLeft.split("px")[0])
+      );
+      let marginRightValue = Math.ceil(
+          Number(window.getComputedStyle(menuNav).marginRight.split("px")[0])
+      );
+      let mainContainer1Width = mainContainer1.offsetWidth;
+      if (menuNav!==null && menuNav.scrollWidth > mainContainer1.offsetWidth) {
+        if (!(document.querySelector("html").getAttribute("dir") === "rtl")) {
+          if (
+              marginLeftValue < 0 &&
+              !(Math.abs(marginLeftValue) < mainContainer1Width)
+          ) {
+            menuNav.style.marginRight = 0;
+            menuNav.style.marginLeft =
+                Number(menuNav.style.marginLeft.split("px")[0]) +
+                Math.abs(mainContainer1Width) +
+                "px";
+            slideRight.classList.remove("hidden");
+          } else if (marginLeftValue >= 0) {
+            menuNav.style.marginLeft = "0px";
+            slideLeft.classList.add("hidden");
+            slideRight.classList.remove("hidden");
+          } else {
+            menuNav.style.marginLeft = "0px";
+            slideLeft.classList.add("hidden");
+            slideRight.classList.remove("hidden");
+          }
+        } else {
+          if (
+              marginRightValue < 0 &&
+              !(Math.abs(marginRightValue) < mainContainer1Width)
+          ) {
+            menuNav.style.marginLeft = 0;
+            menuNav.style.marginRight =
+                Number(menuNav.style.marginRight.split("px")[0]) +
+                Math.abs(mainContainer1Width) +
+                "px";
+            slideRight.classList.remove("hidden");
+          } else if (marginRightValue >= 0) {
+            menuNav.style.marginRight = "0px";
+            slideLeft.classList.add("hidden");
+            slideRight.classList.remove("hidden");
+          } else {
+            menuNav.style.marginRight = "0px";
+            slideLeft.classList.add("hidden");
+            slideRight.classList.remove("hidden");
+          }
+        }
+      } else {
+        document.querySelector(".main-menu").style.marginLeft = "0px";
+        document.querySelector(".main-menu").style.marginRight = "0px";
+        slideLeft.classList.add("hidden");
+      }
+
+      let element = document.querySelector(".main-menu > .slide.open");
+      let element1 = document.querySelector(".main-menu > .slide.open >ul");
+      if (element) {
+        element.classList.remove("open");
+      }
+      if (element1) {
+        element1.style.display = "none";
+      }
+
+      slideClick();
+      return;
+      //
+    });
+  }
+  if (slideRight) {
+    slideRight.addEventListener("click", () => {
+      let menuNav = document.querySelector(".main-menu");
+      let mainContainer1 = document.querySelector(".main-sidebar");
+      let marginLeftValue = Math.ceil(
+          Number(window.getComputedStyle(menuNav).marginLeft.split("px")[0])
+      );
+      let marginRightValue = Math.ceil(
+          Number(window.getComputedStyle(menuNav).marginRight.split("px")[0])
+      );
+      let check = menuNav.scrollWidth - mainContainer1.offsetWidth;
+      let mainContainer1Width = mainContainer1.offsetWidth;
+
+      if (menuNav.scrollWidth > mainContainer1.offsetWidth) {
+        if (!(document.querySelector("html").getAttribute("dir") === "rtl")) {
+          if (Math.abs(check) > Math.abs(marginLeftValue)) {
+            menuNav.style.marginRight = 0;
+            if (
+                !(Math.abs(check) > Math.abs(marginLeftValue) + mainContainer1Width)
+            ) {
+              mainContainer1Width = Math.abs(check) - Math.abs(marginLeftValue);
+              slideRight.classList.add("hidden");
+            }
+            menuNav.style.marginLeft =
+                Number(menuNav.style.marginLeft.split("px")[0]) -
+                Math.abs(mainContainer1Width) +
+                "px";
+            slideLeft.classList.remove("hidden");
+          }
+        } else {
+          if (Math.abs(check) > Math.abs(marginRightValue)) {
+            menuNav.style.marginLeft = 0;
+            if (
+                !(
+                    Math.abs(check) >
+                    Math.abs(marginRightValue) + mainContainer1Width
+                )
+            ) {
+              mainContainer1Width = Math.abs(check) - Math.abs(marginRightValue);
+              slideRight.classList.add("hidden");
+            }
+            menuNav.style.marginRight =
+                Number(menuNav.style.marginRight.split("px")[0]) -
+                Math.abs(mainContainer1Width) +
+                "px";
+            slideLeft.classList.remove("hidden");
+          }
+        }
+      }
+
+      let element = document.querySelector(".main-menu > .slide.open");
+      let element1 = document.querySelector(".main-menu > .slide.open >ul");
+      if (element) {
+        element.classList.remove("open");
+      }
+      if (element1) {
+        element1.style.display = "none";
+      }
+
+      slideClick();
+      return;
+    });
+  }
 }
 function checkHoriMenu() {
   let menuNav = document.querySelector(".main-menu");
   let mainContainer1 = document.querySelector(".main-sidebar");
   let slideLeft = document.querySelector(".slide-left");
   let slideRight = document.querySelector(".slide-right");
-  // let marginLeftValue = Math.ceil(
-  //   Number(window.getComputedStyle(menuNav).marginLeft.split("px")[0])
-  // );
-  // let marginRightValue = Math.ceil(
-  //   Number(window.getComputedStyle(menuNav).marginRight.split("px")[0])
-  // );
-  // let check = menuNav.scrollWidth - mainContainer1.offsetWidth;
+if(menuNav!==null){
+  let marginLeftValue = Math.ceil(
+      Number(window.getComputedStyle(menuNav).marginLeft.split("px")[0])
+  );
+  let marginRightValue = Math.ceil(
+      Number(window.getComputedStyle(menuNav).marginRight.split("px")[0])
+  );
+  let check = menuNav.scrollWidth - mainContainer1.offsetWidth;
   // Show/Hide the arrows
-  // if (menuNav.scrollWidth > mainContainer1.offsetWidth) {
-  //   slideRight.classList.remove("hidden");
-  //   slideLeft.classList.add("hidden");
-  // } else {
-  //   slideRight.classList.add("hidden");
-  //   slideLeft.classList.add("hidden");
-  //   menuNav.style.marginLeft = "0px";
-  //   menuNav.style.marginRight = "0px";
-  // }
+  if (menuNav.scrollWidth > mainContainer1.offsetWidth) {
+    slideRight.classList.remove("hidden");
+    slideLeft.classList.add("hidden");
+  } else {
+    slideRight.classList.add("hidden");
+    slideLeft.classList.add("hidden");
+    menuNav.style.marginLeft = "0px";
+    menuNav.style.marginRight = "0px";
+  }
+}
+
+
+
   if (
-    document.querySelector("html").getAttribute("data-nav-layout") ===
-    "horizontal" &&
-    window.innerWidth > 992
+      document.querySelector("html").getAttribute("data-nav-layout") ===
+      "horizontal" &&
+      window.innerWidth > 992
   ) {
     let activeMenus = document.querySelectorAll(".slide.has-sub.open > ul");
     activeMenus.forEach((e) => {
@@ -1054,7 +1075,7 @@ function checkHoriMenu() {
       var leftEdge = dropdownRect.left - dropdownWidth;
 
       if (html.getAttribute("dir") == "rtl") {
-        
+
         // Check if moving out to the right
         if (e.classList.contains("child1")) {
           if (dropdownRect.left < 0) {
@@ -1095,34 +1116,34 @@ function checkHoriMenu() {
       }
     });
     let leftForceItem = document.querySelector(
-      ".slide-menu.active.force-left"
+        ".slide-menu.active.force-left"
     );
     if (leftForceItem) {
       if (document.querySelector("html").getAttribute("dir") != "rtl") {
         let check =
-          leftForceItem.getBoundingClientRect().right;
+            leftForceItem.getBoundingClientRect().right;
         if (check < innerWidth) {
           leftForceItem.classList.remove("force-left");
         }
         else if (leftForceItem.getBoundingClientRect().left < 0) {
           if (
-            (document.documentElement.getAttribute("data-nav-style") == "menu-hover" ||
-              document.documentElement.getAttribute("data-nav-style") == "icon-hover") ||
-            window.innerWidth > 992
+              (document.documentElement.getAttribute("data-nav-style") == "menu-hover" ||
+                  document.documentElement.getAttribute("data-nav-style") == "icon-hover") ||
+              window.innerWidth > 992
           ) {
             e.classList.remove("force-left");
           }
         }
       } else {
         let check =
-          leftForceItem.getBoundingClientRect().left -
-          leftForceItem.parentElement.closest(".slide-menu")?.clientWidth -
-          leftForceItem.getBoundingClientRect().width;
+            leftForceItem.getBoundingClientRect().left -
+            leftForceItem.parentElement.closest(".slide-menu")?.clientWidth -
+            leftForceItem.getBoundingClientRect().width;
         if (check > 0) {
           if (
-            (document.documentElement.getAttribute("data-nav-style") == "menu-hover" ||
-              document.documentElement.getAttribute("data-nav-style") == "icon-hover") ||
-            window.innerWidth > 992
+              (document.documentElement.getAttribute("data-nav-style") == "menu-hover" ||
+                  document.documentElement.getAttribute("data-nav-style") == "icon-hover") ||
+              window.innerWidth > 992
           ) {
             leftForceItem.classList.remove("force-left");
           }
@@ -1155,38 +1176,57 @@ function checkHoriMenu() {
     });
   }
   if (!(document.querySelector("html").getAttribute("dir") === "rtl")) {
+    if (menuNav!==null) {
+
+      let marginLeftValue = Math.ceil(
+          Number(window.getComputedStyle(menuNav).marginLeft.split("px")[0])
+      );
     // LTR check the width and adjust the menu in screen
-    // if (menuNav.scrollWidth > mainContainer1.offsetWidth) {
-    //   if (Math.abs(check) < Math.abs(marginLeftValue)) {
-    //     menuNav.style.marginLeft = -check + "px";
-    //     slideLeft.classList.remove("hidden");
-    //     slideRight.classList.add("hidden");
-    //   }
-    // }
-    // if (marginLeftValue == 0) {
-    //   slideLeft.classList.add("hidden");
-    // } else {
-    //   slideLeft.classList.remove("hidden");
-    // }
-  } else {
-    // RTL check the width and adjust the menu in screen
     if (menuNav.scrollWidth > mainContainer1.offsetWidth) {
-      if (Math.abs(check) < Math.abs(marginRightValue)) {
-        menuNav.style.marginRight = -check + "px";
+      if (Math.abs(check) < Math.abs(marginLeftValue)) {
+        menuNav.style.marginLeft = -check + "px";
         slideLeft.classList.remove("hidden");
         slideRight.classList.add("hidden");
       }
     }
-    if (marginRightValue == 0) {
+    if (marginLeftValue == 0) {
       slideLeft.classList.add("hidden");
     } else {
       slideLeft.classList.remove("hidden");
     }
+    }
+  } else {
+    if (menuNav!==null) {
+
+      // RTL check the width and adjust the menu in screen
+      if (menuNav.scrollWidth > mainContainer1.offsetWidth) {
+        if (Math.abs(check) < Math.abs(marginRightValue)) {
+          menuNav.style.marginRight = -check + "px";
+          slideLeft.classList.remove("hidden");
+          slideRight.classList.add("hidden");
+        }
+      }
+      if (marginRightValue == 0) {
+        slideLeft.classList.add("hidden");
+      } else {
+        slideLeft.classList.remove("hidden");
+      }
+    }
+
   }
-  // if (marginLeftValue != 0 || marginRightValue != 0) {
-  //   slideLeft.classList.remove("hidden");
-  // }
+  if (menuNav!==null) {
+    let marginLeftValue = Math.ceil(
+        Number(window.getComputedStyle(menuNav).marginLeft.split("px")[0])
+    );
+    let marginRightValue = Math.ceil(
+        Number(window.getComputedStyle(menuNav).marginRight.split("px")[0])
+    );
+    if (marginLeftValue != 0 || marginRightValue != 0) {
+      slideLeft.classList.remove("hidden");
+    }
+  }
 }
+
 function isElementVisible(element) {
   const computedStyle = window.getComputedStyle(element);
   return computedStyle.display != "none";
@@ -1243,21 +1283,21 @@ function HoverToggleInnerMenuFn(event) {
 }
 
 ["switcher-icon-click", "switcher-icon-hover", "switcher-horizontal"].map(
-  (element) => {
-    if (document.getElementById(element)) {
-      document.getElementById(element).addEventListener("click", () => {
-        let menuNav = document.querySelector(".main-menu");
-        let mainContainer1 = document.querySelector(".main-sidebar");
-        setTimeout(() => {
-          if (menuNav.offsetWidth > mainContainer1.offsetWidth) {
-            document.getElementById("slide-right").classList.remove("hidden");
-          } else {
-            document.getElementById("slide-right").classList.add("hidden");
-          }
-        }, 100);
-      });
+    (element) => {
+      if (document.getElementById(element)) {
+        document.getElementById(element).addEventListener("click", () => {
+          let menuNav = document.querySelector(".main-menu");
+          let mainContainer1 = document.querySelector(".main-sidebar");
+          setTimeout(() => {
+            if (menuNav.offsetWidth > mainContainer1.offsetWidth) {
+              document.getElementById("slide-right").classList.remove("hidden");
+            } else {
+              document.getElementById("slide-right").classList.add("hidden");
+            }
+          }, 100);
+        });
+      }
     }
-  }
 );
 
 // double-menu click toggle start
@@ -1265,7 +1305,7 @@ function doublemenu() {
   if (window.innerWidth >= 992) {
     let html = document.querySelector("html");
     let sidemenulink = document.querySelectorAll(
-      ".main-menu > li > .side-menu__item"
+        ".main-menu > li > .side-menu__item"
     );
     sidemenulink.forEach((ele) => {
       ele.addEventListener("click", doubleClickFn);
@@ -1299,10 +1339,10 @@ window.addEventListener("unload", () => {
   mainContent.removeEventListener("click", clearNavDropdown);
   window.removeEventListener("resize", ResizeMenu);
   let sidemenulink = document.querySelectorAll(
-    ".main-menu li > .side-menu__item"
+      ".main-menu li > .side-menu__item"
   );
   sidemenulink.forEach((ele) =>
-    ele.removeEventListener("click", doubleClickFn)
+      ele.removeEventListener("click", doubleClickFn)
   );
 });
 
@@ -1312,9 +1352,9 @@ let customScrollTop = () => {
     if (ele.classList.contains("active")) {
       let elemRect = ele.getBoundingClientRect();
       if (
-        ele.children[0] &&
-        ele.parentElement.classList.contains("has-sub") &&
-        elemRect.top > 435
+          ele.children[0] &&
+          ele.parentElement.classList.contains("has-sub") &&
+          elemRect.top > 435
       ) {
         ele.scrollIntoView({ behavior: "smooth" });
       }
@@ -1330,10 +1370,10 @@ setTimeout(() => {
 document.querySelector(".main-content").addEventListener("click", () => {
   document.querySelectorAll(".slide-menu").forEach((ele) => {
     if (
-      document.querySelector("html").getAttribute("data-toggled") ==
-      "menu-click-closed" ||
-      document.querySelector("html").getAttribute("data-toggled") ==
-      "icon-click-closed"
+        document.querySelector("html").getAttribute("data-toggled") ==
+        "menu-click-closed" ||
+        document.querySelector("html").getAttribute("data-toggled") ==
+        "icon-click-closed"
     ) {
       ele.style.display = "none";
     }

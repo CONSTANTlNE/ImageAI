@@ -19,6 +19,7 @@ class MainController extends Controller
     public function gallery(Request $request,$locale, $model, $perpage = 8)
     {
 
+
         $perpage  = $request->input('perpage', $perpage);
         $page     = $request->page;
         $data     = '';
@@ -26,6 +27,10 @@ class MainController extends Controller
         $perpage2 = 16;
         $perpage3 = 32;
 
+        $models=['flux-schnell','midjourney','removebg','runway'];
+        if (!in_array($model, $models)){
+            return back()->with('alert_error', 'გალერეა არ მოიძებნა');
+        }
 
         if ($model === 'flux-schnell') {
             $fluxes = Flux::where('model', $model)->with('media')

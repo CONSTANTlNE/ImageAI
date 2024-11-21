@@ -15,7 +15,6 @@ class AppBalanceService
         //
     }
 
-
     public function appBalance( string $provider, string $modelname){
 
         $rate=Balance::where('provider', $provider)

@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\FluxErrorMail;
 use App\Models\Balance;
 use App\Models\Flux;
 use App\Models\Language;
 use App\Models\UserBalance;
 use App\Services\AppBalanceService;
+use App\Services\TranslationService;
 use App\Services\UserBalanceService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager;
@@ -49,9 +52,20 @@ class FluxController extends Controller
             return back()->with('alert_error', 'არასაკმარისი ბალანსი');
         }
 
+        $validated=$request->validate([
+            'prompt' => 'required|string|max:700',
+            'ratio'  => 'required|string|in:16:9,9:16,4:3,3:4,HD',
+        ]);
 
-        $prompt = $request->prompt;
-        $ratio  = $request->input('ratio', '4:3');
+
+        $service=new TranslationService();
+        $serviceResult=$service->detectAndTranslate($validated);
+        $language = $serviceResult['language'];
+        $translated= $serviceResult['translation'];
+
+        $prompt = $translated;
+        $ratio  = $validated['ratio'];
+
 
         switch ($ratio) {
             case '16:9':
@@ -105,14 +119,18 @@ class FluxController extends Controller
         if ($response->successful()) {
             $data=$response->json();
 
-            $flux            = new Flux();
-            $flux->model     = 'flux-schnell';
-            $flux->prompt_en = $prompt;
+            $data2=[
+                'model'     => 'flux-schnell',
+                'image_url' => $data['images'][0]['url'],
+                'prompt_en' => $prompt
+            ];
 
-            $flux->save();
+            if ($language !== 'en') {
+                $data2['prompt_ka'] = $validated['prompt'];
+            }
+            $flux = Flux::create($data2);
 
-            $flux->image_url = $data['images'][0]['url'];
-            $flux->save();
+
 
             $imageContents = Http::get($data['images'][0]['url'])->body();
             Storage::disk('public')->put('test.png', $imageContents);
@@ -128,7 +146,6 @@ class FluxController extends Controller
             Storage::disk('public')->delete(auth()->id().'_'.'flux-schnell'.$random.'.jpeg');
 
 
-
             // Deduct Balance from App
             (new AppBalanceService())->appBalance('falai', 'flux-schnell');
 
@@ -139,44 +156,23 @@ class FluxController extends Controller
             return back();
         }
 
-          // Error log
-
-        Log::channel('ai_errors')->info('flux-shcnell', [
-            'response' => $request->all(),
+          // Error log and email
+        $errorNo = random_int(100000, 999999);
+        Log::channel('ai_errors')->info('flux-shcnell'.' '.$errorNo, [
+            'user ID'=>auth()->id(),
+            'user email'=>auth()->user()->email,
+            'response' => $response->json(),
         ]);
+
+        Mail::to(config('devmail.devmail'))->send(new FluxErrorMail(auth()->user(),$errorNo));
+
+
 
         return back()->with('alert_error', 'ბოდიშს გიხდით, დაფიქსირდა ტექნიკური ხარვეზი');
 
-
     }
 
-    public function schnellsave(Request $request)
-    {
-        $flux = Flux::where('prompt_en', $request->prompt)
-            ->where('image_url', null)
-            ->first();
-
-        $flux->image_url = $request->url;
-        $flux->save();
-
-        $imageContents = Http::get($request->url)->body();
-        Storage::disk('public')->put('test.png', $imageContents);
-        $fullPath = storage_path('app/public/test.png');
-
-        $manager = new ImageManager(new Driver());
-        $image   = $manager->read($fullPath);
-        $encoded = $image->toJpeg();
-        Storage::disk('public')->delete('test.png');
-
-        Storage::disk('public')->put(auth()->id().'_'.'flux-schnell'.'.jpeg', $encoded);
-        $flux->addMedia(storage_path('app/public/'.auth()->id().'_'.'flux-schnell'.'.jpeg'))->toMediaCollection('flux-schnell');
-        Storage::disk('public')->delete(auth()->id().'_'.'flux-schnell'.'.jpeg');
-
-
-        return back();
-    }
-
-    public function schnelldelete(Request $request, Flux $flux)
+    public function schnelldelete(Request $request,$locale, Flux $flux)
     {
         if ($request->has('id')) {
             $flux1 = Flux::where('id', $request->id)->first();
@@ -185,6 +181,7 @@ class FluxController extends Controller
                     $media->delete();
                 });
             }
+            // first remove ID from userbalance because of relationship
             $userBalance = UserBalance::where('flux_id', $flux1->id)->first();
             if ($userBalance) {
                 $userBalance->flux_id = null;

@@ -64,11 +64,23 @@ return [
             'level' => 'info',
         ],
 
-        'webhook' => [
+        'api_requests' => [
             'driver' => 'single',
-            'path' => storage_path('logs/webhooks.log'),
+            'path' => storage_path('logs/bog_requests.log'),
             'level' => 'info',
         ],
+        'runway' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/runway.log'),
+            'level' => 'info',
+        ],
+
+        'midjourney' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/midjourney.log'),
+            'level' => 'info',
+        ],
+
 
         'ai_errors' => [
             'driver' => 'single',

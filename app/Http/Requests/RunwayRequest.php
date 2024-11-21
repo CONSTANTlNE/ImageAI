@@ -26,7 +26,7 @@ class RunwayRequest extends FormRequest
             'runwayUpload' => 'nullable|mimes:jpeg,png,jpg|required_without_all:imageUrl',
             'prompt' => 'required|string',
             'duration' => 'nullable|integer|in:5,10',
-            'ratio' => 'nullable|string|in:16:9,6:16',
+            'ratio' => 'nullable|string|in:1280:768,768:1280',
         ];
     }
 

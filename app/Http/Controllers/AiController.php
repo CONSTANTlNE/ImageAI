@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\EdenAiErrorMail;
 use App\Models\Addbg;
 use App\Models\Balance;
 use App\Models\Flux;
@@ -10,12 +11,17 @@ use App\Models\UserBalance;
 use App\Services\AppBalanceService;
 use App\Services\UserBalanceService;
 use Carbon\Carbon;
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
+use Random\RandomException;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 
 class AiController extends Controller
 {
@@ -38,6 +44,7 @@ class AiController extends Controller
 
         return view('user.pages.remove-bg2', compact('images2','images'));
     }
+
 
     public function removeBG(Request $request)
     {
@@ -196,17 +203,21 @@ class AiController extends Controller
                 $random=random_int(0,10000);
 
                 Storage::disk('public')->put('removebg'.$random.'.jpeg', $encoded);
-                $bg->addMedia(storage_path('removebg'.$random.'.jpeg'))->toMediaCollection('removebg');
+                $bg->addMedia(public_path('storage/removebg'.$random.'.jpeg'))->toMediaCollection('removebg');
                 Storage::disk('public')->delete('removebg'.$random.'.jpeg');
-
 
                 return back()->with('alert_success', 'ფონი წარმატებით წაიშალა')->with('url', $url);
 
             }
 
-            Log::channel('ai_errors')->info('Eden AI', [
-                'response' => $request->all(),
+            $random=random_int(100000, 999999);
+            Log::channel('ai_errors')->info('Removebg API error'.' '.$random, [
+                'user ID'=>auth()->id(),
+                'user email'=>auth()->user()->email,
+                'response' => $response->json(),
             ]);
+
+            Mail::to(config('devmail.devmail'))->send(new EdenAiErrorMail(auth()->user(),$random,$response->json()));
 
             return back()->with('alert_error', 'ბოდიშს გიხდით, დაფიქსირდა ტექნიკური ხარვეზი');
         }
@@ -238,7 +249,8 @@ class AiController extends Controller
         return view('user.pages.remove-bg-gallery', compact('images'));
     }
 
-    public function delete(Request $request,Removebg $removebg){
+    public function delete(Request $request,$locale,Removebg $removebg){
+
 
 
         if ($request->has('id')) {

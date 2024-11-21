@@ -47,35 +47,35 @@
                         $segments = explode('/', $currentUrl);
                     @endphp
 
-                     @if(request()->segment(1)==='ka')
-                      @foreach($languages as $language)
-                          @if($language->abbr==='ka')
+                    @if(request()->segment(1)==='ka')
+                        @foreach($languages as $language)
+                            @if($language->abbr==='ka')
                                 @php
                                     $segments[1] = 'en';
                                     $newUrl = implode('/', $segments);
                                 @endphp
-                            <a href="{{ $newUrl }}" id="dropdown-flag"
-                                    class="hs-dropdown-toggle ti-dropdown-toggle !p-0 flex-shrink-0  !border-0 !rounded-full !shadow-none">
-                              {!!$language->icon!!}
-                            </a>
+                                <a href="{{ $newUrl }}" id="dropdown-flag"
+                                   class="hs-dropdown-toggle ti-dropdown-toggle !p-0 flex-shrink-0  !border-0 !rounded-full !shadow-none">
+                                    {!!$language->icon!!}
+                                </a>
                             @endif
-                    @endforeach
+                        @endforeach
                     @endif
-                         @if(request()->segment(1)==='en')
-                             @foreach($languages as $language)
+                    @if(request()->segment(1)==='en')
+                        @foreach($languages as $language)
 
-                                 @if($language->abbr==='en')
+                            @if($language->abbr==='en')
                                 @php
                                     $segments[1] = 'ka';
                                     $newUrl = implode('/', $segments);
                                 @endphp
-                                     <a href="{{ $newUrl }}" id="dropdown-flag"
-                                        class="hs-dropdown-toggle ti-dropdown-toggle !p-0 flex-shrink-0  !border-0 !rounded-full !shadow-none">
-                                         {!!$language->icon!!}
-                                     </a>
-                                 @endif
-                             @endforeach
-                         @endif
+                                <a href="{{ $newUrl }}" id="dropdown-flag"
+                                   class="hs-dropdown-toggle ti-dropdown-toggle !p-0 flex-shrink-0  !border-0 !rounded-full !shadow-none">
+                                    {!!$language->icon!!}
+                                </a>
+                            @endif
+                        @endforeach
+                    @endif
 
                 </div>
                 <!-- end header country -->
@@ -546,26 +546,43 @@
                     <div
                             class="hs-dropdown-menu ti-dropdown-menu !-mt-3 border-0 w-[11rem] !p-0 border-defaultborder hidden main-header-dropdown  pt-0 overflow-hidden header-profile-dropdown dropdown-menu-end"
                             aria-labelledby="dropdown-profile">
-
                         <ul class="text-defaulttextcolor font-medium dark:text-[#8c9097] dark:text-white/50">
-
                             <li id="userbalance">
-                                <span class="w-full ti-dropdown-item !text-[0.8125rem] !gap-x-0 !p-[0.65rem] !inline-flex "
-                                      href="{{route('userbalance.history')}}"><i
-                                            class="ti ti-wallet text-[1.125rem] me-2 opacity-[0.7]"></i>Bal:0.00 ₾
+                                <span class="w-full ti-dropdown-item !text-[0.8125rem] !gap-x-0 !p-[0.65rem] !inline-flex ">
+                                    <i class="ti ti-wallet text-[1.125rem] me-2 opacity-[0.7]"></i>Bal:0.00 ₾
                                 </span>
                             </li>
                             <li>
-                                <a class="w-full ti-dropdown-item !text-[0.8125rem] !p-[0.65rem] !gap-x-0 !inline-flex"
-                                   href="chat.html">
-                                    <i class="ti  text-[1.125rem] me-2 opacity-[0.7]">₾</i>შევსება
+                                <form action="{{route('bog.auth.htmx')}}" target="hiddenIframe">
+                                    <button data-hs-overlay="#fillballance"
+                                            class="w-full ti-dropdown-item !text-[0.8125rem] !p-[0.65rem] !gap-x-0 !inline-flex"
+                                            href="javascript:void(0)">
+                                        <i class="ti  text-[1.125rem] me-2 opacity-[0.7]">₾</i>შევსება
+                                    </button>
+                                </form>
+                            </li>
+                            <li id="userbalance">
+                                <a class="w-full ti-dropdown-item !text-[0.8125rem] !gap-x-0 !p-[0.65rem] !inline-flex "
+                                   href="javascript:void(0)">
+                                    <i class="ti  text-[1.125rem] me-2 opacity-[0.7]">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                             viewBox="0 0 24 24">
+                                            <path fill="white"
+                                                  d="M12.3 8.93L9.88 6.5h5.62V10H17V5H9.88l2.42-2.43l-1.06-1.07L7 5.75L11.24 10zM12 14a3 3 0 1 0 3 3a3 3 0 0 0-3-3m-9-3v12h18V11m-2 8a2 2 0 0 0-2 2H7a2 2 0 0 0-2-2v-4a2 2 0 0 0 2-2h10a2 2 0 0 0 2 2Z"/>
+                                        </svg>
+                                    </i>
+                                    თანხის დაბრუნება
                                 </a>
                             </li>
                             <li>
                                 <a class="w-full ti-dropdown-item !text-[0.8125rem] !p-[0.65rem] !gap-x-0 !inline-flex"
                                    href="{{route('userbalance.history')}}">
                                     <i class="ti  text-[1.125rem] me-2 opacity-[0.7]">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M13 3a9 9 0 0 0-9 9H1l3.89 3.89l.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7s-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.95 8.95 0 0 0 13 21a9 9 0 0 0 0-18m-1 5v5l4.25 2.52l.77-1.29l-3.52-2.09V8z"/></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                             viewBox="0 0 24 24">
+                                            <path fill="currentColor"
+                                                  d="M13 3a9 9 0 0 0-9 9H1l3.89 3.89l.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7s-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.95 8.95 0 0 0 13 21a9 9 0 0 0 0-18m-1 5v5l4.25 2.52l.77-1.29l-3.52-2.09V8z"/>
+                                        </svg>
                                     </i>ისტორია
                                 </a>
                             </li>

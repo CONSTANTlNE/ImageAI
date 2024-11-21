@@ -29,7 +29,7 @@ class NewUserEmail extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'New User',
+            subject: 'New User ONIX'
         );
     }
 

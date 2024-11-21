@@ -59030,11 +59030,7 @@ code {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
 }
-@media (min-width: 992px) {
-  .content {
-    /*margin-inline-start: 15rem;*/
-  }
-}
+
 pre {
   border-width: 1px;
   --tw-border-opacity: 1;

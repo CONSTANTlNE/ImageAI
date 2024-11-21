@@ -2,11 +2,13 @@
 
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\LocalizationMiddleware;
+use App\Http\Middleware\VerifyMobileMiddleware;
 use App\Notifications\ErrorOccurred;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Schedule;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -22,6 +24,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'localization' => LocalizationMiddleware::class,
             'auth'         => Authenticate::class,
+            'verified'         =>VerifyMobileMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

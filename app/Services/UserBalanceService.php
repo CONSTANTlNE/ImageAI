@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\UserBalance;
+use Illuminate\Support\Facades\Log;
 
 class UserBalanceService
 {
@@ -15,9 +16,10 @@ class UserBalanceService
     }
 
 
-    public function deductBalance(string $modelname,string $modelid,float $price){
+    public function deductBalance(string $modelname,string $modelid,float $price,float $user=null){
         $model=$modelname.'_id';
         $userbalance=new UserBalance();
+        $userbalance->user_id=$user;
         $userbalance->model=$modelname;
         $userbalance->$model=$modelid;
         $userbalance->balance=-$price;

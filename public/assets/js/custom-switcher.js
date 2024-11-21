@@ -74,181 +74,181 @@ function switcherClick() {
     loaderEnable = document.querySelector('#switcher-loader-enable');
     loaderDisable = document.querySelector('#switcher-loader-disable');
 
-   // primary theme
-  let primaryColor1Var = primaryDefaultColor1Btn.addEventListener(
-    "click",
-    () => {
-      localStorage.setItem("primaryRGB", "58, 88, 146");
-      localStorage.setItem("primaryRGB1", "58 88 146");
-      html.style.setProperty("--primary-rgb", `58, 88, 146`);
-      html.style.setProperty("--primary", `58 88 146`);
-      updateColors();
-    }
-  );
-  let primaryColor2Var = primaryDefaultColor2Btn.addEventListener(
-    "click",
-    () => {
-      localStorage.setItem("primaryRGB", "92, 144, 163");
-      localStorage.setItem("primaryRGB1", "92 144 163");
-      html.style.setProperty("--primary-rgb", `92, 144, 163`);
-      html.style.setProperty("--primary", `92 144 163`);
-      updateColors();
-    }
-  );
-  let primaryColor3Var = primaryDefaultColor3Btn.addEventListener(
-    "click",
-    () => {
-      localStorage.setItem("primaryRGB", "161, 90, 223");
-      localStorage.setItem("primaryRGB1", "161 90 223");
-      html.style.setProperty("--primary-rgb", `161, 90, 223`);
-      html.style.setProperty("--primary", `161 90 223`);
-      updateColors();
-    }
-  );
-  let primaryColor4Var = primaryDefaultColor4Btn.addEventListener(
-    "click",
-    () => {
-      localStorage.setItem("primaryRGB", "78, 172, 76");
-      localStorage.setItem("primaryRGB1", "78 172 76");
-      html.style.setProperty("--primary-rgb", `78, 172, 76`);
-      html.style.setProperty("--primary", `78 172 76`);
-      updateColors();
-    }
-  );
-  let primaryColor5Var = primaryDefaultColor5Btn.addEventListener(
-    "click",
-    () => {
-      localStorage.setItem("primaryRGB", "223, 90, 90");
-      localStorage.setItem("primaryRGB1", "223 90 90");
-      html.style.setProperty("--primary-rgb", `223, 90, 90`);
-      html.style.setProperty("--primary", `223 90 90`);
-      updateColors();
-    }
-  );
+    // primary theme
+    let primaryColor1Var = primaryDefaultColor1Btn.addEventListener(
+        "click",
+        () => {
+            localStorage.setItem("primaryRGB", "58, 88, 146");
+            localStorage.setItem("primaryRGB1", "58 88 146");
+            html.style.setProperty("--primary-rgb", `58, 88, 146`);
+            html.style.setProperty("--primary", `58 88 146`);
+            updateColors();
+        }
+    );
+    let primaryColor2Var = primaryDefaultColor2Btn.addEventListener(
+        "click",
+        () => {
+            localStorage.setItem("primaryRGB", "92, 144, 163");
+            localStorage.setItem("primaryRGB1", "92 144 163");
+            html.style.setProperty("--primary-rgb", `92, 144, 163`);
+            html.style.setProperty("--primary", `92 144 163`);
+            updateColors();
+        }
+    );
+    let primaryColor3Var = primaryDefaultColor3Btn.addEventListener(
+        "click",
+        () => {
+            localStorage.setItem("primaryRGB", "161, 90, 223");
+            localStorage.setItem("primaryRGB1", "161 90 223");
+            html.style.setProperty("--primary-rgb", `161, 90, 223`);
+            html.style.setProperty("--primary", `161 90 223`);
+            updateColors();
+        }
+    );
+    let primaryColor4Var = primaryDefaultColor4Btn.addEventListener(
+        "click",
+        () => {
+            localStorage.setItem("primaryRGB", "78, 172, 76");
+            localStorage.setItem("primaryRGB1", "78 172 76");
+            html.style.setProperty("--primary-rgb", `78, 172, 76`);
+            html.style.setProperty("--primary", `78 172 76`);
+            updateColors();
+        }
+    );
+    let primaryColor5Var = primaryDefaultColor5Btn.addEventListener(
+        "click",
+        () => {
+            localStorage.setItem("primaryRGB", "223, 90, 90");
+            localStorage.setItem("primaryRGB1", "223 90 90");
+            html.style.setProperty("--primary-rgb", `223, 90, 90`);
+            html.style.setProperty("--primary", `223 90 90`);
+            updateColors();
+        }
+    );
 
-   // Background theme
-   let backgroundColor1Var = bgDefaultColor1Btn.addEventListener("click", () => {
-    localStorage.setItem("darkBgRGB", `${20 + 14} ${30 + 14} ${96 + 14}`);
-    localStorage.setItem("bodyBgRGB", "20 30 96");
-    localStorage.setItem("ynexMenu","dark");
-    localStorage.setItem("ynexHeader","dark");
-    html.classList.add("dark");
-    html.classList.remove("light");
-    html.setAttribute("data-menu-styles", "dark");
-    html.setAttribute("data-header-styles", "dark");
-    document.querySelector('html').style.setProperty('--light', "25 38 101");
-    document.querySelector('html').style.setProperty('--input-border', "55 67 98");
-    localStorage.setItem("--light", "25 38 101");
-    document
-      .querySelector("html")
-      .style.setProperty("--body-bg", localStorage.bodyBgRGB);
-    document
-      .querySelector("html")
-      .style.setProperty("--dark-bg", localStorage.darkBgRGB);
-    document.querySelector("#switcher-dark-theme").checked = true;
-  });
-  let backgroundColor2Var = bgDefaultColor2Btn.addEventListener("click", () => {
-    localStorage.setItem("darkBgRGB", `${8 + 14} ${78 + 14} ${115 + 14}`);
-    localStorage.setItem("bodyBgRGB", "8 78 115");
-    localStorage.setItem("ynexMenu","dark");
-    localStorage.setItem("ynexHeader","dark");
-    html.classList.add("dark");
-    html.classList.remove("light");
-    html.setAttribute("data-menu-styles", "dark");
-    html.setAttribute("data-header-styles", "dark");
-    document.querySelector('html').style.setProperty('--light', "13 86 120");
-    document.querySelector('html').style.setProperty('--input-border', "86 98 55");
-    localStorage.setItem("--light", "13 86 120");
-    document
-      .querySelector("html")
-      .style.setProperty("--body-bg", localStorage.bodyBgRGB);
-    document
-      .querySelector("html")
-      .style.setProperty("--dark-bg", localStorage.darkBgRGB);
-    document.querySelector("#switcher-dark-theme").checked = true;
-  });
-  let backgroundColor3Var = bgDefaultColor3Btn.addEventListener("click", () => {
-    localStorage.setItem("darkBgRGB", `${90 + 14} ${37 + 14} ${135 + 14}`);
-    localStorage.setItem("bodyBgRGB", "90 37 135");
-    localStorage.setItem("ynexMenu","dark");
-    localStorage.setItem("ynexHeader","dark");
-    html.classList.add("dark");
-    html.classList.remove("light");
-    html.setAttribute("data-menu-styles", "dark");
-    html.setAttribute("data-header-styles", "dark");
-    document.querySelector('html').style.setProperty('--light', "95 45 140");
-    document.querySelector('html').style.setProperty('--input-border', "84 55 98");
-    localStorage.setItem("--light", "95 45 140");
-    document
-      .querySelector("html")
-      .style.setProperty("--body-bg", localStorage.bodyBgRGB);
-    document
-      .querySelector("html")
-      .style.setProperty("--dark-bg", localStorage.darkBgRGB);
-    document.querySelector("#switcher-dark-theme").checked = true;
-  });
-  let backgroundColor4Var = bgDefaultColor4Btn.addEventListener("click", () => {
-    localStorage.setItem("bodyBgRGB", `${24 + 14} ${101 + 14} ${51 + 14}`);
-    localStorage.setItem("darkBgRGB", "24 101 51");
-    localStorage.setItem("ynexMenu","dark");
-    localStorage.setItem("ynexHeader","dark");
-    html.classList.add("dark");
-    html.classList.remove("light");
-    html.setAttribute("data-menu-styles", "dark");
-    html.setAttribute("data-header-styles", "dark");
-    document.querySelector('html').style.setProperty('--light', "29 109 56");
-    document.querySelector('html').style.setProperty('--input-border', "55 93 98");
-    localStorage.setItem("--light", "29 109 56");
-    document
-      .querySelector("html")
-      .style.setProperty("--body-bg", localStorage.bodyBgRGB);
-    document
-      .querySelector("html")
-      .style.setProperty("--dark-bg", localStorage.darkBgRGB);
-    document.querySelector("#switcher-dark-theme").checked = true;
-  });
-  let backgroundColor5Var = bgDefaultColor5Btn.addEventListener("click", () => {
-    localStorage.setItem("bodyBgRGB", `${120 + 14} ${66 + 14} ${20 + 14}`);
-    localStorage.setItem("darkBgRGB", "120 66 20");
-    localStorage.setItem("ynexMenu","dark");
-    localStorage.setItem("ynexHeader","dark");
-    html.classList.add("dark");
-    html.classList.remove("light");
-    html.setAttribute("data-menu-styles", "dark");
-    html.setAttribute("data-header-styles", "dark");
-    document.querySelector('html').style.setProperty('--light', "125 74 25");
-    document.querySelector('html').style.setProperty('--input-border', "98 55 55");
-    localStorage.setItem("--light", "125 74 25");
-    document
-      .querySelector("html")
-      .style.setProperty("--body-bg", localStorage.bodyBgRGB);
-    document
-      .querySelector("html")
-      .style.setProperty("--dark-bg", localStorage.darkBgRGB);
-    document.querySelector("#switcher-dark-theme").checked = true;
-  });
+    // Background theme
+    let backgroundColor1Var = bgDefaultColor1Btn.addEventListener("click", () => {
+        localStorage.setItem("darkBgRGB", `${20 + 14} ${30 + 14} ${96 + 14}`);
+        localStorage.setItem("bodyBgRGB", "20 30 96");
+        localStorage.setItem("ynexMenu","dark");
+        localStorage.setItem("ynexHeader","dark");
+        html.classList.add("dark");
+        html.classList.remove("light");
+        html.setAttribute("data-menu-styles", "dark");
+        html.setAttribute("data-header-styles", "dark");
+        document.querySelector('html').style.setProperty('--light', "25 38 101");
+        document.querySelector('html').style.setProperty('--input-border', "55 67 98");
+        localStorage.setItem("--light", "25 38 101");
+        document
+            .querySelector("html")
+            .style.setProperty("--body-bg", localStorage.bodyBgRGB);
+        document
+            .querySelector("html")
+            .style.setProperty("--dark-bg", localStorage.darkBgRGB);
+        document.querySelector("#switcher-dark-theme").checked = true;
+    });
+    let backgroundColor2Var = bgDefaultColor2Btn.addEventListener("click", () => {
+        localStorage.setItem("darkBgRGB", `${8 + 14} ${78 + 14} ${115 + 14}`);
+        localStorage.setItem("bodyBgRGB", "8 78 115");
+        localStorage.setItem("ynexMenu","dark");
+        localStorage.setItem("ynexHeader","dark");
+        html.classList.add("dark");
+        html.classList.remove("light");
+        html.setAttribute("data-menu-styles", "dark");
+        html.setAttribute("data-header-styles", "dark");
+        document.querySelector('html').style.setProperty('--light', "13 86 120");
+        document.querySelector('html').style.setProperty('--input-border', "86 98 55");
+        localStorage.setItem("--light", "13 86 120");
+        document
+            .querySelector("html")
+            .style.setProperty("--body-bg", localStorage.bodyBgRGB);
+        document
+            .querySelector("html")
+            .style.setProperty("--dark-bg", localStorage.darkBgRGB);
+        document.querySelector("#switcher-dark-theme").checked = true;
+    });
+    let backgroundColor3Var = bgDefaultColor3Btn.addEventListener("click", () => {
+        localStorage.setItem("darkBgRGB", `${90 + 14} ${37 + 14} ${135 + 14}`);
+        localStorage.setItem("bodyBgRGB", "90 37 135");
+        localStorage.setItem("ynexMenu","dark");
+        localStorage.setItem("ynexHeader","dark");
+        html.classList.add("dark");
+        html.classList.remove("light");
+        html.setAttribute("data-menu-styles", "dark");
+        html.setAttribute("data-header-styles", "dark");
+        document.querySelector('html').style.setProperty('--light', "95 45 140");
+        document.querySelector('html').style.setProperty('--input-border', "84 55 98");
+        localStorage.setItem("--light", "95 45 140");
+        document
+            .querySelector("html")
+            .style.setProperty("--body-bg", localStorage.bodyBgRGB);
+        document
+            .querySelector("html")
+            .style.setProperty("--dark-bg", localStorage.darkBgRGB);
+        document.querySelector("#switcher-dark-theme").checked = true;
+    });
+    let backgroundColor4Var = bgDefaultColor4Btn.addEventListener("click", () => {
+        localStorage.setItem("bodyBgRGB", `${24 + 14} ${101 + 14} ${51 + 14}`);
+        localStorage.setItem("darkBgRGB", "24 101 51");
+        localStorage.setItem("ynexMenu","dark");
+        localStorage.setItem("ynexHeader","dark");
+        html.classList.add("dark");
+        html.classList.remove("light");
+        html.setAttribute("data-menu-styles", "dark");
+        html.setAttribute("data-header-styles", "dark");
+        document.querySelector('html').style.setProperty('--light', "29 109 56");
+        document.querySelector('html').style.setProperty('--input-border', "55 93 98");
+        localStorage.setItem("--light", "29 109 56");
+        document
+            .querySelector("html")
+            .style.setProperty("--body-bg", localStorage.bodyBgRGB);
+        document
+            .querySelector("html")
+            .style.setProperty("--dark-bg", localStorage.darkBgRGB);
+        document.querySelector("#switcher-dark-theme").checked = true;
+    });
+    let backgroundColor5Var = bgDefaultColor5Btn.addEventListener("click", () => {
+        localStorage.setItem("bodyBgRGB", `${120 + 14} ${66 + 14} ${20 + 14}`);
+        localStorage.setItem("darkBgRGB", "120 66 20");
+        localStorage.setItem("ynexMenu","dark");
+        localStorage.setItem("ynexHeader","dark");
+        html.classList.add("dark");
+        html.classList.remove("light");
+        html.setAttribute("data-menu-styles", "dark");
+        html.setAttribute("data-header-styles", "dark");
+        document.querySelector('html').style.setProperty('--light', "125 74 25");
+        document.querySelector('html').style.setProperty('--input-border', "98 55 55");
+        localStorage.setItem("--light", "125 74 25");
+        document
+            .querySelector("html")
+            .style.setProperty("--body-bg", localStorage.bodyBgRGB);
+        document
+            .querySelector("html")
+            .style.setProperty("--dark-bg", localStorage.darkBgRGB);
+        document.querySelector("#switcher-dark-theme").checked = true;
+    });
 
     // Bg image
     let bgImg1Var = bgImage1Btn.addEventListener("click", () => {
         html.setAttribute("bg-img", "bgimg1");
         localStorage.setItem("bgimg", "bgimg1");
-      });
-      let bgImg2Var = bgImage2Btn.addEventListener("click", () => {
+    });
+    let bgImg2Var = bgImage2Btn.addEventListener("click", () => {
         html.setAttribute("bg-img", "bgimg2");
         localStorage.setItem("bgimg", "bgimg2");
-      });
-      let bgImg3Var = bgImage3Btn.addEventListener("click", () => {
+    });
+    let bgImg3Var = bgImage3Btn.addEventListener("click", () => {
         html.setAttribute("bg-img", "bgimg3");
         localStorage.setItem("bgimg", "bgimg3");
-      });
-      let bgImg4Var = bgImage4Btn.addEventListener("click", () => {
+    });
+    let bgImg4Var = bgImage4Btn.addEventListener("click", () => {
         html.setAttribute("bg-img", "bgimg4");
         localStorage.setItem("bgimg", "bgimg4");
-      });
-      let bgImg5Var = bgImage5Btn.addEventListener("click", () => {
+    });
+    let bgImg5Var = bgImage5Btn.addEventListener("click", () => {
         html.setAttribute("bg-img", "bgimg5");
         localStorage.setItem("bgimg", "bgimg5");
-      });
+    });
 
     /* Light Layout Start */
     let lightThemeVar = lightBtn.addEventListener('click', () => {
@@ -562,10 +562,10 @@ function switcherClick() {
 
         document.querySelectorAll(".slide").forEach((element) => {
             if (
-              element.classList.contains("open") &&
-              !element.classList.contains("active")
+                element.classList.contains("open") &&
+                !element.classList.contains("active")
             ) {
-              element.querySelector("ul").style.display = "none";
+                element.querySelector("ul").style.display = "none";
             }
         });
     });
@@ -593,7 +593,7 @@ function switcherClick() {
         if (document.querySelector(".noUi-target")) {
             console.log("working");
             document.querySelectorAll(".noUi-origin").forEach((e) => {
-              e.classList.add("!transform-none");
+                e.classList.add("!transform-none");
             });
         }
     });
@@ -607,9 +607,9 @@ function switcherClick() {
         ltrFn();
         if (document.querySelector(".noUi-target")) {
             document.querySelectorAll(".noUi-origin").forEach((e) => {
-              e.classList.add("!transform-none");
+                e.classList.add("!transform-none");
             });
-          }
+        }
     });
     /* ltr end */
 
@@ -621,10 +621,10 @@ function switcherClick() {
         document.querySelector('#switcher-menu-dark').checked = true;
         document.querySelectorAll(".slide").forEach((element) => {
             if (
-              element.classList.contains("open") &&
-              !element.classList.contains("active")
+                element.classList.contains("open") &&
+                !element.classList.contains("active")
             ) {
-              element.querySelector("ul").style.display = "none";
+                element.querySelector("ul").style.display = "none";
             }
         });
     })
@@ -750,7 +750,7 @@ function verticalFn() {
     document.querySelector('#switcher-icon-hover').checked = false;
     checkOptions();
     if(!localStorage.ynexMenu){
-    html.setAttribute("data-menu-styles","dark")
+        html.setAttribute("data-menu-styles","dark")
     }
 }
 

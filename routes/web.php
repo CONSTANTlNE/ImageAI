@@ -1,37 +1,92 @@
 <?php
 
 use App\Http\Controllers\AiController;
+use App\Http\Controllers\BogController;
 use App\Http\Controllers\FluxController;
+use App\Http\Controllers\LocalizationController;
 use App\Http\Controllers\MidjourneyController;
 use App\Http\Controllers\MainController;
+use App\Http\Controllers\MobileVerificationController;
 use App\Http\Controllers\RunwayController;
 use App\Http\Controllers\SocialiteController;
-use App\Jobs\WebmConversion;
+use App\Jobs\NewUserNotifyAdminJob;
+use App\Mail\FluxErrorMail;
+use App\Mail\RunwayErrorMail;
 use App\Models\Balance;
 use App\Models\Midjourney;
 use App\Models\Runway;
+use App\Models\User;
+use App\Models\UserBalance;
+use App\Services\AppBalanceService;
+use App\Services\UserBalanceService;
 use FFMpeg\FFMpeg;
 use FFMpeg\Format\Video\WebM;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
-
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
-
 use Intervention\Image\Drivers\Gd\Driver;
 
 
-Route::get('/{locale?}', function () {
+Route:: get('/{locale?}', function () {
     return view('index');
-})->name('index');
+})->middleware('localization')
+    ->name('index');
 
 
+//ADMIN ROUTES
 Route::prefix('{locale}')
     ->where(['locale' => '[a-zA-Z]{2}'])
-    ->middleware(['localization', 'auth',])
+    ->middleware(['localization','auth'])
     ->group(function () {
+
+        Route::get('/admin/main',[LocalizationController::class, 'adminMain'])->name('admin.main');
+        Route::get('/admin/languages', [LocalizationController::class, 'languages'])->name('languages');
+        Route::post('/admin/languages/position/change', [LocalizationController::class, 'changePosition'])->name('changePosition');
+//        Start JSON CRUD
+        Route::get('/admin/static/translation/add',
+            [LocalizationController::class, 'addTranslation'])->name('addStaticTranslation');
+        Route::post('/admin/static/translation/store',
+            [LocalizationController::class, 'storeStaticTranslations'])->name('storeStaticTranslations');
+        Route::post('/admin/static/translation/update',
+            [LocalizationController::class, 'updateStaticTranslation'])->name('updateStaticTranslation');
+
+//        End JSON CRUD
+        Route::get('/admin/testpage', [LocalizationController::class, 'testPage'])->name('testPage');
+        Route::post('/admin/language/store', [LocalizationController::class, 'createLanguage'])->name('createLanguage');
+        Route::post('/admin/language/status/update',
+            [LocalizationController::class, 'updateLangStatus'])->name('updateLangStatus');
+        Route::post('/admin/language/delete', [LocalizationController::class, 'deleteLanguage'])->name('deleteLanguage');
+        Route::post('/admin/language/main/update', [LocalizationController::class, 'setMainLang'])->name('setMainLang');
+
+
+    });
+
+
+
+//Mobile Verification ROUTES
+Route::prefix('{locale}')
+    ->where(['locale' => '[a-zA-Z]{2}'])
+    ->middleware(['localization', 'auth'])
+    ->group(callback: function () {
+        Route::get('/mobile', [MobileVerificationController::class, 'index'])->name('verify.mobile.index');
+        Route::post('/mobile/save', [MobileVerificationController::class, 'storeMobile'])->name('verify.mobile.store');
+        Route::post('/mobile/resend/code', [MobileVerificationController::class, 'codeResend'])->name('verify.mobile.resend');
+        Route::post('/mobile/verify', [MobileVerificationController::class, 'verify'])->name('verify.mobile');
+        Route::post('/mobile/change', [MobileVerificationController::class, 'changeMobile'])->name('verify.mobile.change');
+
+    });
+
+//USER ROUTES
+Route::prefix('{locale}')
+    ->where(['locale' => '[a-zA-Z]{2}'])
+    ->middleware(['localization', 'auth','verified'])
+    ->group(function () {
+
         //  Midjourney Routes
         Route::get('/midjourney', [MidjourneyController::class, 'index'])->name('midjourney');
         Route::post('/midjourney/create', [MidjourneyController::class, 'imagine'])->name('midjourney.create');
@@ -62,7 +117,6 @@ Route::prefix('{locale}')
         // Flux Routes
         Route::get('/flux-schnell', [FluxController::class, 'index'])->name('flux-schnell');
         Route::post('/flux-schnell/prompt', [FluxController::class, 'schnellGenerate'])->name('flux-schnell.prompt');
-        Route::post('/flux-schnell/save', [FluxController::class, 'schnellsave'])->name('flux-schnell.save');
         Route::post('/flux-schnell/delete/{flux?}',
             [FluxController::class, 'schnelldelete'])->name('flux-schnell.delete');
         Route::get('/flux-schnell/download', [FluxController::class, 'download'])->name('flux.download');
@@ -83,6 +137,10 @@ Route::prefix('{locale}')
         // User Balance
         Route::post('/balance/check/htmx', [MainController::class, 'checkUserBalance'])->name('userbalance.check');
         Route::get('/balance/history', [MainController::class, 'checkUserBalanceHistory'])->name('userbalance.history');
+
+        // Bog-Purchase
+        Route::get('/bog/auth',[BogController::class,'bogAuth'])->name('bog.auth.htmx');
+        Route::post('/bog/payment/request',[BogController::class,'sendPaymentRequest'])->name('bog.payment.request');
 
 
         // ==================== some random tests and playground ====================
@@ -136,7 +194,26 @@ Route::get('auth/facebook/redirect', [SocialiteController::class, 'facebookedire
 Route::get('auth/facebook/callback', [SocialiteController::class, 'facebookcallback']);
 
 
+
+
 // ==================TESTING ROUTES=========================
+
+
+
+Route::get('/{locale}/bogtest',function(){
+// Save the balance without applying the global scopes
+    UserBalance::withoutGlobalScopes()->create([
+        'user_id' => 1,
+        'balance' => 1,
+        'model'=>'fill'
+    ]);
+});
+
+
+Route::get('/{locale}/temp',function(){
+    $tmp_dir = ini_get('upload_tmp_dir') ? ini_get('upload_tmp_dir') : sys_get_temp_dir();
+    die($tmp_dir);
+});
 
 Route::get('token', function () {
     $user = auth()->user();
@@ -230,9 +307,11 @@ Route::get('manualfetch', function () {
 })->name('manualfetch');
 
 
+
+
+
 // RESIZE IMAGES WITH INTERVENTION
 Route::get('{locale}/resizetest', function (Request $request) {
-
 
     return view('resize');
 });
@@ -279,21 +358,211 @@ Route::post('/convert', function (Request $request) {
 // GOOGLE TRANSLATE
 
 Route::get('{locale}/detect', function () {
+
     $token    = config('apikeys.google');
     $response = Http::post('https://translation.googleapis.com/language/translate/v2/detect?key='.$token, [
         'q' => 'გამარჯობა',
     ]);
+    $data=$response->json();
+    return $data['data']['detections'][0][0]['language'];
 
-    return $response->json();
 });
 
 Route::get('{locale}/translate', function () {
+
     $token    = config('apikeys.google');
     $response = Http::post('https://translation.googleapis.com/language/translate/v2?key='.$token, [
         'q'      => 'ძაღლლის მზის სათვალეებში პლიაჟზე',
         'target' => 'en',
     ]);
+    $data=$response->json();
+    return $data['data']['translations'][0]['translatedText'];
+
+});
+
+Route::get('/{locale}/task',function (){
+    $task = Midjourney::withoutGlobalScopes()->where('status', '=', 'pending')->first();
+dd($task);
+});
+
+
+
+Route::get('{locale}/jobtest', function () {
+
+    NewUserNotifyAdminJob::dispatch(User::first()); // Use a sample user
+
+});
+
+
+
+
+
+//PIAPI KLING TEST
+
+Route::get('{locale}/klingtest', function () {
+
+    // 163aaf75-354f-4b7c-a4f6-5a671053c4f4
+
+    $response=Http::withHeaders([
+        'Content-Type' => 'application/json',
+        'User-Agent'   => 'Apidog/1.0.0 (https://apidog.com)',
+        'x-api-key'    => config('apikeys.piapi'),
+    ])->post('https://api.piapi.ai/api/v1/task', [
+        'model'=> 'kling',
+        'task_type'=> 'video_generation',
+        'input'=> [
+            'prompt' => 'ninja kittens fighting',
+            'duration'=> 5,
+            'aspect_ratio'=> '16:9',
+            'mode'=>'std',
+            'version' => '1.0',
+            'image_url'=>'https://local.ews.ge/storage/148/1_flux-schnell13562.jpeg',
+        ],
+    ]);
+
 
     return $response->json();
+
+});
+
+
+
+Route::get('{locale}/klingfetch', function () {
+
+    $response=Http::withHeaders([
+        'x-api-key'    => config('apikeys.piapi'),
+    ])->get('https://api.piapi.ai/api/v1/task/84023b83-f5e6-4bd8-ab7f-af8b02a7214a');
+
+    return $response->json();
+});
+
+Route::get('{locale}/klingcancel', function () {
+
+    $response=Http::withHeaders([
+        'x-api-key'    => config('apikeys.piapi'),
+    ])->delete('https://api.piapi.ai/api/v1/task/03b377fb-2de5-457c-b6ba-cca2a44c3b20');
+
+    return $response->json();
+});
+
+
+// RUNWAY TEST
+
+Route::get('{locale}/runwaytest', function () {
+
+
+    $response=Http::withHeaders([
+        'Content-Type' => 'application/json',
+        'Authorization'    => 'Bearer '.config('apikeys.runway'),
+        'X-Runway-Version' => "2024-11-06"
+    ])->post('https://api.dev.runwayml.com/v1/image_to_video',[
+        'promptImage' => 'https://i.ibb.co/Gp0mt90/1-flux-schnell56099.jpg',
+        'model'=>'gen3a_turbo',
+        'promptText'=>'girl drinking beer till the end',
+        'watermark'=>false,
+        'duration'=>5,
+        'ratio'=>'1280:768'
+    ]);
+
+
+    if ($response->successful()) {
+        $runway=Runway::create(
+            [
+                'task_id'=>$response->json()['id'],
+                'prompt_en'=>'girl drinking beer till the end',
+                'duration'=>5,
+                'ratio'=>'1280:768',
+                'status'=>'pending',
+                'provider'=>'runway',
+            ]
+        );
+    }
+
+        return $response->json();
+
+});
+
+Route::get('{locale}/runwayfetch', function () {
+
+    $runway = Runway::withoutGlobalScopes()->where('status', '=', 'pending')->with('user')->first();
+
+    if ($runway) {
+
+        $response=Http::withHeaders([
+            'Authorization'    => 'Bearer '.config('apikeys.runway'),
+            'X-Runway-Version' => "2024-11-06"
+        ])->get('https://api.dev.runwayml.com/v1/tasks/70e4ae50-89fd-4d72-9f16-07bfa85c6508');
+
+        if ($response->successful()) {
+//                Log::channel('midjourney')->info('api call is successful');
+
+            if ($response->json()['status'] === 'SUCCEEDED') {
+
+                Log::channel('runway')->info('Runway webhook success-  '.$runway->task_id, [
+                    'response' => $response->json(),
+                ]);
+
+
+                $user = $runway->user->first();
+
+                $runway->video_url = $response->json()['output']['0'];
+                $runway->status = 'completed';
+                $runway->save();
+
+                $videourl= Http::get($response->json()['output']['0'])->body();
+                $random = random_int(10000, 99999);
+                $videourl->save(public_path($user->id.'_'.$random.'_runway.mp4'));
+                $runway->addMedia(public_path($user->id.'_'.$random.'_runway.mp4'))->toMediaCollection('runway_videos');
+                File::delete(public_path($user->id.'_'.$random.'_runway.mp4'));
+
+                // SEND SMS NOTIFICATION
+
+                $text1 = 'გამარჯობა';
+                $text2 = 'Midjourney -მ დაასრულა თქვენი მოთხოვნა, გთხოვთ იხილოთ ფოტოები ლინკზე';
+                $text3 = 'https://imageai.test/midjourney';
+
+                $sendsms = $text1."\n\n".$text2."\n\n".$text3;
+
+                $url = 'https://api.ubill.dev/v1/sms/send';
+
+                $params = [
+                    'key'      => config('apikeys.ubill'),
+                    'brandID'  => 2,
+                    'numbers'  => '995'.$runway->user->mobile,
+                    'text'     => $sendsms,
+                    'stopList' => false,
+                ];
+
+                $response2 = Http::get($url, $params);
+            }
+
+
+
+            // Deduct Balance from App
+            (new AppBalanceService())->appBalance('runway', 'runway'.$runway->duration);
+
+            // Deduct Balance from User
+            (new UserBalanceService)->deductBalance('runway', $runway->id, config('variables.runway'.$runway->duration.'-price'));
+
+        }else {
+
+            Log::channel('runway')->info('Runway webhook success-  '.$runway->task_id, [
+                'response' => $response->json(),
+            ]);
+
+            Mail::to('gmta.constantine@gmail.com')->send(new RunwayErrorMail($runway->task_id,$runway->user->first(),$response->json()));
+        }
+    }
+
+
+
+
+});
+
+
+Route::get('/{locale}/image',function(){
+
+
+
 });
 

@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\CheckMidjourney;
 use App\Models\Balance;
 use App\Models\Midjourney;
 use App\Services\AppBalanceService;
+use App\Services\TranslationService;
 use App\Services\UserBalanceService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Schedule;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager;
 
@@ -19,36 +22,39 @@ class MidjourneyController extends Controller
 
     public function index(Request $request)
     {
-        $images = Midjourney::where('status', '=', 'completed')
+        $images  = Midjourney::where('status', '=', 'completed')
             ->whereDate('created_at', Carbon::today())
             ->with('media')
             ->get();
+        $pending = Midjourney::where('status', '=', 'pending')->first();
 
 
         $midjourneys = Midjourney::where('status', '=', 'completed')
             ->with('media')
-            ->take(30)
+            ->take(6)
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('user.pages.image-midjourney', compact('images', 'midjourneys'));
+        return view('user.pages.image-midjourney', compact('images', 'midjourneys', 'pending'));
     }
 
     public function imagine(Request $request)
     {
-
-
-        if(!(new UserBalanceService())->checkBalance('midjourney')){
-            return back()->with('alert_error','არასაკმარისი ბალანსი');
+        if (!(new UserBalanceService())->checkBalance('midjourney')) {
+            return back()->with('alert_error', 'არასაკმარისი ბალანსი');
         }
 
 
+        $validated = $request->validate([
+            'prompt' => 'required|string|max:700',
+        ]);
 
-        if ($request->prompt == null) {
-            sleep(5);
 
-            return back()->with('alert_error', 'გთხოვთ მიუთითეთ ფოტოს აღწერა');
-        }
+        $service       = new TranslationService();
+        $serviceResult = $service->detectAndTranslate($validated);
+        $language      = $serviceResult['language'];
+        $translated    = $serviceResult['translation'];
+
 
         $response = Http::withHeaders([
             'x-api-key'    => config('apikeys.piapi'),
@@ -58,7 +64,7 @@ class MidjourneyController extends Controller
             'model'     => 'midjourney',
             'task_type' => 'imagine',
             'input'     => [
-                'prompt'            => $request->prompt,
+                'prompt'            => $translated,
                 'aspect_ratio'      => '4:3',
                 'process_mode'      => 'relax',
                 'skip_prompt_check' => false,
@@ -70,25 +76,42 @@ class MidjourneyController extends Controller
         ]);
 
         if ($response->successful()) {
-           $midjourney = Midjourney::create([
+            $data = [
                 'task_id'        => $response->json()['data']['task_id'],
                 'model'          => 'midjourney',
                 'status'         => $response->json()['data']['status'],
-                'user_prompt_en' => $request->prompt,
-            ]);
+                'user_prompt_en' => $translated,
+            ];
+
+            if ($language === 'ka') {
+                $data['user_prompt_ka'] = $validated['prompt'];
+            }
+
+            $midjourney = Midjourney::create($data);
 
             // Deduct Balance from App
             (new AppBalanceService())->appBalance('piapi', 'midjourney');
 
             // Deduct Balance from User
-            (new UserBalanceService)->deductBalance('midjourney', $midjourney->id, config('variables.midjourney-price'));
+            (new UserBalanceService)->deductBalance('midjourney', $midjourney->id,
+                config('variables.midjourney-price'));
 
             return back()->with('alert_success', 'დავალება მიღებულია! დასრულებისას მიიღებთ სმს შეტყობინებას ');
-        } else {
-            dd($response->json());
-        }
 
-        return back();
+        } elseif ($response->json()['data']['status'] === 'failed') {
+            $random=random_int(10000,99999);
+            Log::channel('midjourney')->info('Midjourney api failed'. $random, [
+                'user ID'=>auth()->id(),
+                'response' => $response->json(),
+            ]);
+
+            return back()->with('alert_error', 'თხვენი მოთხოვნა ვერ დამუშავდა, გთხოვთ გადაამოწმოთ ფოტოს აღწერა');
+        }
+        $random=random_int(10000,99999);
+        Log::channel('midjourney')->info('Midjourney api unknown error'.$random, [
+            'user ID'=>auth()->id(),
+            'response' => $response->json(),
+        ]);
     }
 
     public function variation(Request $request)
@@ -104,8 +127,7 @@ class MidjourneyController extends Controller
             return back()->with('alert_error', 'ფოტოს შექმნიდან გასულია 1 საათი და აღნიშნულ ფუნქციას ვერ გამოიყენებთ');
         }
 
-        if ($media !==null && !$media->isEmpty()) {
-
+        if ($media !== null && !$media->isEmpty()) {
             $index = substr($request->index, -1);
 
             $response = Http::withHeaders([
@@ -141,28 +163,27 @@ class MidjourneyController extends Controller
                 (new AppBalanceService())->appBalance('piapi', 'midjourney');
 
                 // Deduct Balance from User
-                (new UserBalanceService)->deductBalance('midjourney', $midjourney->id, config('variables.midjourney-price'));
+                (new UserBalanceService)->deductBalance('midjourney', $midjourney->id,
+                    config('variables.midjourney-price'));
 
 
                 return back()->with('alert_success', 'დავალება მიღებულია! დასრულებისას მიიღებთ სმს შეტყობინებას ');
             } else {
                 // Error log and email
-
-                dd($response->json());
+                Log::channel('midjourney')->info('midjourney api variation error'.' '.'user:'.auth()->user()->id, [
+                    'response' => $response->json(),
+                ]);
             }
-
-
         } else {
             return back()->with('alert_error', 'ფოტო არ მოიძებნა');
         }
-
-        return back();
     }
 
     public function delete(Request $request)
     {
         $midjourney = Midjourney::where('id', $request->id)->first();
         $index      = $request->index;
+
 
         $i = 0;
         foreach ($midjourney->media as $media) {
@@ -184,8 +205,6 @@ class MidjourneyController extends Controller
 
     public function fetch(Request $request)
     {
-
-
         $task = Midjourney::where('status', '=', 'pending')->first();
 
         if ($task) {
@@ -193,22 +212,14 @@ class MidjourneyController extends Controller
                 'x-api-key'  => config('apikeys.piapi'),
                 'User-Agent' => 'Apidog/1.0.0 (https://apidog.com)',
             ])->get('https://api.piapi.ai/api/v1/task/'.$task->task_id);
+
             if ($response->successful()) {
-
                 if ($response->json()['data']['status'] === 'completed') {
-
                     $created_at = Carbon::parse($response->json()['data']['meta']['created_at']);
-                    $ended_at = Carbon::parse($response->json()['data']['meta']['ended_at']);
-                    $duration = $created_at->diffInSeconds($ended_at);
-
-                    $task->update([
-                        'midjourney_url' => $response->json()['data']['output']['image_url'],
-                        'status'         => $response->json()['data']['status'],
-                        'duration'       => $duration,
-                    ]);
+                    $ended_at   = Carbon::parse($response->json()['data']['meta']['ended_at']);
+                    $duration   = $created_at->diffInSeconds($ended_at);
 
                     $imageContents = Http::get($response->json()['data']['output']['image_url'])->body();
-
 
                     $manager = new ImageManager(new Driver());
                     $image   = $manager->read($imageContents);
@@ -253,10 +264,16 @@ class MidjourneyController extends Controller
                     File::delete(public_path(auth()->user()->id.'_midjourney4.jpg'));
 
 
+                    $task->update([
+                        'midjourney_url' => $response->json()['data']['output']['image_url'],
+                        'status'         => $response->json()['data']['status'],
+                        'duration'       => $duration,
+                    ]);
+
                     // SEND SMS NOTIFICATION
 
                     $text1 = 'გამარჯობა';
-                    $text2 = 'AI-მ დაასრულა თქვენი მოთხოვნა, გთხოვთ იხილოთ ფოტოები ლინკზე';
+                    $text2 = 'Midjourney -მ დაასრულა თქვენი მოთხოვნა, გთხოვთ იხილოთ ფოტოები ლინკზე';
                     $text3 = 'https://imageai.test/midjourney';
 
                     $sendsms = $text1."\n\n".$text2."\n\n".$text3;
@@ -272,11 +289,17 @@ class MidjourneyController extends Controller
                     ];
 
                     $response2 = Http::get($url, $params);
-
-                    dd($response->json());
                 } else {
-                    return $response->json()['data']['status'];
+                    Log::channel('midjourney')->info('midjourney received', [
+                        'response' => $response->json()['data']['status'],
+                    ]);
+//                    return $response->json()['data']['status'];
                 }
+            } else {
+                Log::channel('midjourney')->info('midjourney received', [
+                    'response' => $response->all(),
+                ]);
+//              return $response->json();
             }
         }
     }
@@ -286,8 +309,11 @@ class MidjourneyController extends Controller
         $midjourney = Midjourney::where('id', $request->id)->with('media')->first();
         $media      = $midjourney->media[$request->index];
         $filePath   = $media->getPath();
+        if ($media) {
+            return response()->download($filePath, $media->file_name);
+        }
 
-        return response()->download($filePath, $media->file_name);
+        return back()->with('alert_error', 'ფოტოს არ მოიძებნა');
     }
 
 }

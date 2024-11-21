@@ -11,7 +11,13 @@ class UserBalance extends Model
 {
     use HasFactory;
 
+    /**
+     * @var float|mixed|null
+     */
 
+    protected $guarded = [];
+
+    public $skipCreatingLogic = false;
 
     public function user(): BelongsTo
     {
@@ -25,7 +31,7 @@ class UserBalance extends Model
 
     public function removebg(): BelongsTo
     {
-        return $this->belongsTo(Removebg::class,'removebg_id');
+        return $this->belongsTo(Removebg::class, 'removebg_id');
     }
 
     public function runway(): BelongsTo
@@ -40,8 +46,14 @@ class UserBalance extends Model
 
     protected static function booted(): void
     {
-        static::creating(function (UserBalance $balance) {
-            $balance->user_id = auth()->id();
+        static::creating(function ($model) {
+
+
+            $userid = auth()->id();
+            // Set the user_id only if it's not already set (useful for webhook calls)
+            if (!$model->user_id) {
+                $model->user_id = $model->user_id ?: $userid; // Pass `$userid` directly when necessary
+            }
         });
 
         static::addGlobalScope(function (Builder $builder) {

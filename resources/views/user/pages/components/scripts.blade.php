@@ -107,8 +107,7 @@
   </div>
     <p style="font-size:1.2rem" class="mt-2">{{session()->get('alert_error')}}</p>
   `,
-                timer: 2500,
-                showConfirmButton: false,
+            showConfirmButton: true,
             },
         )
     </script>
@@ -176,7 +175,6 @@
     });
 
 </script>
-
 {{--Spinner--}}
 <script type="module">
     import {Spinner} from '../../../../assets/js/spin.js';
@@ -212,10 +210,7 @@
 
     });
 </script>
-
-
 {{--sweet alert on copy--}}
-
 <script>
 
     function copyUrl2() {
@@ -234,6 +229,7 @@
     }
 
 </script>
+
 
 
 <script>

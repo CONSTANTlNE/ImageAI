@@ -27,6 +27,7 @@
 
     function localStorageBackup() {
 
+
         // if there is a value stored, update color picker and background color
         // Used to retrive the data from local storage
         if (localStorage.primaryRGB) {
@@ -244,6 +245,10 @@
             let value = localStorage.getItem('bgimg');
             html.setAttribute('bg-img', value);
         }
+
+
+
+
     }
     localStorageBackup()
 

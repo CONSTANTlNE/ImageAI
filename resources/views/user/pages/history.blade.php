@@ -141,9 +141,8 @@
                                                                     </div>
                                                                 @endif
                                                                 @if($transaction->model==='runway')
-                                                                        <div class="grid grid-cols-2 gap-2">
                                                                             @if($transaction->runway)
-                                                                                @foreach($transaction->runway->media as $media)
+                                                                                @foreach($transaction->runway->getMedia('runway_image') as $media)
                                                                                     <a aria-label="anchor"
                                                                                        href="{{$media->getUrl()}}"
                                                                                        class="glightbox box responcive-image-history">
@@ -155,7 +154,6 @@
                                                                             @else
                                                                                 <p>Video Was Deleted By User</p>
                                                                             @endif
-                                                                        </div>
                                                                 @endif
                                                             </td>
                                                         </tr>
@@ -267,6 +265,9 @@
                                             </span>
                             <input type="number" name="page"
                                    class="min-h-[32px] py-2 px-2.5 block w-12 border-gray-200 rounded-md text-sm text-center focus:border-primary focus:ring-primary [&amp;::-webkit-outer-spin-button]:appearance-none [&amp;::-webkit-inner-spin-button]:appearance-none disabled:opacity-50 disabled:pointer-events-none dark:bg-bodybg dark:border-white/10 dark:text-gray-400 dark:focus:ring-gray-600">
+                            @if(request()->query('model'))
+                                <input type="hidden" name="model" value="{{request()->query('model')}}">
+                            @endif
                             <button style="height: 100%!important;"
                                     class="text-sm text-gray-800 whitespace-nowrap dark:text-white ">
                                 <span class="badge bg-primary/10  text-primary ms-1">GO</span>

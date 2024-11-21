@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BogController;
 use App\Http\Controllers\MidjourneyController;
 use App\Http\Controllers\RunwayController;
 use Illuminate\Http\Request;
@@ -10,12 +11,10 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 
-Route::post('/midjourney/webhook', [MidjourneyController::class, 'webhook'])
-    ->middleware(['auth:sanctum', 'throttle:60,1'])
-    ->name('webhook');
-
-
 Route::post('/runway/webhook', [RunwayController::class, 'webhook'])
     ->middleware('throttle:60,1')
     ->name('runway.webhook');
 
+Route::post('/bog/webhook', [BogController::class, 'webhook'])
+    ->middleware('throttle:60,1')
+    ->name('bog.webhook');

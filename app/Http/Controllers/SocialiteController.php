@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewUserRegistered;
 use App\Mail\NewUserEmail;
 use App\Models\User;
 use Exception;
@@ -49,7 +50,7 @@ class SocialiteController extends Controller
             $user = $google_user;
 
             if (!$existing) {
-                Mail::to('webmenu01@gmail.com')->send(new NewUserEmail($user));
+                event (new NewUserRegistered($user));
             }
 
 

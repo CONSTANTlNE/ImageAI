@@ -4,15 +4,21 @@ namespace App\Http\Controllers;
 
 
 use App\Http\Requests\RunwayRequest;
+use App\Mail\RunwayErrorMail;
 use App\Models\Flux;
 use App\Models\Midjourney;
 use App\Models\Removebg;
 use App\Models\Runway;
+use App\Models\User;
+use App\Models\UserBalance;
+use App\Services\AppBalanceService;
+use App\Services\TranslationService;
 use App\Services\UserBalanceService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class RunwayController extends Controller
 {
@@ -26,13 +32,15 @@ class RunwayController extends Controller
             ->take(30)
             ->orderBy('created_at', 'desc')
             ->get();
+        $pending = Runway::whereNull('video_url')->first();
 
 
-        return view('user.pages.runway', compact('runway', 'runway2'));
+        return view('user.pages.runway', compact('runway', 'runway2', 'pending'));
     }
 
-    public function create(Request $request, RunwayRequest $runwayRequest)
+    public function create(Request $request,RunwayRequest $runwayRequest)
     {
+
         $data = $runwayRequest->validated();
 
 
@@ -40,37 +48,126 @@ class RunwayController extends Controller
             return back()->with('alert_error', 'არასაკმარისი ბალანსი');
         }
 
-        $key = config('apikeys.falAI');
+        $service=new TranslationService();
+        $result=$service->detectAndTranslate($data);
+        $language = $result['language'];
+        $translated= $result['translation'];
 
-        $runway           = new Runway();
-        $runway->prompt   = $data['prompt'];
-        $runway->duration = $data['duration'];
-        $runway->ratio    = $data['ratio'];
-        $runway->save();
+        $runwaydata=[
+            'prompt_en'=>$translated,
+            'duration'=>$data['duration'],
+            'ratio'=>$data['ratio'],
+            'status'=>'started',
+            'provider'=>'runway',
+        ];
+
+        if ($language !== 'en') {
+            $runwaydata['prompt_ka'] = $data['prompt'];
+        }
 
 
+//        dd($translated,$data['duration']+0,$data['ratio']);
+
+        $runway=Runway::create($runwaydata);
+
+//        if image was uploaded or uploaded
         if ($request->hasFile('runwayUpload')) {
             $runway->addMediaFromRequest('runwayUpload')->toMediaCollection('runway_image');
+
             $media = $runway->media()->first();
             $url   = $media->getUrl();
         }
+        elseif ($data['imageUrl'] !== null){
+            $url = $data['imageUrl'];
 
-        if ($data['imageUrl'] !== null) {
-            $checkurl = HTTP::get($data['imageUrl']);
-            if ($checkurl->successful()) {
-                $url = $data['imageUrl'];
-                $runway->addMediaFromUrl($url)->toMediaCollection('runway_image');
-            } else {
-                return back()->with('error', 'Chosen image is invalid');
+
+            // Add cover photo for video
+            $runway->addMediaFromUrl($url)->toMediaCollection('runway_image');
+//
+//            $checkurl = HTTP::timeout(60)->withoutVerifying()->get($data['imageUrl']);
+//
+//            if ($checkurl->successful()) {
+//                $url = $data['imageUrl'];
+//                $runway->addMediaFromUrl($url)->toMediaCollection('runway_image');
+//            } else {
+//                return back()->with('alert_error', 'ფოტო არ მოიძებნა');
+//            }
+        }
+//        dd($url);
+
+        if($url){
+
+            $response=Http::withHeaders([
+                'Content-Type' => 'application/json',
+                'Authorization'    => 'Bearer '.config('apikeys.runway'),
+                'X-Runway-Version' => "2024-11-06"
+            ])->post('https://api.dev.runwayml.com/v1/image_to_video',[
+                'promptImage' => (string) $url,
+                'model'=>'gen3a_turbo',
+                'promptText'=>$translated,
+                'watermark'=>false,
+                'duration'=>$data['duration']+0,
+                'ratio'=>$data['ratio'],
+            ]);
+
+
+            if ($response->successful()) {
+              // upgrade status if response is successful because scheduler checks for pending and not to cause error
+                $runway->status='pending';
+                $runway->save();
+
+                Log::channel('runway')->info('Runway queue request', [
+                    'user ID'=>auth()->id(),
+                    'response' => $response->json(),
+                ]);
+                $runway->update([
+                    'task_id'=>$response->json()['id'],
+                ]);
+
+                return back()->with('alert_success', 'დავალება მიღებულია! დასრულებისას მიიღებთ სმს შეტყობინებას ');
+            }
+
+            if ($response->status()==429) {
+                return back()->with('alert_error','დღეს Runway გადატვირთულია, შეგიძლიათ სცადოთ მომდევნო დღეს');
+            } else{
+
+                $random=random_int(10000,99999);
+                Log::channel('runway')->info('Runway api failed on create error '.$random, [
+                    'user ID'=>auth()->id(),
+                    'response' => $response->json(),
+                ]);
+
+
+                 // Delete initial runway if api failed
+                if ($runway->media) {
+                    foreach ($runway->media as $media) {
+                        $media->delete();
+                    }
+                }
+                $runway->delete();
+                Mail::to(config('devmail.devmail'))->send(new RunwayErrorMail($random,$runway->user->first(), $response->json()));
+
+                return back()->with('alert_error', 'ბოდიშს გიხდით, დაფიქსირდა ტექნიკური შეცდომა');
             }
         }
+
+
     }
 
     public function delete(Request $request)
     {
+
+
         $runway = Runway::find($request->id);
 
         if ($runway) {
+            $userBalance = UserBalance::where('runway_id', $runway->id)->first();
+
+            if ($userBalance) {
+                $userBalance->runway_id = null;
+                $userBalance->save();
+            }
+
             if ($runway->media) {
                 foreach ($runway->media as $media) {
                     $media->delete();
@@ -103,9 +200,7 @@ class RunwayController extends Controller
 
     public function webhook(Request $request)
     {
-        Log::channel('webhook')->info('Webhook received', [
-            'response' => $request->all(),
-        ]);
+
 
         $data = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
@@ -114,15 +209,20 @@ class RunwayController extends Controller
             $runway->video_url = $data['payload']['video']['url'];
             $runway->save();
 
-//            if ($runway->media->first()){
-//                $runway->media->first()->delete();
-//            }
+            Log::channel('runway')->info('Runway webhook success-  '.$data['request_id'], [
+                'response' => $request->all(),
+            ]);
+
+            // Deduct Balance from App
+            (new AppBalanceService())->appBalance('falai', 'runway'.$runway->duration);
+
+            // Deduct Balance from User
+            (new UserBalanceService)->deductBalance('runway', $runway->id, config('variables.runway'.$runway->duration.'-price'));
 
             // SEND SMS NOTIFICATION
-
             $text1 = 'გამარჯობა';
             $text2 = 'AI-მ დაასრულა თქვენი მოთხოვნა, გთხოვთ იხილოთ ფოტოები ლინკზე';
-            $text3 = 'https://imageai.test/midjourney';
+            $text3 = 'https://imageai.test/runway';
 
             $sendsms = $text1."\n\n".$text2."\n\n".$text3;
 
@@ -131,22 +231,48 @@ class RunwayController extends Controller
             $params = [
                 'key'      => config('apikeys.ubill'),
                 'brandID'  => 2,
-                'numbers'  => '995551507697',
+                'numbers'  => '995'.$runway->user->mobile,
                 'text'     => $sendsms,
                 'stopList' => false,
             ];
 
             $response2 = Http::get($url, $params);
-            // IF errpor send email and log
-
 
         } else {
-            $runway         = Runway::where('task_id', $data['request_id'])->first();
-            $runway->status = $data['status'];
-            $runway->error  = $data['error'];
-            $runway->save();
-            // Send email error too
 
+            $runway            = Runway::withoutGlobalScopes()->where('task_id', $data['request_id'])->first();
+
+            Log::channel('runway')->info('Runway webhook error-  '.$data['request_id'], [
+                'response' => $request->all(),
+            ]);
+
+            Mail::to(config('devmail.devmail'))->send(new RunwayErrorMail($data['request_id'],$runway->user->first(),$request->json()));
+
+            // SEND SMS NOTIFICATION to user
+            $text1 = 'სამწუხაროდ Runway-მ ვერ დაამუშავა თქვენი მოთხოვნა';
+            $text2 = 'ბალანსიდან საფასური არ ჩამოგეჭრებათ';
+            $text3 = 'https://imageai.test/runway';
+
+            $sendsms = $text1."\n\n".$text2."\n\n".$text3;
+
+            $url = 'https://api.ubill.dev/v1/sms/send';
+
+            $params = [
+                'key'      => config('apikeys.ubill'),
+                'brandID'  => 2,
+                'numbers'  => '995'.$runway->user->mobile,
+                'text'     => $sendsms,
+                'stopList' => false,
+            ];
+
+            $response2 = Http::get($url, $params);
+
+            if ($runway->media) {
+                foreach ($runway->media as $media) {
+                    $media->delete();
+                }
+            }
+            $runway->delete();
         }
 
         return response('webhook received', 200);

@@ -24,6 +24,8 @@ return new class extends Migration
             $table->string('facebook_id')->nullable();
             $table->string('adminpass')->nullable();
             $table->string('mobile')->nullable();
+            $table->boolean('mob_verified')->default(false);
+            $table->integer('sms_code')->nullable();
             $table->timestamps();
         });
 

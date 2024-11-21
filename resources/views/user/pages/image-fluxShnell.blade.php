@@ -22,7 +22,7 @@
                                 </a>
                             </p>
                             <p class="text-[#8c9097] dark:text-white/50 mb-0 chatpersonstatus !text-defaultsize">
-                                ფასი - 0.03 ₾
+                                {{__('Price')}} - 0.03 ₾
                             </p>
                         </div>
                         <div class="flex ms-auto">
@@ -63,7 +63,11 @@
                                         </span>
                                         <div class="main-chat-msg">
                                             <div>
-                                                <p class="mb-0">{{$item->prompt_en}}</p>
+                                                @if($item->prompt_ka)
+                                                    <p class="mb-0">{{$item->prompt_ka}}</p>
+                                                @else
+                                                    <p class="mb-0">{{$item->prompt_en}}</p>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>
@@ -158,10 +162,10 @@
                             <select style="max-width: 190px;padding-bottom: 2px;padding-top:2px" name="ratio"
                                     class="ti-form-select rounded-sm  !px-2">
                                 <option value="HD">HD (1024x1024)</option>
-                                <option value="16:9">ლანდშაფტი (16:9)</option>
-                                <option selected value="4:3">ლანდშაფტი (4:3)</option>
-                                <option value="9:16">პორტრეტი (9:16)</option>
-                                <option value="3:4">პორტრეტი (3:4)</option>
+                                <option value="16:9">{{__('Landscape')}} (16:9)</option>
+                                <option selected value="4:3">{{__('Landscape')}} (4:3)</option>
+                                <option value="9:16">{{__('Portrait')}} (9:16)</option>
+                                <option value="3:4">{{__('Portrait')}} (3:4)</option>
                             </select>
                         </div>
                     </div>
@@ -188,13 +192,13 @@
 
                 <div class="mb-0 mt-3">
                     <div class="font-semibold mb-4 text-defaultsize dark:text-defaulttextcolor/70">
-                        Gallery (last
+                        {{__('Gallery')}} ( {{__('last')}}
                         <span class="badge bg-primary/10 !rounded-full text-primary ">30</span>
-                        images)
+                        {{__('images')}} )
                         <span class="ltr:float-right rtl:float-left text-[0.6875rem]">
                             <a href="javascript:void(0);" class="text-primary underline">
                                 <u>
-                                    <a class="startSpinner" href="{{route('gallery',['model'=>'flux-schnell'])}}">  View All</a>
+                                    <a class="startSpinner" href="{{route('gallery',['model'=>'flux-schnell'])}}">{{__('View All')}}</a>
                                 </u>
                             </a>
                         </span>
@@ -239,7 +243,7 @@
         <div class="hs-overlay-open:mt-7 ti-modal-box mt-0 ease-out min-h-[calc(100%-3.5rem)] flex items-center">
             <div class="ti-modal-content w-full">
                 <div class="ti-modal-header">
-                    <h6 class="modal-title text-[1rem] font-semibold">Delete Image</h6>
+                    <h6 class="modal-title text-[1rem] font-semibold">{{__('Delete Image')}}</h6>
                     <button type="button" class="hs-dropdown-toggle !text-[1rem] !font-semibold !text-defaulttextcolor"
                             data-hs-overlay="#staticBackdrop">
                         <span class="sr-only">Close</span>
@@ -248,20 +252,20 @@
                 </div>
                 <div class="ti-modal-body px-4">
                     <p>
-                        Are you sure you want to delete this image?
+                        {{__('Are you sure ?')}}
                     </p>
                 </div>
                 <div class="ti-modal-footer">
                     <button type="button"
                             class="hs-dropdown-toggle ti-btn  ti-btn-secondary-full align-middle"
                             data-hs-overlay="#staticBackdrop">
-                        Close
+                        {{__('Close')}}
                     </button>
                     <form action="{{route('flux-schnell.delete')}}"
                           method="post">
                         <input type="hidden" name="id" id="deleteId">
                         @csrf
-                        <button class="ti-btn bg-primary text-white !font-medium">Delete</button>
+                        <button class="ti-btn bg-primary text-white !font-medium">{{__('Delete')}}</button>
                     </form>
 
                 </div>
@@ -274,7 +278,7 @@
         <div class="hs-overlay-open:mt-7 ti-modal-box mt-0 ease-out min-h-[calc(100%-3.5rem)] flex items-center">
             <div class="ti-modal-content">
                 <div class="ti-modal-header">
-                    <h6 class="modal-title text-[1rem] font-semibold" id="staticBackdropLabel2">Actions
+                    <h6 class="modal-title text-[1rem] font-semibold" id="staticBackdropLabel2">{{__('Actions')}}
                     </h6>
                     <button type="button" class="hs-dropdown-toggle ti-modal-close-btn" data-hs-overlay="#actionsmodal">
                         <span class="sr-only">Close</span>
