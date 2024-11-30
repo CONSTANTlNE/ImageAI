@@ -1,34 +1,34 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr" data-nav-layout="vertical" data-vertical-style="overlay" class="dark"
+<html lang="{{app()->getLocale()}}" dir="ltr" data-nav-layout="vertical" data-vertical-style="overlay" class="dark"
       data-header-styles="dark" data-menu-styles="dark" data-toggled="close">
 
 <head>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> YNEX - Tailwind Admin Template </title>
+    <title>ONIX</title>
     <meta name="description"
-          content="A Tailwind CSS admin template is a pre-designed web page for an admin dashboard. Optimizing it for SEO includes using meta descriptions and ensuring it's responsive and fast-loading.">
+          content="">
     <meta name="keywords"
           content="html dashboard,tailwind css,tailwind admin dashboard,template dashboard,html and css template,tailwind dashboard,tailwind css templates,admin dashboard html template,tailwind admin,html panel,template tailwind,html admin template,admin panel html">
 
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="../assets/images/brand-logos/favicon.ico">
+    <link rel="shortcut icon" href="{{asset('landingassets/img/onix.jpeg')}}">
 
     <!-- Main Theme Js -->
-    <script src="../assets/js/authentication-main.js"></script>
+    <script src="{{asset('assets/js/authentication-main.js')}}"></script>
 
     <!-- Style Css -->
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
 
 
     <!-- Color Picker Css -->
-    <link rel="stylesheet" href="../assets/libs/@simonwep/pickr/themes/nano.min.css">
+    <link rel="stylesheet" href="{{asset('')}}../assets/libs/@simonwep/pickr/themes/nano.min.css">
 
 
     <!-- Swiper Css -->
-    <link rel="stylesheet" href="../assets/libs/swiper/swiper-bundle.min.css">
+    <link rel="stylesheet" href="{{asset('')}}../assets/libs/swiper/swiper-bundle.min.css">
 
     <style>
 
@@ -489,7 +489,7 @@
 
 <!-- Loader -->
 <div id="loader" >
-    <img src="../assets/images/media/loader.svg" alt="">
+{{--    <img src="../assets/images/media/loader.svg" alt="">--}}
 </div>
 <!-- Loader -->
 
@@ -497,19 +497,21 @@
 <div class="grid grid-cols-12 authentication mx-0">
     @yield('login')
     @yield('register')
+    @yield('forgot-password')
+    @yield('reset-password')
 </div>
 
 <!-- Swiper JS -->
-<script src="../assets/libs/swiper/swiper-bundle.min.js"></script>
+<script src="{{asset('assets/libs/swiper/swiper-bundle.min.js')}}"></script>
 
 <!-- Internal Authentication JS -->
-<script src="../assets/js/authentication.js"></script>
+<script src="{{asset('assets/js/authentication.js')}}"></script>
 
 <!-- Show Password JS -->
-<script src="../assets/js/show-password.js"></script>
+<script src="{{asset('assets/js/show-password.js')}}"></script>
 
 <!-- Auth Custom JS -->
-<script src="../assets/js/auth-custom.js"></script>
+<script src="{{asset('assets/js/auth-custom.js')}}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @if(session()->has('alert_error'))
     <script>

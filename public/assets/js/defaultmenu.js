@@ -1,4 +1,5 @@
 "use strict";
+import { createPopper } from '@popperjs/core';
 
 const ANIMATION_DURATION = 300;
 
@@ -27,7 +28,7 @@ class PopperObject {
   init(reference, popperTarget) {
     this.reference = reference;
     this.popperTarget = popperTarget;
-    this.instance = Popper.createPopper(this.reference, this.popperTarget, {
+    this.instance = createPopper(this.reference, this.popperTarget, {
       placement: "bottom",
       strategy: "relative",
       resize: true,

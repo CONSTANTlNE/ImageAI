@@ -48,7 +48,6 @@ class UserBalance extends Model
     {
         static::creating(function ($model) {
 
-
             $userid = auth()->id();
             // Set the user_id only if it's not already set (useful for webhook calls)
             if (!$model->user_id) {

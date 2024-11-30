@@ -5,10 +5,8 @@
 @section('runway')
     <div class="main-content">
         <div class="main-chart-wrapper p-2 gap-2 lg:flex responsive-chat-open">
-            {{--            Left Sidebar--}}
-
-            @include('user.pages.components.chat-left-sidebar')
-
+            {{--Left Sidebar--}}
+            @include('user.pages.components.chatLeftSidebar.chat-left-sidebar')
             {{--Main Chat--}}
             <div id="main-chat" class="main-chat-area  custom-height border dark:border-defaultborder/10">
                 <div class="sm:flex items-center p-2 border-b dark:border-defaultborder/10">
@@ -57,7 +55,7 @@
                 <div class="chat-content" id="main-chat-content">
                     <ul id="chat-target" class="list-none">
                         <li style="margin-bottom: 15px" class="chat-day-label">
-                            <span>Today</span>
+                            <span>{{__('Today')}}</span>
                         </li>
                         @foreach($runway as $itemindex => $item)
                             {{-- PROMPT--}}
@@ -146,7 +144,7 @@
                     @csrf
                     <div style="height: 10rem!important;align-items: flex-end" class="chat-footer mb-3">
                         <input class="form-control  !rounded-md" name="prompt"
-                               placeholder="Type your message here..."
+                               placeholder="{{__('description')}}"
                                type="text">
 
                         <button id="fetch-prompt2" aria-label="anchor"
@@ -194,7 +192,7 @@
                                                            data-hs-overlay="#staticBackdrop2" href="javascript:void(0);"
                                                            class="p-4 items-center related-app block text-center rounded-sm hover:bg-gray-50 dark:hover:bg-black/20">
                                                             <div>
-                                                                <img src="https://imageai.test/assets/images/schnell.webp"
+                                                                <img src="{{asset('assets/images/schnell.webp')}}"
                                                                      alt="figma"
                                                                      style="height: 110px!important;object-fit: cover"
                                                                      class="!w-full text-2xl avatar text-primary flex justify-center items-center mx-auto">
@@ -209,7 +207,7 @@
                                                            hx-target="#galleryTarget" hx-vals='{"model": "midjourney"}'
                                                            data-hs-overlay="#staticBackdrop2" href="javascript:void(0);"
                                                            class="p-4 items-center related-app block text-center rounded-sm hover:bg-gray-50 dark:hover:bg-black/20">
-                                                            <img src="https://imageai.test/assets/images/midjourney.jpg"
+                                                            <img src="{{asset('assets/images/midjourney.jpg')}}"
                                                                  style="height: 110px!important;object-fit: cover"
                                                                  class="!w-full text-2xl avatar text-primary flex justify-center items-center mx-auto">
                                                             <div class="text-[0.75rem] text-defaulttextcolor dark:text-[#8c9097] dark:text-white/50">
@@ -290,13 +288,13 @@
                 </div>
                 <div class="mb-0 mt-3">
                     <div class="font-semibold mb-4 text-defaultsize dark:text-defaulttextcolor/70">
-                        Gallery (last
-                        <span class="badge bg-primary/10 !rounded-full text-primary ">30</span>
-                        videos)
+                        {{__('last')}}
+                        <span class="badge bg-primary/10 !rounded-full text-primary ">20</span>
+                        {{__('videos')}}
                         <span class="ltr:float-right rtl:float-left text-[0.6875rem]">
                             <a href="javascript:void(0);" class="text-primary underline">
                                 <u>
-                                    <a href="{{route('gallery',['model'=>'runway'])}}">View All</a>
+                                    <a class="text-primary startSpinner" href="{{route('gallery',['model'=>'runway'])}}">{{__('View All')}}</a>
                                 </u>
                             </a>
                         </span>

@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-overlay z-3 navbar--dark">
     <div class="container">
-        <a href="index.html" class="logo d-block">
+        <a href="{{route('index')}}" class="logo d-block">
             <img
                     src="{{asset('landingassets/img/onix.jpeg')}}" alt="logo"
                     class="logo__img"> </a>

@@ -84,48 +84,6 @@
                                     </svg>
                                 </button>
                             </form>
-                            {{--Share--}}
-                            <form action="">
-                                <a href="javascript:void(0);" data-hs-overlay="#staticBackdrop2{{$indexFlux}}">
-                                    <svg class="badge bg-primary/10  text-primary" xmlns="http://www.w3.org/2000/svg"
-                                         width="30" height="30" viewBox="0 0 24 24">
-                                        <path fill="currentColor" fill-rule="evenodd"
-                                              d="M14.25 5.5a3.25 3.25 0 1 1 .833 2.173l-2.717 1.482l-3.04 1.737a3.25 3.25 0 0 1 .31 2.464l5.447 2.971a3.25 3.25 0 1 1-.719 1.316l-5.447-2.97a3.25 3.25 0 1 1-.652-4.902l3.37-1.926l2.729-1.489a3.3 3.3 0 0 1-.114-.856m3.25-1.75a1.75 1.75 0 1 0 0 3.5a1.75 1.75 0 0 0 0-3.5m-11 7a1.75 1.75 0 1 0 0 3.5a1.75 1.75 0 0 0 0-3.5m9.25 7.75a1.75 1.75 0 1 1 3.5 0a1.75 1.75 0 0 1-3.5 0"
-                                              clip-rule="evenodd"/>
-                                    </svg>
-                                </a>
-                                <div id="staticBackdrop2{{$indexFlux}}"
-                                     class="hs-overlay hidden ti-modal  [--overlay-backdrop:static]">
-                                    <div class="hs-overlay-open:mt-7 ti-modal-box mt-0 ease-out min-h-[calc(100%-3.5rem)] flex items-center">
-                                        <div class="ti-modal-content">
-                                            <div class="ti-modal-header">
-                                                <h6 class="modal-title text-[1rem] font-semibold">Share</h6>
-                                                <button type="button"
-                                                        class="hs-dropdown-toggle !text-[1rem] !font-semibold !text-defaulttextcolor"
-                                                        data-hs-overlay="#staticBackdrop2{{$indexFlux}}">
-                                                    <span class="sr-only">Close</span>
-                                                    <i class="ri-close-line"></i>
-                                                </button>
-                                            </div>
-                                            <div class="ti-modal-body px-4">
-                                                <p>
-                                                    გახადეთ ფოტო ყველასათვის ხელმისაწვდომი, თანხმობის შემთხვევაში ფოტო
-                                                    ჩვენს გვერდზე საერთო გალერეაში გამოჩნდება
-                                                </p>
-                                            </div>
-                                            <div class="ti-modal-footer">
-                                                <button type="button"
-                                                        class="hs-dropdown-toggle ti-btn  ti-btn-secondary-full align-middle"
-                                                        data-hs-overlay="#staticBackdrop2{{$indexFlux}}">
-                                                    Close
-                                                </button>
-                                                <button class="ti-btn bg-primary text-white !font-medium">Delete
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
                             {{--Copy--}}
                             <button class="mb-2" data-hs-overlay="#actionsmodal" onclick="
                                     navigator.clipboard.writeText('{{$flux->media->first()->getUrl()}}');
@@ -139,6 +97,49 @@
                                           d="m383.5 128l.5-24a56.16 56.16 0 0 0-56-56H112a64.19 64.19 0 0 0-64 64v216a56.16 56.16 0 0 0 56 56h24"/>
                                 </svg>
                             </button>
+                            {{--Share--}}
+                            <form action="{{route('flux.make.public')}}" method="post">
+                                @csrf
+                                <input type="hidden" name="id" value="{{$flux->id}}">
+                                <a href="javascript:void(0);" data-hs-overlay="#staticBackdrop2{{$indexFlux}}">
+                                    <svg class="badge bg-primary/10  text-primary" xmlns="http://www.w3.org/2000/svg"
+                                         width="30" height="30" viewBox="0 0 24 24">
+                                        <path {{$flux->public===1? "fill=green" : "fill=currentColor"}} fill-rule="evenodd"
+                                              d="M14.25 5.5a3.25 3.25 0 1 1 .833 2.173l-2.717 1.482l-3.04 1.737a3.25 3.25 0 0 1 .31 2.464l5.447 2.971a3.25 3.25 0 1 1-.719 1.316l-5.447-2.97a3.25 3.25 0 1 1-.652-4.902l3.37-1.926l2.729-1.489a3.3 3.3 0 0 1-.114-.856m3.25-1.75a1.75 1.75 0 1 0 0 3.5a1.75 1.75 0 0 0 0-3.5m-11 7a1.75 1.75 0 1 0 0 3.5a1.75 1.75 0 0 0 0-3.5m9.25 7.75a1.75 1.75 0 1 1 3.5 0a1.75 1.75 0 0 1-3.5 0"
+                                              clip-rule="evenodd"/>
+                                    </svg>
+                                </a>
+                                <div id="staticBackdrop2{{$indexFlux}}"
+                                     class="hs-overlay hidden ti-modal  [--overlay-backdrop:static]">
+                                    <div class="hs-overlay-open:mt-7 ti-modal-box mt-0 ease-out min-h-[calc(100%-3.5rem)] flex items-center">
+                                        <div class="ti-modal-content">
+                                            <div class="ti-modal-header">
+                                                <h6 class="modal-title text-[1rem] font-semibold">{{__('Make Public')}}</h6>
+                                                <button type="button"
+                                                        class="hs-dropdown-toggle !text-[1rem] !font-semibold !text-defaulttextcolor"
+                                                        data-hs-overlay="#staticBackdrop2{{$indexFlux}}">
+                                                    <span class="sr-only">Close</span>
+                                                    <i class="ri-close-line"></i>
+                                                </button>
+                                            </div>
+                                            <div class="ti-modal-body px-4">
+                                                <p>
+                                                    {{__('Make the photo available to everyone')}}
+                                                </p>
+                                            </div>
+                                            <div class="ti-modal-footer">
+                                                <button type="button"
+                                                        class="hs-dropdown-toggle ti-btn  ti-btn-secondary-full align-middle"
+                                                        data-hs-overlay="#staticBackdrop2{{$indexFlux}}">
+                                                    {{__('Close')}}
+                                                </button>
+                                                <button class="ti-btn bg-primary text-white !font-medium">{{__('share')}}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                         @foreach($flux->media as $media)
                             <a href="{{$media->getUrl()}}" class="glightbox box" data-gallery="gallery1">
@@ -153,11 +154,12 @@
                     @foreach($midjourney->media as $mediaindex=> $media)
                         <div class="lg:col-span-3 md:col-span-3 sm:col-span-6 col-span-6">
                             <div class="flex justify-center gap-3">
+                               {{--DELETE--}}
                                 <form class="mb-2" action="{{route('midjourney.delete')}}" method="post">
                                     @csrf
                                     <input type="hidden" name="id" value="{{$midjourney->id}}">
-                                    <input type="hidden" name="index" value="{{$mediaindex}}">
-                                    <a href="javascript:void(0);" data-hs-overlay="#staticBackdrop2{{$mediaindex}}">
+                                    <input type="hidden" name="mediaid" value="{{$media->id}}">
+                                    <a href="javascript:void(0);" data-hs-overlay="#staticBackdrop2{{$media->id}}">
                                         <svg class="badge bg-primary/10  text-primary"
                                              xmlns="http://www.w3.org/2000/svg" width="35" height="35"
                                              viewBox="0 0 24 24">
@@ -165,7 +167,7 @@
                                                   d="M7 21q-.825 0-1.412-.587T5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.587 1.413T17 21zM17 6H7v13h10zM9 17h2V8H9zm4 0h2V8h-2zM7 6v13z"/>
                                         </svg>
                                     </a>
-                                    <div id="staticBackdrop2{{$mediaindex}}"
+                                    <div id="staticBackdrop2{{$media->id}}"
                                          class="hs-overlay hidden ti-modal  [--overlay-backdrop:static]">
                                         <div class="hs-overlay-open:mt-7 ti-modal-box mt-0 ease-out">
                                             <div class="ti-modal-content">
@@ -173,7 +175,7 @@
                                                     <h6 class="modal-title text-[1rem] font-semibold">Modal title</h6>
                                                     <button type="button"
                                                             class="hs-dropdown-toggle !text-[1rem] !font-semibold !text-defaulttextcolor"
-                                                            data-hs-overlay="#staticBackdrop2{{$mediaindex}}">
+                                                            data-hs-overlay="#staticBackdrop2{{$media->id}}">
                                                         <span class="sr-only">Close</span>
                                                         <i class="ri-close-line"></i>
                                                     </button>
@@ -186,7 +188,7 @@
                                                 <div class="ti-modal-footer">
                                                     <button type="button"
                                                             class="hs-dropdown-toggle ti-btn  ti-btn-secondary-full align-middle"
-                                                            data-hs-overlay="#staticBackdrop2{{$mediaindex}}">
+                                                            data-hs-overlay="#staticBackdrop2{{$media->id}}">
                                                         Close
                                                     </button>
                                                     <button class="ti-btn bg-primary text-white !font-medium">Delete
@@ -196,6 +198,7 @@
                                         </div>
                                     </div>
                                 </form>
+                                {{--DOWNLOAD--}}
                                 <form class="mb-2" action="{{route('midjourney.download')}}">
                                     <input type="hidden" name="id" value="{{$midjourney->id}}">
                                     <input type="hidden" name="index" value="{{$mediaindex}}">
@@ -208,7 +211,7 @@
                                         </svg>
                                     </button>
                                 </form>
-                                {{--share Button--}}
+                                {{--COPY--}}
                                 <button class="mb-2" data-hs-overlay="#actionsmodal" onclick="
                                     navigator.clipboard.writeText('{{$media->getUrl()}}');
                             copyUrl3()
@@ -222,6 +225,60 @@
                                               d="m383.5 128l.5-24a56.16 56.16 0 0 0-56-56H112a64.19 64.19 0 0 0-64 64v216a56.16 56.16 0 0 0 56 56h24"/>
                                     </svg>
                                 </button>
+                                {{--Share--}}
+                                <form action="{{route('midjourney.make.public')}}" method="post">
+                                    @csrf
+                                    <input type="hidden" name="id" value="{{$midjourney->id}}">
+                                    <input type="hidden" name="mediaid" value="{{$media->id}}">
+                                    <a href="javascript:void(0);" data-hs-overlay="#staticBackdrop3{{$media->id}}">
+                                        <svg class="badge bg-primary/10  text-primary"
+                                             xmlns="http://www.w3.org/2000/svg"
+                                             width="30" height="30" viewBox="0 0 24 24">
+                                            <path {{$media->public===1? "fill=green" : "fill=currentColor"}} fill-rule="evenodd"
+                                                  d="M14.25 5.5a3.25 3.25 0 1 1 .833 2.173l-2.717 1.482l-3.04 1.737a3.25 3.25 0 0 1 .31 2.464l5.447 2.971a3.25 3.25 0 1 1-.719 1.316l-5.447-2.97a3.25 3.25 0 1 1-.652-4.902l3.37-1.926l2.729-1.489a3.3 3.3 0 0 1-.114-.856m3.25-1.75a1.75 1.75 0 1 0 0 3.5a1.75 1.75 0 0 0 0-3.5m-11 7a1.75 1.75 0 1 0 0 3.5a1.75 1.75 0 0 0 0-3.5m9.25 7.75a1.75 1.75 0 1 1 3.5 0a1.75 1.75 0 0 1-3.5 0"
+                                                  clip-rule="evenodd"/>
+                                        </svg>
+                                    </a>
+                                    <div id="staticBackdrop3{{$media->id}}"
+                                         class="hs-overlay hidden ti-modal  [--overlay-backdrop:static]">
+                                        <div class="hs-overlay-open:mt-7 ti-modal-box mt-0 ease-out min-h-[calc(100%-3.5rem)] flex items-center">
+                                            <div class="ti-modal-content">
+                                                <div class="ti-modal-header">
+                                                    <h6 class="modal-title text-[1rem] font-semibold">{{__('Make Public')}}</h6>
+                                                    <button type="button"
+                                                            class="hs-dropdown-toggle !text-[1rem] !font-semibold !text-defaulttextcolor"
+                                                            data-hs-overlay="#staticBackdrop3{{$media->id}}">
+                                                        <span class="sr-only">Close</span>
+                                                        <i class="ri-close-line"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="ti-modal-body px-4">
+                                                    <p>
+                                                        @if($media->public===0)
+                                                            {{__('Make the photo available to everyone')}}
+                                                        @else
+                                                            {{__('Remove photo from public gallery')}}
+                                                        @endif
+                                                    </p>
+                                                </div>
+                                                <div class="ti-modal-footer">
+                                                    <button type="button"
+                                                            class="hs-dropdown-toggle ti-btn  ti-btn-secondary-full align-middle"
+                                                            data-hs-overlay="#staticBackdrop3{{$media->id}}">
+                                                        {{__('Close')}}
+                                                    </button>
+                                                    <button class="ti-btn bg-primary text-white !font-medium">
+                                                        @if($media->public===0)
+                                                            {{__('share')}}
+                                                        @else
+                                                            {{__('Remove2')}}
+                                                        @endif
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                             <a href="{{$media->getUrl()}}" class="glightbox box" data-gallery="gallery1">
                                 <img src="{{$media->getUrl()}}" alt="image">
@@ -444,7 +501,7 @@
             </nav>
             {{-- PER PAGE AND GO TO PAGE--}}
             <div class="flex justify-center items-center gap-x-5 mb-3">
-                <!-- Dropdown -->
+                {{-- do not apply per page dropdown for midjourney--}}
                 @if(request('model')!=='midjourney')
                     <div class="hs-dropdown ti-dropdown [--placement:top-left]">
                         <button id="hs-pagination-dropdown-bordered-group1" type="button"
@@ -500,7 +557,7 @@
                         </div>
                     </div>
                 @endif
-                <!-- End Dropdown -->
+
 
                 <!-- Go To Page -->
                 <form action="">

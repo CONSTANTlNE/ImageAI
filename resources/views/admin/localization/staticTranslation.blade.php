@@ -77,7 +77,7 @@
                                             $counter++;
                                         @endphp
 
-                                        <tr>
+                                        <tr style="width: 150px!important">
 
                                             @csrf
                                             <td style="width: 150px!important">{{$key}}</td>

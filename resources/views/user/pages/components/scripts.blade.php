@@ -5,70 +5,43 @@
 <script src="https://cdn.jsdelivr.net/gh/underground-works/clockwork-browser@1/dist/toolbar.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-
-{{--<script src="{{asset('assets/js/switch.js')}}"></script>--}}
-
-{{--<script src="{{asset('assets/libs/preline/preline.js')}}"></script>--}}
-
-{{--<script src="{{asset('assets/libs/@popperjs/core/umd/popper.min.js')}}"></script>--}}
-
-{{--<script src="{{asset('assets/libs/@simonwep/pickr/pickr.es5.min.js')}}"></script>--}}
-
-{{--<script src="{{asset('assets/js/defaultmenu.js')}}"></script>--}}
-
-{{--<script src="{{asset('assets/js/sticky.js')}}"></script>--}}
-
-{{--<script src="{{asset('assets/libs/simplebar/simplebar.min.js')}}"></script>--}}
-
-{{--<script src="{{asset('assets/js/custom.js')}}"></script>--}}
-
-<!-- Apex Charts JS -->
-{{--<script src="../assets/libs/apexcharts/apexcharts.min.js"></script>--}}
-
-<!-- Jobs-Dashboard -->
-{{--<script src="../assets/js/jobs-dashboard.js"></script>--}}
-
 <!-- Custom-Switcher JS -->
 <script src="{{asset('assets/js/custom-switcher.js')}}"></script>
 
 
+{{--@if(request()->routeIs('bg.remove') )--}}
 
-{{--<script src="{{asset('assets/js/chat.js')}}"></script>--}}
+{{--    <script>--}}
 
+{{--        const inputElement = document.querySelector('.filepond');--}}
 
-@if(request()->routeIs('bg.remove') )
+{{--        FilePond.registerPlugin(--}}
+{{--            FilePondPluginImagePreview,--}}
+{{--            FilePondPluginImageExifOrientation,--}}
+{{--            FilePondPluginImageValidateSize,--}}
+{{--        );--}}
 
-    <script>
+{{--        const multipleInput = document.getElementById('multiple');--}}
+{{--        FilePond.create(inputElement, {--}}
+{{--            labelIdle: `მოათავსეთ ფოტო Drag & Drop-ით ან <span class="filepond--label-action">ატვირთეთ</span>`,--}}
+{{--            onupdatefiles: (files) => {--}}
+{{--                // When FilePond updates, update the hidden input with the FilePond files--}}
+{{--                const fileArray = files.map(fileItem => fileItem.file);--}}
+{{--                const dataTransfer = new DataTransfer();--}}
 
-        const inputElement = document.querySelector('.filepond');
+{{--                // Add each file from FilePond to the hidden input--}}
+{{--                fileArray.forEach(file => {--}}
+{{--                    dataTransfer.items.add(file);--}}
+{{--                });--}}
 
-        FilePond.registerPlugin(
-            FilePondPluginImagePreview,
-            FilePondPluginImageExifOrientation,
-            FilePondPluginImageValidateSize,
-        );
+{{--                // Set the files in the hidden input--}}
+{{--                multipleInput.files = dataTransfer.files;--}}
+{{--            },--}}
+{{--        });--}}
 
-        const multipleInput = document.getElementById('multiple');
-        FilePond.create(inputElement, {
-            labelIdle: `მოათავსეთ ფოტო Drag & Drop-ით ან <span class="filepond--label-action">ატვირთეთ</span>`,
-            onupdatefiles: (files) => {
-                // When FilePond updates, update the hidden input with the FilePond files
-                const fileArray = files.map(fileItem => fileItem.file);
-                const dataTransfer = new DataTransfer();
+{{--    </script>--}}
 
-                // Add each file from FilePond to the hidden input
-                fileArray.forEach(file => {
-                    dataTransfer.items.add(file);
-                });
-
-                // Set the files in the hidden input
-                multipleInput.files = dataTransfer.files;
-            },
-        });
-
-    </script>
-
-@endif
+{{--@endif--}}
 
 @if(request()->routeIs('runway') || request()->routeIs('bg.remove'))
 
@@ -234,17 +207,32 @@
 
 <script>
 
+    {{--if ('serviceWorker' in navigator) {--}}
+    {{--    window.addEventListener('load', () => {--}}
+    {{--        navigator.serviceWorker.register('{{asset('service-worker.js')}}')--}}
+    {{--            .then((registration) => {--}}
+    {{--                console.log('Service Worker registered with scope:', registration.scope);--}}
+    {{--            })--}}
+    {{--            .catch((error) => {--}}
+    {{--                console.error('Service Worker registration failed:', error);--}}
+    {{--            });--}}
+    {{--    });--}}
+    {{--}--}}
 
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('{{asset('service-worker.js')}}')
-                .then((registration) => {
-                    console.log('Service Worker registered with scope:', registration.scope);
-                })
-                .catch((error) => {
-                    console.error('Service Worker registration failed:', error);
-                });
-        });
-    }
+</script>
+
+{{--Online Offline Detection--}}
+<script>
+    const overlay= document.getElementById('spinner-overlay')
+
+    window.addEventListener('online',()=>{
+        overlay.style.display="none"
+    })
+
+    window.addEventListener('offline',()=>{
+        overlay.style.display="flex"
+        overlay.style.justifyContent="center"
+        overlay.style.alignItems="center"
+    })
 
 </script>

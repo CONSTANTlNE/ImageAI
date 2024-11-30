@@ -43,6 +43,10 @@
             cursor: move;
         }
 
+        tr, td {
+            max-width: 150px!important;
+        }
+
         .draggable-lang.dragging {
             opacity: 1.5;
         }
@@ -58,6 +62,8 @@
                 padding-inline-start: 15rem!important;
             }
         }
+
+
     </style>
 
     <script src="https://unpkg.com/htmx.org@1.9.10"
@@ -99,7 +105,7 @@
 
 <!-- Loader -->
 <div id="loader" >
-    <img src="../assets/images/media/loader.svg" alt=""/>
+{{--    <img src="../assets/images/media/loader.svg" alt=""/>--}}
 </div>
 <!-- Loader -->
 <div  style="height: 100%!important" class="page">
@@ -204,125 +210,118 @@
 
 
     const updateForm2=document.getElementById('updateForm')
-    updateForm2.addEventListener('mouseover',(e)=>{
-        editTranslationButtons=document.querySelectorAll(`[data-edit]`)
-        console.log(editTranslationButtons)
-        editTranslationButtons.forEach((el, index) => {
+    if(updateForm2){
+        updateForm2.addEventListener('mouseover',(e)=>{
+            editTranslationButtons=document.querySelectorAll(`[data-edit]`)
+            // console.log(editTranslationButtons)
+            editTranslationButtons.forEach((el, index) => {
 
-            el.addEventListener('click', e => {
-                console.log(e)
-                document.querySelectorAll('[data-form-abbr="' + el.getAttribute('data-edit') + '"]').forEach(element => {
-                    element.removeAttribute('disabled');
-                });
-                document.querySelectorAll('[data-form-key="' + el.getAttribute('data-edit') + '"]').forEach(element => {
-                    element.removeAttribute('disabled');
-                });
-
-                document.querySelectorAll('[data-key="' + el.getAttribute('data-edit') + '"]').forEach(element => {
-                    element.removeAttribute('disabled');
-                });
-
-                document.querySelectorAll('[data-translation="' + el.getAttribute('data-edit') + '"]').forEach(element => {
-                    element.removeAttribute('disabled');
-                });
-
-                document.querySelectorAll('[data-abbr="' + el.getAttribute('data-edit') + '"]').forEach(element => {
-                    element.removeAttribute('disabled');
-                });
-
-                document.querySelectorAll('[data-submit="' + el.getAttribute('data-edit') + '"]').forEach(element => {
-                    element.style.display = 'block';
-                });
-                document.querySelectorAll('[data-cancel-submit="' + el.getAttribute('data-edit') + '"]').forEach(element => {
-                    element.style.display = 'block';
-                });
-
-                document.querySelectorAll('[data-delete="' + el.getAttribute('data-edit') + '"]').forEach(element => {
-                    element.style.display = 'block';
-                });
-
-            });
-
-            // Cancel Edit
-
-            const cancelEdit = document.querySelectorAll('[data-cancel-submit="' + el.getAttribute('data-edit') + '"]');
-            cancelEdit.forEach((eli) => {
-                eli.addEventListener('click', e => {
-                    console.log('clicked')
-
+                el.addEventListener('click', e => {
+                    console.log(e)
                     document.querySelectorAll('[data-form-abbr="' + el.getAttribute('data-edit') + '"]').forEach(element => {
-                        element.setAttribute('disabled', '');
+                        element.removeAttribute('disabled');
                     });
                     document.querySelectorAll('[data-form-key="' + el.getAttribute('data-edit') + '"]').forEach(element => {
-                        element.setAttribute('disabled', '');
+                        element.removeAttribute('disabled');
                     });
 
-                    document.querySelectorAll('[data-submit="' + eli.getAttribute('data-cancel-submit') + '"]').forEach(element => {
-                        element.style.display = 'none';
-                    });
-                    console.log(document.querySelectorAll('[data-submit="' + eli.getAttribute('data-cancel-submit') + '"]'))
-
-                    document.querySelectorAll('[data-cancel-submit="' + eli.getAttribute('data-cancel-submit') + '"]').forEach(element => {
-                        element.style.display = 'none';
-                    });
-                    document.querySelectorAll('[data-delete="' + eli.getAttribute('data-cancel-submit') + '"]').forEach(element => {
-                        element.style.display = 'none';
-                    });
-                    document.querySelectorAll('[data-key="' + eli.getAttribute('data-cancel-submit') + '"]').forEach(element => {
-                        element.setAttribute('disabled', '');
+                    document.querySelectorAll('[data-key="' + el.getAttribute('data-edit') + '"]').forEach(element => {
+                        element.removeAttribute('disabled');
                     });
 
-                    document.querySelectorAll('[data-abbr="' + eli.getAttribute('data-cancel-submit') + '"]').forEach(element => {
-                        element.setAttribute('disabled', '');
+                    document.querySelectorAll('[data-translation="' + el.getAttribute('data-edit') + '"]').forEach(element => {
+                        element.removeAttribute('disabled');
                     });
 
-
-                    document.querySelectorAll('[data-translation="' + eli.getAttribute('data-cancel-submit') + '"]').forEach(element => {
-                        element.setAttribute('disabled', '');
+                    document.querySelectorAll('[data-abbr="' + el.getAttribute('data-edit') + '"]').forEach(element => {
+                        element.removeAttribute('disabled');
                     });
 
+                    document.querySelectorAll('[data-submit="' + el.getAttribute('data-edit') + '"]').forEach(element => {
+                        element.style.display = 'block';
+                    });
+                    document.querySelectorAll('[data-cancel-submit="' + el.getAttribute('data-edit') + '"]').forEach(element => {
+                        element.style.display = 'block';
+                    });
+
+                    document.querySelectorAll('[data-delete="' + el.getAttribute('data-edit') + '"]').forEach(element => {
+                        element.style.display = 'block';
+                    });
+
+                });
+
+                // Cancel Edit
+
+                const cancelEdit = document.querySelectorAll('[data-cancel-submit="' + el.getAttribute('data-edit') + '"]');
+                cancelEdit.forEach((eli) => {
+                    eli.addEventListener('click', e => {
+                        console.log('clicked')
+
+                        document.querySelectorAll('[data-form-abbr="' + el.getAttribute('data-edit') + '"]').forEach(element => {
+                            element.setAttribute('disabled', '');
+                        });
+                        document.querySelectorAll('[data-form-key="' + el.getAttribute('data-edit') + '"]').forEach(element => {
+                            element.setAttribute('disabled', '');
+                        });
+
+                        document.querySelectorAll('[data-submit="' + eli.getAttribute('data-cancel-submit') + '"]').forEach(element => {
+                            element.style.display = 'none';
+                        });
+                        console.log(document.querySelectorAll('[data-submit="' + eli.getAttribute('data-cancel-submit') + '"]'))
+
+                        document.querySelectorAll('[data-cancel-submit="' + eli.getAttribute('data-cancel-submit') + '"]').forEach(element => {
+                            element.style.display = 'none';
+                        });
+                        document.querySelectorAll('[data-delete="' + eli.getAttribute('data-cancel-submit') + '"]').forEach(element => {
+                            element.style.display = 'none';
+                        });
+                        document.querySelectorAll('[data-key="' + eli.getAttribute('data-cancel-submit') + '"]').forEach(element => {
+                            element.setAttribute('disabled', '');
+                        });
+
+                        document.querySelectorAll('[data-abbr="' + eli.getAttribute('data-cancel-submit') + '"]').forEach(element => {
+                            element.setAttribute('disabled', '');
+                        });
+
+
+                        document.querySelectorAll('[data-translation="' + eli.getAttribute('data-cancel-submit') + '"]').forEach(element => {
+                            element.setAttribute('disabled', '');
+                        });
+
+                    })
                 })
-            })
 
 
-            // Submit and update Translations
+                // Submit and update Translations
 
-            const submitTranslationUpdate = document.querySelectorAll('[data-submit="' + el.getAttribute('data-edit') + '"]');
+                const submitTranslationUpdate = document.querySelectorAll('[data-submit="' + el.getAttribute('data-edit') + '"]');
 
-            submitTranslationUpdate.forEach((updt) => {
-                updt.addEventListener('click', e => {
-                    updateForm.submit()
+                submitTranslationUpdate.forEach((updt) => {
+                    updt.addEventListener('click', e => {
+                        updateForm.submit()
+                    })
                 })
-            })
 
 
-            // Delete Particular Translations
-            const deleteTranslation = document.querySelectorAll('[data-delete="' + el.getAttribute('data-edit') + '"]');
+                // Delete Particular Translations
+                const deleteTranslation = document.querySelectorAll('[data-delete="' + el.getAttribute('data-edit') + '"]');
 
-            deleteTranslation.forEach((dlt1) => {
-                dlt1.addEventListener('click', e => {
-                    console.log('delete clicked')
-                    console.log(document.querySelectorAll('[data-deleteinput="' + el.getAttribute('data-edit') + '"]'))
-                    document.querySelectorAll('[data-deleteinput="' + el.getAttribute('data-edit') + '"]').forEach(dlt => {
-                        dlt.removeAttribute('disabled');
-                        console.log(dlt)
+                deleteTranslation.forEach((dlt1) => {
+                    dlt1.addEventListener('click', e => {
+                        console.log('delete clicked')
+                        console.log(document.querySelectorAll('[data-deleteinput="' + el.getAttribute('data-edit') + '"]'))
+                        document.querySelectorAll('[data-deleteinput="' + el.getAttribute('data-edit') + '"]').forEach(dlt => {
+                            dlt.removeAttribute('disabled');
+                            console.log(dlt)
 
-                    });
+                        });
 
-                    updateForm.submit()
+                        updateForm.submit()
+                    })
                 })
-            })
-        });
-    })
-
-
-
-
-
-
-
-
-
+            });
+        })
+    }
 
 </script>
 

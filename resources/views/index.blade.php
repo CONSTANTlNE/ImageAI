@@ -96,7 +96,6 @@
     @include('landingcomponents.heroSection')
 
 
-
     {{--install buttons--}}
     @include('landingcomponents.installButtonsSection')
     <!-- Midjourney Section -->
@@ -111,6 +110,7 @@
     {{--Pricing FAQ Footer--}}
     @include('landingcomponents.pricingSection')
     <!-- Scripts -->
+
 </div>
 
 

@@ -30,32 +30,32 @@
                         <path fill="#EB4335"
                               d="M130.55 50.479c24.514 0 41.05 10.589 50.479 19.438l36.844-35.974C195.245 12.91 165.798 0 130.55 0 79.49 0 35.393 29.301 13.925 71.947l42.211 32.783c10.59-31.477 39.891-54.251 74.414-54.251"/>
                     </svg>
-                    ავტორიზაცია
+                    {{__('Authorization')}}
                 </a>
             </div>
             <div class="text-center my-[1.5rem] authentication-barrier">
-                <span>OR</span>
+                <span>{{__('OR')}}</span>
             </div>
             <form class="flex justify-center" action="{{route('login')}}" method="post">
                 @csrf
                 <div style="max-width: 370px" class="grid grid-cols-12">
                     <div class="xl:col-span-12 col-span-12 mb-4">
-                        <label for="signin-username" class="form-label text-default">Email</label>
+                        <label for="signin-username" class="form-label text-default">{{__('Email')}}</label>
                         <input name="email" type="email" class="form-control form-control-lg w-full !rounded-md"
-                               id="signin-username" placeholder="user name">
+                               id="signin-username" placeholder="">
                         @error('email')
                         <span class="text-danger " role="alert">{{$message}}</span>
                         @enderror
                     </div>
                     <div class="xl:col-span-12 col-span-12 mb-4">
-                        <label for="signin-password" class="form-label text-default block">Password<a
-                                    href="reset-password-cover.html"
-                                    class="ltr:float-right rtl:float-left text-danger">Forget password
-                                ?</a></label>
+                        <label for="signin-password" class="form-label text-default block">{{__('Password')}}<a
+                                    href="{{route('password.request')}}"
+                                    class="ltr:float-right rtl:float-left text-danger">{{__('Forget password ?')}}
+                                </a></label>
                         <div class="input-group">
                             <input  name="password" type="password"
                                     class="form-control form-control-lg !border-s border-defaultborder dark:border-defaultborder/10 !rounded-e-none"
-                                    id="signin-password" placeholder="password">
+                                    id="signin-password" placeholder="">
                             <button aria-label="button" type="button"
                                     class="ti-btn ti-btn-light !rounded-s-none !mb-0"
                                     onclick="createpassword('signin-password',this)" id="button-addon2"><i
@@ -65,26 +65,27 @@
                         @error('password')
                         <span class="text-danger " role="alert">{{$message}}</span>
                         @enderror
-                        <div class="mt-2">
-                            <div class="form-check !ps-0">
-                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                <label class="form-check-label text-[#8c9097] dark:text-white/50 font-normal"
-                                       for="defaultCheck1">
-                                    Remember password ?
-                                </label>
-                            </div>
-                        </div>
+{{--                        <div class="mt-2">--}}
+{{--                            <div class="form-check !ps-0">--}}
+{{--                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">--}}
+{{--                                <label class="form-check-label text-[#8c9097] dark:text-white/50 font-normal"--}}
+{{--                                       for="defaultCheck1">--}}
+{{--                                    Remember password ?--}}
+{{--                                </label>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
                     </div>
                     <div class="xl:col-span-12 col-span-12 grid">
                         <button
-                                class="startSpinner ti-btn ti-btn-lg bg-primary text-white !font-medium dark:border-defaultborder/10">Sign
-                            In</button>
+                                class="startSpinner ti-btn ti-btn-lg bg-primary text-white !font-medium dark:border-defaultborder/10">
+                         {{__('Authorization')}}
+                        </button>
                     </div>
                 </div>
             </form>
             <div class="text-center">
-                <p class="text-[0.75rem] text-[#8c9097] dark:text-white/50 mt-4">Dont have an account? <a
-                            href="{{route('register')}}" class="text-primary">Sign Up</a>
+                <p class="text-[0.75rem] text-[#8c9097] dark:text-white/50 mt-4">{{__('Dont have an account?')}} <a
+                            href="{{route('register')}}" class="text-primary">{{__('Register')}}</a>
                 </p>
             </div>
         </div>

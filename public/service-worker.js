@@ -1,4 +1,3 @@
-const CACHE_NAME = 'site-cache-v2'; // You can keep this for future use or remove it if not needed
 
 self.addEventListener('install', (event) => {
     console.log('Service Worker: Installing...');
@@ -8,18 +7,39 @@ self.addEventListener('install', (event) => {
 
 self.addEventListener('activate', (event) => {
     console.log('Service Worker: Activated');
-    // You can include logic to clean up old caches here, but we'll skip it for now
+    // Typically, cleanup logic for old caches would go here
 });
 
-// Fetch event handler
+
+
+
 self.addEventListener('fetch', (event) => {
-    // console.log('Service Worker: Fetching', event.request.url);
-    event.respondWith(
-        // Just fetch from the network
-        fetch(event.request).catch((error) => {
-            console.error('Fetch failed; returning offline page instead.', error);
-            // You can return a fallback page here if desired
-            // return caches.match('/offline.html');
-        })
-    );
+    const url = new URL(event.request.url);
+
+    // If the app is opened fresh, always redirect to the start_url
+    if (!event.clientId && url.pathname === '/') {
+        event.respondWith(Response.redirect('/ka/register'));
+    } else {
+        event.respondWith(fetch(event.request));
+    }
 });
+
+// Save the current URL before the user leaves the app
+window.addEventListener('beforeunload', () => {
+    localStorage.setItem('lastVisitedPage', window.location.href);
+});
+
+// On app load, check the last page and logged-in status
+document.addEventListener('DOMContentLoaded', () => {
+    const isLoggedIn = Boolean(localStorage.getItem('authToken')); // Replace with your auth check
+    const lastVisitedPage = localStorage.getItem('lastVisitedPage');
+
+    if (isLoggedIn && lastVisitedPage && window.location.href !== lastVisitedPage) {
+        window.location.href = lastVisitedPage;
+    } else if (!isLoggedIn) {
+        // Redirect to the login page or start_url
+        window.location.href = '/login';
+    }
+});
+
+

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\LocalizationMiddleware;
 use App\Http\Middleware\VerifyMobileMiddleware;
@@ -25,6 +26,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'localization' => LocalizationMiddleware::class,
             'auth'         => Authenticate::class,
             'verified'         =>VerifyMobileMiddleware::class,
+            'admin' => AdminMiddleware::class
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

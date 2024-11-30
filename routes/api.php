@@ -15,6 +15,6 @@ Route::post('/runway/webhook', [RunwayController::class, 'webhook'])
     ->middleware('throttle:60,1')
     ->name('runway.webhook');
 
-Route::post('/bog/webhook', [BogController::class, 'webhook'])
+Route::post('/bog/webhook', [BogController::class, 'getPaymentStatus'])
     ->middleware('throttle:60,1')
     ->name('bog.webhook');

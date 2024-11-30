@@ -1,7 +1,7 @@
 {
   "short_name": "ONIX",
   "name": "ONIX AI",
-  "start_url": "https://local.ews.ge/en/register",
+  "start_url": "https://local.ews.ge/ka/register",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#000000",

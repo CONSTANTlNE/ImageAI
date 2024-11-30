@@ -46,8 +46,12 @@ class AiController extends Controller
     }
 
 
-    public function removeBG(Request $request)
+    public function removeBGcreate(Request $request)
     {
+
+        if($request->hasFile('images') && $request->file_url!==null){
+            return back()->with('alert_error','გთხოვთ აირჩოთ ერთ-ერთი, ატვირთეთ ფოტო ან აირჩიეთ არსებული გალერეიდან');
+        }
 
         if(!(new UserBalanceService())->checkBalance('removebg')){
             return back()->with('alert_error','არასაკმარისი ბალანსი');

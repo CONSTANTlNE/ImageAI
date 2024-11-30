@@ -12,6 +12,7 @@
     },
     "dependencies": {
         "@fal-ai/serverless-client": "^0.15.0",
+        "@popperjs/core": "^2.11.8",
         "simplebar": "^6.2.7"
     }
 }

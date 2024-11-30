@@ -29,17 +29,21 @@ class RunwayController extends Controller
             ->get();
 
         $runway2 = Runway::with('media')
-            ->take(30)
+            ->take(20)
             ->orderBy('created_at', 'desc')
             ->get();
-        $pending = Runway::whereNull('video_url')->first();
 
+        $pending = Runway::whereNull('video_url')->first();
 
         return view('user.pages.runway', compact('runway', 'runway2', 'pending'));
     }
 
     public function create(Request $request,RunwayRequest $runwayRequest)
     {
+
+        if($request->hasFile('runwayUpload') && $request->imageUrl!==null){
+            return back()->with('alert_error','გთხოვთ აირჩოთ ერთ-ერთი, ატვირთეთ ფოტო ან აირჩიეთ არსებული გალერეიდან');
+        }
 
         $data = $runwayRequest->validated();
 
@@ -278,27 +282,47 @@ class RunwayController extends Controller
         return response('webhook received', 200);
     }
 
-    public function galleryHtmx(Request $request)
+    public function galleryHtmx(Request $request, $perpage = 10)
     {
+
+
+//        dd($request->model === 'flux');
+        $validated = $request->validate([
+            'page' => 'numeric',
+        ]);
+
+
+
+        $page     = $request->page;
+        $data     = '';
+
+
         if ($request->model === 'midjourney') {
             $midjourneys = Midjourney::where('status', '=', 'completed')
                 ->with('media')
-                ->take(30)
                 ->orderBy('created_at', 'desc')
-                ->get();
+                ->paginate(10)->appends($request->query());
 
-            return view('user.htmx.gallery-for-runway', compact('midjourneys'));
+            $data=$midjourneys;
+
+
+            return view('user.htmx.gallery-for-runway', compact('midjourneys','data'));
         }
 
         if ($request->model === 'flux') {
             $fluxes = Flux::where('model', 'flux-schnell')
                 ->where('image_url', '!=', null)
                 ->with('media')
-                ->take(30)
                 ->orderBy('created_at', 'desc')
-                ->get();
+                ->paginate(10)->appends($request->query());
 
-            return view('user.htmx.gallery-for-runway', compact('fluxes'));
+            $data=$fluxes;
+
+            return view('user.htmx.gallery-for-runway', compact('fluxes','data'));
         }
+
+        $error='გალერეა არ მოიძებნა';
+        return view('user.htmx.error-htmx',compact('error'));
+
     }
 }

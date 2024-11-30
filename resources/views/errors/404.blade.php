@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr" data-nav-layout="vertical" data-vertical-style="overlay" class="light"
+<html lang="en" dir="ltr" data-nav-layout="vertical" data-vertical-style="overlay" class="dark"
   data-header-styles="light" data-menu-styles="light" data-toggled="close">
 
 <head>
@@ -37,7 +37,6 @@
 
 
 </head>
-
 <body>
 
   <!-- ========== Switcher  ========== -->
@@ -477,8 +476,8 @@
                     been removed or never been existed.</p>
                 </div>
               </div>
-              <a href="index.html" class="ti-btn bg-primary text-white font-semibold"><i
-                  class="ri-arrow-left-line align-middle inline-block"></i>BACK TO HOME</a>
+              <a onclick="window.history.back()"  class="ti-btn bg-primary text-white font-semibold"><i
+                  class="ri-arrow-left-line align-middle inline-block"></i>RETURN BACK</a>
             </div>
             <div class="xl:col-span-3"></div>
           </div>

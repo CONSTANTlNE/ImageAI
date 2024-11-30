@@ -3,12 +3,10 @@
 
 
 @section('remove-bg')
-    <div class="main-content">
+    <div class="main-content" >
         <div class="main-chart-wrapper p-2 gap-2 lg:flex responsive-chat-open">
-            {{--            Left Sidebar--}}
-
-            @include('user.pages.components.chat-left-sidebar')
-
+            {{--Left Sidebar--}}
+            @include('user.pages.components.chatLeftSidebar.chat-left-sidebar')
             {{--Main Chat--}}
             <div id="main-chat" class="main-chat-area  custom-height border dark:border-defaultborder/10">
                 <div class="sm:flex items-center p-2 border-b dark:border-defaultborder/10">
@@ -53,7 +51,7 @@
                 <div class="chat-content custom-chat-content" id="main-chat-content">
                     <ul id="chat-target" class="list-none">
                         <li class="chat-day-label">
-                            <span>Today</span>
+                            <span>{{__('Today')}}</span>
                         </li>
                         @foreach($images as $item)
                             {{-- PROMPT--}}
@@ -107,7 +105,7 @@
                     <div style="height: 8rem!important;align-items: flex-end" class="chat-footer mb-3 justify-center">
                         {{-- Submit Button--}}
                         <button class="ti-btn ti-btn-primary-full !rounded-full ti-btn-wave startSpinner">
-                            Remove
+                            {{__('Remove')}}
                             <i class="ri-send-plane-2-line"></i>
                         </button>
                     </div>
@@ -116,7 +114,7 @@
                         {{--Upload PHOTO--}}
                         <div class="text-center">
                             <button id="runwayBtn" type="button"
-                                    class="ti-btn ti-btn-primary-full !rounded-full ti-btn-wave">ატვირთე ახალი
+                                    class="ti-btn ti-btn-primary-full !rounded-full ti-btn-wave">{{__('Upload')}}
                             </button>
                             <div style="color:#845ADF" id="runwayPhotoName"></div>
                         </div>
@@ -128,7 +126,7 @@
                             <a id="choosefromgallery" href="javascript:void(0);"
                                class="ti-btn ti-btn-primary-full !rounded-full ti-btn-wave"
                                data-hs-overlay="#staticBackdrop">
-                                აირჩიე არსებული
+                                {{__('From gallery')}}
                             </a>
                             <div id="staticBackdrop" class="hs-overlay hidden ti-modal  [--overlay-backdrop:static]">
                                 <div class="hs-overlay-open:mt-7 ti-modal-box mt-0 ease-out">
@@ -146,9 +144,13 @@
                                             <div class="container-fluid">
                                                 <div class="grid grid-cols-2 gap-2">
                                                     <div class="">
-                                                        <a hx-get="{{route('runway.gallery.htmx')}}"
-                                                           hx-target="#galleryTarget" hx-vals='{"model": "flux"}'
-                                                           data-hs-overlay="#staticBackdrop2" href="javascript:void(0);"
+                                                        <a
+                                                                hx-get="{{route('runway.gallery.htmx')}}"
+                                                           href="javascript:void(0);"
+{{--                                                           href="{{route('runway.gallery.htmx',['model'=>'flux'])}}"--}}
+                                                           hx-target="#galleryTarget"
+                                                           hx-vals='{"model": "flux"}'
+                                                           data-hs-overlay="#staticBackdrop2"
                                                            class="p-4 items-center related-app block text-center rounded-sm hover:bg-gray-50 dark:hover:bg-black/20">
                                                             <div>
                                                                 <img src="{{asset('assets/images/schnell.webp')}}"
@@ -190,7 +192,7 @@
                                 </div>
                             </div>
                             {{--gallery modal Modal and htmx--}}
-                            <div id="staticBackdrop2" class="hs-overlay ti-modal hidden">
+                            <div id="staticBackdrop2" style="overflow: hidden!important;" class="hs-overlay ti-modal hidden">
                                 <div class="hs-overlay-open:mt-7 ti-modal-box mt-0 ease-out h-[calc(100%-3.5rem)] min-h-[calc(100%-3.5rem)] flex items-center">
                                     <div class="max-h-full overflow-hidden ti-modal-content">
                                         <div class="ti-modal-header">
@@ -241,14 +243,14 @@
                 </div>
                 <div class="mb-0 mt-3">
                     <div class="font-semibold mb-4 text-defaultsize dark:text-defaulttextcolor/70">
-                        Gallery (last
+                        {{__('last')}}
                         <span class="badge bg-primary/10 !rounded-full text-primary ">30</span>
-                        images)
+                        {{__('images')}}
                         <span class="ltr:float-right rtl:float-left text-[0.6875rem]">
                             <a href="javascript:void(0);" class="text-primary underline">
                                 <u>
-                                    <a class="startSpinner"
-                                       href="{{route('gallery',['model'=>'removebg'])}}">  View All</a>
+                                    <a class="startSpinner text-primary"
+                                       href="{{route('gallery',['model'=>'removebg'])}}">{{__('View All')}}</a>
                                 </u>
                             </a>
                         </span>

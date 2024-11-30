@@ -7,7 +7,7 @@
     <div class="main-content">
         <div class="main-chart-wrapper p-2 gap-2 lg:flex responsive-chat-open">
             {{--Left Sidebar--}}
-            @include('user.pages.components.chat-left-sidebar')
+            @include('user.pages.components.chatLeftSidebar.chat-left-sidebar')
             {{--Main Chat--}}
             <div id="main-chat" class="custom-height main-chat-area border dark:border-defaultborder/10">
                 <div class="sm:flex items-center p-2 border-b dark:border-defaultborder/10">
@@ -51,7 +51,7 @@
                 <div class="chat-content custom-chat-content" id="main-chat-content">
                     <ul class="list-none">
                         <li class="chat-day-label">
-                            <span>Today</span>
+                            <span>{{__('Today')}}</span>
                         </li>
                         @foreach($images as $image)
                             {{-- PROMPT--}}
@@ -162,7 +162,7 @@
                 {{-- PROMPT FIELD--}}
                 <form class="chat-footer" action="{{route('midjourney.create')}}" method="post">
                     @csrf
-                    <input name="prompt" class="form-control w-full !rounded-md" placeholder="Type your message here..."
+                    <input name="prompt" class="form-control w-full !rounded-md"     placeholder="{{__('description')}}"
                            type="text">
                     <button id="fetch-prompt2" aria-label="anchor"
                             class="ti-btn bg-primary text-white !mx-2 ti-btn-icon ti-btn-send startSpinner">
@@ -180,10 +180,10 @@
                 </div>
                 <div style="margin-left: 10px" class="mb-0 mt-3">
                     <div class="font-semibold mb-4 text-defaultsize dark:text-defaulttextcolor/70">
-                        Gallery
+                        {{__('Gallery')}}
                         <span class="ltr:float-right rtl:float-left text-[0.6875rem]">
                             <a href="{{route('gallery',['model'=>'midjourney'])}}" class="text-primary underline">
-                                <u>View All</u>
+                                <u>{{__('View All')}}</u>
                             </a>
                         </span>
                     </div>
@@ -204,6 +204,8 @@
                                                    document.getElementById('mediaindex3').value={{$mediaindex}}
                                                    document.getElementById('downloadId').value={{$midjourney->id}}
                                                    document.getElementById('shareId').value='{{$media->getUrl()}}'
+                                                   document.getElementById('public').value={{$mediaindex}}
+                                                   document.getElementById('publicid').value={{$midjourney->id}}
                                                    "
                                            data-hs-overlay="#actionsmodal">
                                             <svg class="badge bg-primary/10  text-primary"
@@ -353,6 +355,23 @@
                                       d="m383.5 128l.5-24a56.16 56.16 0 0 0-56-56H112a64.19 64.19 0 0 0-64 64v216a56.16 56.16 0 0 0 56 56h24"/>
                             </svg>
                         </button>
+                        {{--make public Button--}}
+                        <form action="{{route('midjourney.make.public')}}" method="post">
+                            @csrf
+                            <input type="hidden" name="index" id="public">
+                            <input type="hidden" name="id" id="publicid">
+                            <button>
+                                <svg class="badge bg-primary/10 text-primary" xmlns="http://www.w3.org/2000/svg"
+                                     width="35" height="35" viewBox="0 0 24 24">
+                                    <g stroke="#845ADF" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                                        <circle cx="18" cy="5" r="3"/>
+                                        <circle cx="6" cy="12" r="3"/>
+                                        <circle cx="18" cy="19" r="3"/>
+                                        <path d="m8.5 13.5l7 4m0-11l-7 4" fill="none"/>
+                                    </g>
+                                </svg>
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>

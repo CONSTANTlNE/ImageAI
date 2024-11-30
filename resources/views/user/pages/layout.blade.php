@@ -4,9 +4,9 @@
 
 <head>
     <script>
-        if(localStorage.getItem('hs_theme')=='light'){
+        if (localStorage.getItem('hs_theme') == 'light') {
             let html = document.querySelector("html");
-            html.className='light';
+            html.className = 'light';
             html.setAttribute('data-header-styles', 'light');
         }
     </script>
@@ -14,7 +14,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="htmx-config" content='{"selfRequestsOnly":false}'>
-    <title> IMAGEAI</title>
+    <title>IMAGEAI</title>
     <meta name="description"
           content="A Tailwind CSS admin template is a pre-designed web page for an admin dashboard. Optimizing it for SEO includes using meta descriptions and ensuring it's responsive and fast-loading.">
     <meta name="keywords"
@@ -63,6 +63,17 @@
 
     <style>
         .spinner-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+            z-index: 1999999999; /* Behind the spinner's z-index */
+            display: none; /* Hidden by default */
+        }
+
+        #spinner-overlay {
             position: fixed;
             top: 0;
             left: 0;
@@ -140,6 +151,10 @@
 
             .hideX {
                 display: block;
+            }
+
+            #menusvg {
+                margin-top: 3px;
             }
 
             .ai-image {
@@ -249,6 +264,12 @@
 </head>
 
 <body id="foo">
+<div id="spinner-overlay">
+    <svg xmlns="http://www.w3.org/2000/svg" width="150" height="150" viewBox="0 0 16 16">
+        <path fill="currentColor"
+              d="m6.517 12.271l1.254-1.254Q7.883 11 8 11a1.5 1.5 0 1 1-1.483 1.271m2.945-2.944l.74-.74c.361.208.694.467.987.772a.5.5 0 0 1-.721.693a3.4 3.4 0 0 0-1.006-.725m2.162-2.163l.716-.715q.463.349.87.772a.5.5 0 1 1-.722.692a6.3 6.3 0 0 0-.864-.749M7.061 6.07A6.2 6.2 0 0 0 3.54 7.885a.5.5 0 0 1-.717-.697a7.2 7.2 0 0 1 5.309-2.187zm6.672-1.014l.71-.71q.411.346.786.736a.5.5 0 0 1-.721.692a9 9 0 0 0-.775-.718m-3.807-1.85A9 9 0 0 0 8 3a9 9 0 0 0-6.469 2.734a.5.5 0 1 1-.717-.697A10 10 0 0 1 8 2c.944 0 1.868.131 2.75.382zM8 13a.5.5 0 1 0 0-1a.5.5 0 0 0 0 1m-5.424 1a.5.5 0 0 1-.707-.707L14.146 1.146a.5.5 0 0 1 .708.708z"/>
+    </svg>
+</div>
 <div id="htmxerrors"></div>
 <!-- ========== Switcher  ========== -->
 @include('user.pages.components.switcher')
@@ -313,7 +334,7 @@
             <form action="{{route('bog.payment.request')}}" method="post">
                 @csrf
                 <div class="ti-modal-header">
-                    <h6 class="modal-title text-[1rem] font-semibold" id="staticBackdropLabel2">ბალანსის შევსება
+                    <h6 class="modal-title text-[1rem] font-semibold" id="staticBackdropLabel2">{{__('Top Up')}}
                     </h6>
                     <button type="button" class="hs-dropdown-toggle ti-modal-close-btn" data-hs-overlay="#fillballance">
                         <span class="sr-only">Close</span>
@@ -325,9 +346,14 @@
                     </button>
                 </div>
                 <div class="ti-modal-body flex flex-col gap-3 justify-center align-middle">
-                    <input type="text" class="form-control" id="amount" name="amount" placeholder="მინიმიმუმ 3 ლარი">
+                    <input
+                            oninvalid="this.setCustomValidity('მხოლოდ რიცხვი, არანაკლებ 3')"
+                            oninput="this.setCustomValidity('')"
+                            min="3"
+                            type="number" required class="form-control" id="amount" name="amount"
+                            placeholder="{{__('minimum 3 ₾')}}">
                     <button class="flex justify-center">
-                        <img style="border-radius: 20px;height: 50px;object-fit: cover" src="{{asset('bog-dark.png')}}"
+                        <img style="border-radius: 5px;height: 50px;object-fit: cover" src="{{asset('bog-dark.png')}}"
                              alt="">
                     </button>
                 </div>

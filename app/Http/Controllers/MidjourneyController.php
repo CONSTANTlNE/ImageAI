@@ -16,9 +16,11 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schedule;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class MidjourneyController extends Controller
 {
+
 
     public function index(Request $request)
     {
@@ -181,16 +183,12 @@ class MidjourneyController extends Controller
 
     public function delete(Request $request)
     {
-        $midjourney = Midjourney::where('id', $request->id)->first();
-        $index      = $request->index;
+        $midjourney = Midjourney::where('id', $request->id)->with('media')->first();
+        $media      = $midjourney->media->where('id', $request->mediaid)->first();
 
 
-        $i = 0;
-        foreach ($midjourney->media as $media) {
-            if ($i == $index) {
-                $media->delete();
-            }
-            $i++;
+        if($media) {
+            $media->delete();
         }
 
 // Refresh the relationship to get the updated media collection
@@ -314,6 +312,29 @@ class MidjourneyController extends Controller
         }
 
         return back()->with('alert_error', 'ფოტოს არ მოიძებნა');
+    }
+
+    public function makePublic (Request $request)
+    {
+
+        $midjourney = Midjourney::where('id', $request->id)->with('media')->first();
+        $media      = $midjourney->media->where('id', $request->mediaid)->first();
+
+//        dd($request->mediaid);
+//dd($media);
+        if($media) {
+
+            if ($media->public===0) {
+                $media->public = 1;
+                $message='გმადლობთ! ფოტო გახდა საჯაროდ ხელმიწაწვდომი';
+            } else {
+                $media->public = 0;
+                $message='ფოტო ამოღებულია საჯარო გალერეიდან';
+            }
+            $media->save();
+            return back()->with('alert_success',$message );
+        }
+        return back()->with('alert_error', 'ფოტო არ მოიძებნა');
     }
 
 }

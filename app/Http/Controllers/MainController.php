@@ -19,9 +19,14 @@ class MainController extends Controller
     public function gallery(Request $request,$locale, $model, $perpage = 8)
     {
 
+        $validated = $request->validate([
+            'page' => 'numeric',
+            'perpage' => 'numeric',
+        ]);
+
 
         $perpage  = $request->input('perpage', $perpage);
-        $page     = $request->page;
+        $page     = $request->input('page');
         $data     = '';
         $perpage1 = 8;
         $perpage2 = 16;
@@ -113,6 +118,13 @@ class MainController extends Controller
 
     public function checkUserBalanceHistory(Request $request,$locale,$perpage = 10) {
 
+//        dd($request->all());
+
+        $validated = $request->validate([
+            'page' => 'numeric',
+            'perpage' => 'numeric',
+        ]);
+
         $perpage  = $request->input('perpage', $perpage);
         $perpage1 = 10;
         $perpage2 = 15;
@@ -122,10 +134,14 @@ class MainController extends Controller
 
         if ($model && $model!=='all') {
             $history = Userbalance::where('model', $model)->
-            with('flux.media', 'midjourney.media', 'removebg.media', 'runway.media')->paginate($perpage)->appends($request->query());
+            with('flux.media', 'midjourney.media', 'removebg.media', 'runway.media')
+                ->orderBy('created_at', 'desc')
+                ->paginate($perpage)
+                ->appends($request->query());
 
-            $sum=UserBalance::where('model', $model)->select('balance')->get();
-            $totabymodel =$sum->sum(function ($userBalance )  {
+            $sum=UserBalance::where('model', $model)
+                ->select('balance')->get();
+            $totalbymodel =$sum->sum(function ($userBalance )  {
                 return $userBalance->balance < 0  ? $userBalance->balance : 0;
             });
 
@@ -134,26 +150,40 @@ class MainController extends Controller
                 $totalfill = $sum->sum(function ($userBalance)  {
                     return $userBalance->balance > 0 ? $userBalance->balance : 0 ;
                 });
-                return view('user.pages.history', compact('history', 'perpage1', 'perpage2', 'perpage3', 'model','totabymodel','totalfill'));
+                return view('user.pages.history', compact('history', 'perpage1', 'perpage2', 'perpage3', 'model','totalbymodel','totalfill'));
             }
-            return view('user.pages.history', compact('history', 'perpage1', 'perpage2', 'perpage3', 'model','totabymodel'));
+            return view('user.pages.history', compact('history', 'perpage1', 'perpage2', 'perpage3', 'model','totalbymodel'));
         }
 
 
 
 
-        $history = Userbalance::with('flux.media', 'midjourney.media', 'removebg.media', 'runway.media')->paginate($perpage);
+        $history = Userbalance::with('flux.media', 'midjourney.media', 'removebg.media', 'runway.media')
+            ->orderBy('created_at', 'desc')
+            ->paginate($perpage);
 
-         $sum=UserBalance::select('balance')->get();
+         $sum=UserBalance::all();
+
         $totalfill = $sum->sum(function ($userBalance) {
             return max($userBalance->balance, 0);
         });
+
         $totalspent = $sum->sum(function ($userBalance) {
-            return $userBalance->balance < 0 ? $userBalance->balance : 0;
+           if ($userBalance->balance < 0 && $userBalance->model!=='refund'){
+               return $userBalance->balance;
+           }else {
+               return 0;
+           }
+        });
+
+        $totalrefund=$sum->sum(function ($userBalance) {
+            if ($userBalance->model==='refund'){
+                return $userBalance->balance;
+            }
         });
 
 
-        return view('user.pages.history', compact('history', 'perpage1', 'perpage2', 'perpage3', 'model','totalfill','totalspent'));
+        return view('user.pages.history', compact('history', 'perpage1', 'perpage2', 'perpage3', 'model','totalfill','totalspent','totalrefund'));
 
     }
 }

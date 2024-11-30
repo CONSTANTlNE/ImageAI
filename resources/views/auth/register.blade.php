@@ -30,30 +30,30 @@
             <path fill="#EB4335"
                   d="M130.55 50.479c24.514 0 41.05 10.589 50.479 19.438l36.844-35.974C195.245 12.91 165.798 0 130.55 0 79.49 0 35.393 29.301 13.925 71.947l42.211 32.783c10.59-31.477 39.891-54.251 74.414-54.251"/>
           </svg>
-          რეგისტრაცია
+          {{__('Register')}}
         </a>
       </div>
       <div class="text-center my-[1.5rem] authentication-barrier">
-        <span>OR</span>
+        <span>{{__('OR')}}</span>
       </div>
       <form action="{{route('register')}}" method="post">
         @csrf
       <div class="grid grid-cols-12 ">
         <div class="xl:col-span-12 col-span-12 mb-4">
-          <input type="text" value="{{old('name')}}" name="name" class="form-control form-control-lg w-full !rounded-md" id="signup-firstname" placeholder="first name">
+          <input type="text" value="{{old('name')}}" name="name" class="form-control form-control-lg w-full !rounded-md" id="signup-firstname" placeholder="{{__('user name')}}">
           @error('name')
           <span class="text-danger " role="alert">{{$message}}</span>
           @enderror
         </div>
         <div class="xl:col-span-12 col-span-12 mb-4">
-          <input type="email"  value="{{old('email')}}" name="email" class="form-control form-control-lg w-full !rounded-md" id="signup-lastname" placeholder="Email">
+          <input type="email"  value="{{old('email')}}" name="email" class="form-control form-control-lg w-full !rounded-md" id="signup-lastname" placeholder="{{__('Email')}}">
           @error('email')
           <span class="text-danger " role="alert">{{$message}}</span>
           @enderror
         </div>
         <div class="xl:col-span-12 col-span-12 mb-4">
           <div class="input-group">
-            <input type="password" name="password" class="form-control form-control-lg !border-s border-defaultborder dark:border-defaultborder/10 !rounded-e-none" id="signup-password" placeholder="password">
+            <input type="password" name="password" class="form-control form-control-lg !border-s border-defaultborder dark:border-defaultborder/10 !rounded-e-none" id="signup-password" placeholder="{{__('Password')}}">
             <button aria-label="button" class="ti-btn ti-btn-light !rounded-s-none !mb-0" onclick="createpassword('signup-password',this)" type="button" id="button-addon2"><i class="ri-eye-off-line align-middle"></i></button>
           </div>
           @error('password')
@@ -62,23 +62,23 @@
         </div>
         <div class="xl:col-span-12 col-span-12 mb-4">
           <div class="input-group">
-            <input type="password" name="password_confirmation" class="form-control !border-s border-defaultborder dark:border-defaultborder/10 form-control-lg !rounded-e-none" id="signup-confirmpassword" placeholder="confirm password">
+            <input type="password" name="password_confirmation" class="form-control !border-s border-defaultborder dark:border-defaultborder/10 form-control-lg !rounded-e-none" id="signup-confirmpassword" placeholder="{{__('confirm password')}}">
             <button aria-label="button" class="ti-btn ti-btn-light !rounded-s-none !mb-0" onclick="createpassword('signup-confirmpassword',this)" type="button" id="button-addon21"><i class="ri-eye-off-line align-middle"></i></button>
           </div>
           <div class="form-check mt-4 flex !ps-0 ">
             <input class="form-check-input align-middle" type="checkbox" value="" id="defaultCheck1">
             <label class="form-check-label text-[#8c9097] dark:text-white/50 font-normal inline" for="defaultCheck1">
-              By creating a account you agree to our <a href="terms.html" class="text-success"><u>&nbsp;Terms &amp; Conditions</u></a>&nbsp; and&nbsp; <a class="text-success"><u>Privacy Policy</u></a>
+              {{__('By creating a account you agree to our')}} <a href="{{route('terms')}}" class="text-success"><u>{{__('Terms & Conditions2')}}</u></a>&nbsp;&nbsp
             </label>
           </div>
         </div>
         <div class="xl:col-span-12 col-span-12 grid ">
-          <button  class="startSpinner ti-btn ti-btn-lg bg-primary text-white !font-medium dark:border-defaultborder/10">Create Account</button>
+          <button  class="startSpinner ti-btn ti-btn-lg bg-primary text-white !font-medium dark:border-defaultborder/10">{{__('Create Account')}}</button>
         </div>
       </div>
       </form>
       <div class="text-center">
-        <p class="text-[0.75rem] text-[#8c9097] dark:text-white/50 mt-4">Already have an account? <a href="{{route('login')}}" class="text-primary">Sign In</a></p>
+        <p class="text-[0.75rem] text-[#8c9097] dark:text-white/50 mt-4">{{__('Already have an account?')}} <a href="{{route('login')}}" class="text-primary">{{(__('Authorization'))}}</a></p>
       </div>
     </div>
   </div>

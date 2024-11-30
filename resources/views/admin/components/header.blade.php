@@ -915,13 +915,13 @@
                             type="button"
                             class="hs-dropdown-toggle ti-dropdown-toggle !gap-2 !p-0 flex-shrink-0 sm:me-2 me-0 !rounded-full !shadow-none text-xs align-middle !border-0 !shadow-transparent"
                     >
-{{--                        <img--}}
-{{--                                class="inline-block rounded-full"--}}
-{{--                                src="../assets/images/faces/9.jpg"--}}
-{{--                                width="32"--}}
-{{--                                height="32"--}}
-{{--                                alt="Image Description"--}}
-{{--                        />--}}
+                        <img
+                                class="inline-block rounded-full"
+                                src="../assets/images/faces/9.jpg"
+                                width="32"
+                                height="32"
+                                alt="Image Description"
+                        />
                     </button>
                     <div class="md:block hidden dropdown-profile">
                         <p

@@ -64,7 +64,12 @@ return [
             'level' => 'info',
         ],
 
-        'api_requests' => [
+        'bog_payment_request' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/bog_requests.log'),
+            'level' => 'info',
+        ],
+        'bog_refund_request' => [
             'driver' => 'single',
             'path' => storage_path('logs/bog_requests.log'),
             'level' => 'info',

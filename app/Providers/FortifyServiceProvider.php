@@ -50,7 +50,7 @@ class FortifyServiceProvider extends ServiceProvider
             public function toResponse($request)
             {
 //                return redirect(route('main',['locale' => app()->getLocale()]));
-                return redirect(route('index', ['locale' => app()->getLocale()]));
+                return redirect(route('login', ['locale' => app()->getLocale()]));
             }
         });
 
