@@ -104,6 +104,9 @@
     @include('landingcomponents.fluxSection')
     <!-- Remove BG Section -->
     @include('landingcomponents.removeBGSection')
+    <!-- Colorization -->
+    @include('landingcomponents.colorizationSection')
+
     <!-- Runway Section -->
     @include('landingcomponents.runwaySection')
     <button class="openModal">openModal</button>
@@ -161,6 +164,10 @@
             disableOnInteraction: false, // Keep autoplay running even after interaction
         },
     });
+
+
+
+</script>
 
 </script>
 

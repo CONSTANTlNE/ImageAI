@@ -47,6 +47,7 @@ class FluxController extends Controller
     public function schnellGenerate(Request $request)
     {
 
+
         if (!(new UserBalanceService())->checkBalance('flux-schnell')) {
 
             return back()->with('alert_error', 'არასაკმარისი ბალანსი');

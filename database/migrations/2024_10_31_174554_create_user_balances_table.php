@@ -23,6 +23,7 @@ return new class extends Migration
             $table->foreignId('midjourney_id')->nullable()->constrained();
             $table->foreignId('removebg_id')->nullable()->constrained();
             $table->foreignId('runway_id')->nullable()->constrained();
+            $table->foreignId('colorization_id')->nullable()->constrained();
             $table->timestamps();
         });
     }

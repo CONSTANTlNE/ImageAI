@@ -43,7 +43,7 @@
 
 {{--@endif--}}
 
-@if(request()->routeIs('runway') || request()->routeIs('bg.remove'))
+@if(request()->routeIs('runway') || request()->routeIs('bg.remove') || request()->routeIs('colorize.index'))
 
     <script>
         const runwayBtn = document.getElementById('runwayBtn');

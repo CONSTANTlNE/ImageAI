@@ -47,7 +47,7 @@
                             {{--                            <span class="d-inline-block text-light"><i--}}
                             {{--                                        class="bi bi-lightning-charge-fill"></i>--}}
                             {{--                            </span>--}}
-                            <span class="d-inline-block text-light fw-medium">Midjourney</span>
+                            <span style="font-size: 25px"  class="d-inline-block text-light fw-medium">Midjourney</span>
                         </div>
                         <div class="p-6 p-xl-8">
                             {{--                            <h4 class="text-light">Exclusive</h4>--}}
@@ -88,7 +88,7 @@
                             {{--                            <span class="d-inline-block text-light"><i--}}
                             {{--                                        class="bi bi-lightning-charge-fill"></i>--}}
                             {{--                            </span>--}}
-                            <span class="d-inline-block text-light fw-medium">Flux</span>
+                            <span style="font-size: 25px"  class="d-inline-block text-light fw-medium">Flux</span>
                         </div>
                         <div class="p-6 p-xl-8">
                             {{--                            <h4 class="text-light">Exclusive</h4>--}}
@@ -129,7 +129,7 @@
                             {{--                            <span class="d-inline-block text-light"><i--}}
                             {{--                                        class="bi bi-lightning-charge-fill"></i>--}}
                             {{--                            </span>--}}
-                            <span class="d-inline-block text-light fw-medium">{{__('Remove Background')}}</span>
+                            <span style="font-size: 25px"  class="d-inline-block text-light fw-medium">{{__('Remove Background')}}</span>
                         </div>
                         <div class="p-6 p-xl-8">
                             {{--                            <h4 class="text-light">Exclusive</h4>--}}
@@ -163,6 +163,48 @@
                         </div>
                     </div>
                 </div>
+                {{--Colorize--}}
+                <div class="col-md-6 col-lg-4 ms-auto me-auto">
+                    <div class="process-card rounded-5 text-center overflow-hidden">
+                        <div class="bg-primary-gradient d-flex justify-content-center gap-2 px-6 px-xl-8 py-2 fs-14">
+                            {{--                            <span class="d-inline-block text-light"><i--}}
+                            {{--                                        class="bi bi-lightning-charge-fill"></i>--}}
+                            {{--                            </span>--}}
+                            <span style="font-size: 25px" class="d-inline-block text-light fw-medium">Colorize</span>
+                        </div>
+                        <div class="p-6 p-xl-8">
+                            {{--                            <h4 class="text-light">Exclusive</h4>--}}
+                            {{--                            <p class="text-light text-opacity-50 mb-0">The Most Basic Plan</p>--}}
+                            <hr class="my-8">
+                            <h2 class="text-light">0.55 ₾ / 0.70 ₾
+                                {{--                                <span class="fs-16 fw-normal">month</span>--}}
+                            </h2>
+                            {{--                            <span--}}
+                            {{--                                    class="d-block fs-14 text-light text-opacity-50">--}}
+                            {{--                                This package is ideal for individual students, bloggers, and casual isers.--}}
+                            {{--                            </span>--}}
+                            <hr class="my-8">
+                            <ul class="list gap-4">
+                                <li class="
+                        @if(app()->getLocale() === 'ka')
+                           firago
+                        @else
+                           jakarta
+                         @endif
+                                ">
+                                    {{(__('colorize pricing text'))}}
+                                </li>
+                            </ul>
+                            <hr class="my-8">
+                            {{--                            <button type="button"--}}
+                            {{--                                    class="btn btn-primary-gradient text-light fs-14 rounded-pill border-0"><span--}}
+                            {{--                                        class="d-inline-block">Choose This Plan </span><span class="d-inline-block"><i--}}
+                            {{--                                            class="bi bi-arrow-right"></i></span>--}}
+                            {{--                            </button>--}}
+                        </div>
+                    </div>
+                </div>
+
                 {{--Runway price--}}
                 <div class="col-md-6 col-lg-4 ms-auto me-auto">
                     <div class="process-card rounded-5 text-center overflow-hidden">
@@ -170,7 +212,7 @@
                             {{--                            <span class="d-inline-block text-light"><i--}}
                             {{--                                        class="bi bi-lightning-charge-fill"></i>--}}
                             {{--                            </span>--}}
-                            <span class="d-inline-block text-light fw-medium">Runway</span>
+                            <span style="font-size: 25px"  class="d-inline-block text-light fw-medium">Runway</span>
                         </div>
                         <div class="p-6 p-xl-8">
                             {{--                            <h4 class="text-light">Exclusive</h4>--}}

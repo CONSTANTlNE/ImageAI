@@ -100,6 +100,8 @@
                         <button  class="dropdowna-toggle btn btn-sm btn-outline-danger fs-14 rounded-pill">
                             @if(request()->query('perpage'))
                                <span>{{request()->query('perpage')}}</span>
+                            @else
+                                9
                             @endif
                         </button>
                         <div style="width: 50px!important;border:none;" class="dropdowna-menu bg-dark">
@@ -111,7 +113,7 @@
                                     @if(isset($removebgs)) href="{{route('landing.gallery.model',['model'=>'removebg','perpage'=>$perpage1,'page'=>request()->query('page')])}}"
                                     @endif
                                   >
-                                8
+                                9
 
                             </a>
                             <a
@@ -122,7 +124,7 @@
                                     @if(isset($removebgs)) href="{{route('landing.gallery.model',['model'=>'removebg','perpage'=>$perpage2,'page'=>request()->query('page')])}}"
                                     @endif
                                    >
-                                16
+                                18
 
                             </a>
                             <a
@@ -133,7 +135,7 @@
                                     @if(isset($removebgs)) href="{{route('landing.gallery.model',['model'=>'removebg','perpage'=>$perpage3,'page'=>request()->query('page')])}}"
                                     @endif
                                     >
-                                32
+                                36
 
                             </a>
                         </div>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Colorization;
 use App\Models\Flux;
 use App\Models\Midjourney;
 use App\Models\Removebg;
@@ -51,6 +52,22 @@ class MainController extends Controller
             }
 
             return view('user.pages.gallery', compact('fluxes', 'model', 'perpage1', 'perpage2', 'perpage3', 'data', 'count'));
+        }
+
+        if ($model === 'colorization') {
+            $colorizations = Colorization::with('media')
+                ->orderBy('created_at', 'desc')
+                ->paginate($perpage)->appends($request->query());
+            $data   = $colorizations;
+            $count=Colorization::where('model', $model)->count();
+
+            // IF PAGE IS MORE THAT LAST PAGE return back with last page data
+            if ($page > $data->lastPage()) {
+                return redirect()->route('gallery',
+                    ['model' => $model, 'perpage' => $perpage, 'page' => $data->lastPage()]);
+            }
+
+            return view('user.pages.gallery', compact('colorizations', 'model', 'perpage1', 'perpage2', 'perpage3', 'data', 'count'));
         }
 
         if ($model === 'midjourney') {
@@ -134,7 +151,7 @@ class MainController extends Controller
 
         if ($model && $model!=='all') {
             $history = Userbalance::where('model', $model)->
-            with('flux.media', 'midjourney.media', 'removebg.media', 'runway.media')
+            with('flux.media', 'midjourney.media', 'removebg.media', 'runway.media','colorize.media')
                 ->orderBy('created_at', 'desc')
                 ->paginate($perpage)
                 ->appends($request->query());
@@ -152,13 +169,13 @@ class MainController extends Controller
                 });
                 return view('user.pages.history', compact('history', 'perpage1', 'perpage2', 'perpage3', 'model','totalbymodel','totalfill'));
             }
+
             return view('user.pages.history', compact('history', 'perpage1', 'perpage2', 'perpage3', 'model','totalbymodel'));
         }
 
 
 
-
-        $history = Userbalance::with('flux.media', 'midjourney.media', 'removebg.media', 'runway.media')
+        $history = Userbalance::with('flux.media', 'midjourney.media', 'removebg.media', 'runway.media','colorize.media')
             ->orderBy('created_at', 'desc')
             ->paginate($perpage);
 

@@ -61,6 +61,7 @@
         </style>
     @endif
 
+
     <style>
         .spinner-overlay {
             position: fixed;
@@ -241,7 +242,21 @@
 
     </style>
 
-    @if(request()->routeIs('userbalance.history'))
+    @if(request()->routeIs('colorize.index'))
+        <style>
+            .simplebar-content {
+                padding-right: 5px !important;
+                padding-left: 5px !important;
+                padding-bottom: 5px !important;
+            }
+            .custom-chat-content {
+                max-height: calc(100vh - 17rem) !important;
+            }
+        </style>
+    @endif
+
+
+@if(request()->routeIs('userbalance.history'))
         <style>
             .simplebar-content {
                 padding: 0px !important;
@@ -303,6 +318,7 @@
         @yield('resize')
         @yield('gallery')
         @yield('history')
+        @yield('colorize')
 
     </div>
     <!-- End::content  -->

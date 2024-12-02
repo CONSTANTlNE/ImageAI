@@ -69,6 +69,11 @@ return [
             'path' => storage_path('logs/bog_requests.log'),
             'level' => 'info',
         ],
+        'colorize_request' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/colorize_request.log'),
+            'level' => 'info',
+        ],
         'bog_refund_request' => [
             'driver' => 'single',
             'path' => storage_path('logs/bog_requests.log'),

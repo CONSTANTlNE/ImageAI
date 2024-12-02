@@ -36,8 +36,9 @@
 
                 <div class="swiper" style="height: 100%">
                     <!-- Additional required wrapper -->
-                    <div class="swiper-wrapper">
+                    <div style="display: flex;align-items: center" class="swiper-wrapper">
                         <!-- Slides -->
+
                         <div class="swiper-slide text-center">
                             <a href="{{asset('landingassets/img/flux-schnell/9.webp')}}" class="glightbox">
                                 <img class="img-fluid"

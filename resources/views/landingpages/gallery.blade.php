@@ -1,11 +1,11 @@
 ﻿@extends('landingcomponents.layout')
 
 @section('gallery')
-<div class="section-space-y">
+<div class="section-space-y bg-dark">
     <div class="section-space-sm-bottom">
         <div class="container">
             <div class="row g-4 align-items-center mt-5">
-                <div class="col-md-6"><h2 class="text-light mb-0" data-cue="fadeIn">Our Blogs</h2></div>
+{{--                <div class="col-md-6"><h2 class="text-light mb-0" data-cue="fadeIn">Our Blogs</h2></div>--}}
             </div>
         </div>
     </div>

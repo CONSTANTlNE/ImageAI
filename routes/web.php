@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AiController;
 use App\Http\Controllers\BogController;
+use App\Http\Controllers\ColorizationController;
 use App\Http\Controllers\FluxController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\LocalizationController;
@@ -39,11 +40,11 @@ Route::prefix('{locale?}')
     ->where(['locale' => '[a-zA-Z]{2}'])
     ->middleware(['localization'])
     ->group(function () {
-        Route::controller(LandingController::class)->group(function (){
+        Route::controller(LandingController::class)->group(function () {
             Route::get('/', 'index')->name('index');
-            Route::get('/terms',  'terms')->name('terms');
-            Route::get('/public/gallery',  'gallery')->name('landing.gallery');
-            Route::get('/public/gallery/{model}',  'galleryModel')->name('landing.gallery.model');
+            Route::get('/terms', 'terms')->name('terms');
+            Route::get('/public/gallery', 'gallery')->name('landing.gallery');
+            Route::get('/public/gallery/{model}', 'galleryModel')->name('landing.gallery.model');
         });
     });
 
@@ -83,6 +84,7 @@ Route::prefix('{locale}')
         Route::post('/mobile/change', 'changeMobile')->name('verify.mobile.change');
     });
 
+
 //App ROUTES
 Route::prefix('{locale}')
     ->where(['locale' => '[a-zA-Z]{2}'])
@@ -97,7 +99,6 @@ Route::prefix('{locale}')
             Route::post('/midjourney/delete}', 'delete')->name('midjourney.delete');
             Route::get('/midjourney/download', 'download')->name('midjourney.download');
             Route::post('/midjourney/make/public', 'makePublic')->name('midjourney.make.public');
-
         });
 
         // Remove background routes
@@ -163,6 +164,14 @@ Route::prefix('{locale}')
             Route::get('/bog/userrequest/return/amount', 'userRequest')->name('bog.user.request');
         });
 
+        // Colorization
+        Route::controller(ColorizationController::class)->group(function () {
+            Route::get('/colorization', 'index')->name('colorize.index');
+            Route::post('/colorization/create','colorize')->name('colorize.create');
+            Route::get('/colorization/download', 'download')->name('colorize.download');
+            Route::post('/colorization/delete','delete')->name('colorize.delete');
+
+        });
 
         // ==================== some random tests and playground ====================
 
@@ -456,23 +465,20 @@ Route::get('{locale}/nbg', function () {
 
 // BOG return amount back
 Route::get('{locale}/bogreturn', function () {
+    $order_id = '36ae1a6a-3885-4859-be55-47cec3fbdea6';
+    $amount   = 0.05;
+    $response = (new \App\Services\BogService())->Refund($order_id, $amount);
 
-    $order_id='36ae1a6a-3885-4859-be55-47cec3fbdea6';
-    $amount=0.05;
-    $response= (new \App\Services\BogService())->Refund($order_id,$amount);
-
-    if (isset($response['key']) && $response['key'] === 'request_received'){
-
-       Log::channel('bog_refund_request')->info('Refund Success'.' '.'user: '.auth()->user()->id.' '.auth()->user()->email, ['Details' => $response]);
-
-   } else {
-       Log::channel('bog_refund_request')->info('Refund Error'.' '.'user: '.auth()->user()->id.' '.auth()->user()->email, ['Details' => $response]);
-
-   }
+    if (isset($response['key']) && $response['key'] === 'request_received') {
+        Log::channel('bog_refund_request')->info('Refund Success'.' '.'user: '.auth()->user()->id.' '.auth()->user()->email,
+            ['Details' => $response]);
+    } else {
+        Log::channel('bog_refund_request')->info('Refund Error'.' '.'user: '.auth()->user()->id.' '.auth()->user()->email,
+            ['Details' => $response]);
+    }
 
 
-   return $response;
-
+    return $response;
 });
 
 // BOG return amount back
@@ -482,8 +488,84 @@ Route::get('{locale}/media', function () {
             $query->where('public', 1); // Replace 'your_column_name' with the actual column name
         })
         ->get();
-
-
-
 });
+
+// Colorization API
+
+Route::get('{locale}/colorizationn', function () {
+    return view('colorization');
+});
+
+
+
+Route::post('{locale}/colorization/colorize', function (Request $request) {
+
+    $file = $request->file('image');
+
+    $response = Http::withHeaders([
+        'x-rapidapi-host' => 'colorize-photo1.p.rapidapi.com',
+        'x-rapidapi-key'  => config('apikeys.pallete'),
+    ])
+        ->asMultipart()
+        ->post('https://colorize-photo1.p.rapidapi.com/colorize_image_with_auto_prompt', [
+            [
+                'name'     => 'image',  // Field name in the API
+                'contents' => fopen($file->getRealPath(), 'r'),  // Open the file
+                'filename' => $file->getClientOriginalName(),  // Original file name
+            ],
+            [
+                'name'     => 'temperature',
+                'contents' => '-0.1',
+            ],
+            [
+                'name'     => 'raw_captions',
+                'contents' => 'false',
+            ],
+            [
+                'name'     => 'standard_filter_id',
+                'contents' => '1',
+            ],
+            [
+                'name'     => 'white_balance',
+                'contents' => 'false',
+            ],
+            [
+                'name'     => 'resolution',
+                'contents' => 'watermarked-sd',
+            ],
+            [
+                'name'     => 'auto_color',
+                'contents' => 'true',
+            ],
+            [
+                'name'     => 'artistic_filter_id',
+                'contents' => '0',
+            ],
+            [
+                'name'     => 'saturation',
+                'contents' => '1.1',
+            ],
+        ]);
+
+
+    if ($response->successful()) {
+
+        $imageContent = $response->body();
+        $imageName = 'colorized_' . time() . '.jpg';  // You can change the extension if needed based on the API response
+        Storage::disk('public')->put('images/' . $imageName, $imageContent);
+        $imageUrl = Storage::url('images/' . $imageName);
+        return response()->json([
+            'message' => 'Image colorized successfully',
+            'image_url' => $imageUrl, // You can send the URL to the frontend
+        ]);
+    } else {
+
+        Log::channel('colorize_request')->info('Request Error user:'.' '.auth()->user()->id, [
+            'user email'=>auth()->user()->email,
+            'response' => $response->json(),
+        ]);
+
+    }
+
+})->name('colorize.test');
 

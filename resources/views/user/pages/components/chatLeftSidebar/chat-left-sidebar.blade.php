@@ -15,7 +15,7 @@
 {{--            <i class="ri-phone-line me-1 align-middle inline-block w-[1.875rem] h-[1.875rem] p-[0.4rem] rounded-full hs-tab-active:bg-primary/10 bg-light"></i>Calls--}}
 {{--        </a>--}}
     </nav>
-    <div  class="tab-content custom-height" id="myTabContent">
+    <div  class="tab-content custom-height chat-content" id="myTabContent">
         {{--MODELS მოქმედება--}}
         <div  class="tab-pane fade show  !border-0 chat-users-tab" id="users-tab-pane"
              aria-labelledby="users-item" role="tabpanel" tabindex="0">
@@ -72,7 +72,7 @@
                         </div>
                     </a>
                 </li>
-                {{-- Flux shcnell--}}
+                {{-- Flux shcnell --}}
                 <li class="checkforactive">
                     <a  class="" href="{{route('flux-schnell','chat-open')}}" onclick="changeTheInfo(this,'Flux Schnell','5','ფასი - 0.03 ₾')">
                         <div class="flex items-start " >
@@ -92,6 +92,30 @@
 {{--                                    <span class="chat-read-icon ltr:float-right rtl:float-left align-middle"><i--}}
 {{--                                                class="ri-check-double-fill"></i></span>--}}
 {{--                                </p>--}}
+                            </div>
+                        </div>
+                    </a>
+                </li>
+                {{-- Colorization --}}
+                <li class="checkforactive">
+                    <a  class="" href="{{route('colorize.index')}}" onclick="changeTheInfo(this,'Flux Schnell','5','ფასი - 0.03 ₾')">
+                        <div class="flex items-start " >
+                            <div class="me-1 leading-none">
+                                <span class="avatar avatar-md online me-2 avatar-rounded">
+                                    <img src="{{asset('assets/images/colorization.png')}}" alt="img">
+                                </span>
+                            </div>
+                            <div class="flex-grow ">
+                                <p  class="mt-3 font-semibold">
+                                    Colorize
+                                    {{-- <span--}}
+                                    {{--                                            class="ltr:float-right rtl:float-left text-[#8c9097] dark:text-white/50 font-normal text-[0.6875rem]">1:32PM</span>--}}
+                                </p>
+                                {{--                                <p class="text-[0.75rem] mb-0">--}}
+                                {{--                                    <span class="chat-msg text-truncate">Need to go for lunch?</span>--}}
+                                {{--                                    <span class="chat-read-icon ltr:float-right rtl:float-left align-middle"><i--}}
+                                {{--                                                class="ri-check-double-fill"></i></span>--}}
+                                {{--                                </p>--}}
                             </div>
                         </div>
                     </a>

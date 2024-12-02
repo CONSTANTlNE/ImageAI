@@ -75,6 +75,10 @@ class User extends Authenticatable
         return $this->hasMany(Balance::class);
     }
 
+    public function colorization(): HasMany{
+        return $this->hasMany(Colorization::class);
+    }
+
 
 
 }

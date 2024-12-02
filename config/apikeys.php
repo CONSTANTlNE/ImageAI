@@ -10,5 +10,6 @@ return [
     'BOG_ID'=>env('BOG_ID'),
     'BOG_SECRET'=>env('BOG_SECRET'),
     'runway'=>env('RUNWAY_KEY'),
+    'pallete'=>env('PALLETE_KEY')
 
 ];

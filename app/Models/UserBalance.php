@@ -44,6 +44,11 @@ class UserBalance extends Model
         return $this->belongsTo(Midjourney::class);
     }
 
+    public function colorize(): BelongsTo
+    {
+        return $this->belongsTo(Colorization::class,'colorization_id');
+    }
+
     protected static function booted(): void
     {
         static::creating(function ($model) {
