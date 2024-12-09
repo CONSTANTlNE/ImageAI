@@ -52,17 +52,13 @@
             integrity="sha384-0895/pl2MU10Hqc6jd4RvrthNlDiE9U1tWmX7WRESftEDRosgxNsQG/Ze9YMRzHq"
             crossorigin="anonymous"></script>
 
-    @if(request()->routeIs('midjourney'))
-        <style>
-            .simplebar-content {
-                padding-right: 5px !important;
-                padding-left: 5px !important;
-            }
-        </style>
-    @endif
-
 
     <style>
+        .simplebar-content {
+            padding: 10px 10px 10px !important;
+
+        }
+
         .spinner-overlay {
             position: fixed;
             top: 0;
@@ -173,44 +169,11 @@
             display: none !important;
         }
 
-        @media only screen and (max-width: 1400px) {
-            .hideX {
-                display: block;
-            }
-
-            .hide-gallery {
-                display: flex !important;
-            }
-        }
 
         .avatar::before {
             content: none !important;
         }
 
-
-        @media only screen and (max-width: 990px) {
-
-            .main-chart-wrapper {
-                flex-grow: 1 !important;
-                display: flex !important;
-                flex-direction: column
-            }
-
-            .main-content {
-                display: flex !important;
-                flex-direction: column !important;
-                flex-grow: 1 !important;
-            }
-
-            #main-chat {
-                flex-grow: 1 !important;
-            }
-
-        }
-
-        .custom-chat-content {
-            max-height: calc(100vh - 14rem) !important;
-        }
 
         .responcive-image-history {
             max-width: 250px !important;
@@ -225,7 +188,76 @@
         }
 
 
-        @media only screen and (max-width: 400px) {
+        @if(request()->routeIs('colorize.index'))
+
+            .custom-chat-content {
+            max-height: calc(100vh - 17rem) !important;
+        }
+
+        @endif
+        @if(request()->routeIs('userbalance.history'))
+            .simplebar-content {
+            padding: 0px !important;
+
+        }
+
+        @media only screen and (max-width: 465px) {
+            #answer {
+                width: 94% !important;
+            }
+        }
+
+        @endif
+
+        @media only screen and (max-width: 1400px) {
+            .hideX {
+                display: block;
+            }
+
+            .hide-gallery {
+                display: flex !important;
+            }
+
+            .main-chart-wrapper, .main-content {
+
+                height: calc(100vh - 1rem) !important;
+            }
+        }
+
+        @media only screen and (max-width: 990px) {
+
+            .main-chart-wrapper {
+                flex-grow: 1 !important;
+                display: flex !important;
+                flex-direction: column
+            }
+
+            .main-content {
+                display: flex !important;
+                flex-direction: column !important;
+                /*flex-grow: 1 !important;*/
+                height: 100% !important;
+            }
+
+
+        }
+
+        @media only screen and (max-width: 415px) {
+            .simplebar-content {
+                padding: 10px 10px 120px !important;
+
+            }
+
+            .main-chart-wrapper, .main-content {
+                height: 100% !important;
+                max-height: calc(100vh - 10rem) !important;
+            }
+
+            .custom-chat-content {
+                max-height: calc(100vh - 14rem) !important;
+                /*max-height: calc(100vh - 15%) !important;*/
+            }
+
             .responcive-image-history {
                 max-width: 190px !important;
             }
@@ -233,44 +265,28 @@
             .td-width {
                 width: 100px !important;
             }
+
+            #main-chat {
+                flex-grow: 0 !important;
+            }
+
+            @if(!request()->routeIs('gallery') &&  !request()->routeIs('userbalance.history'))
+           html, body {
+
+                overflow: hidden !important;
+                overscroll-behavior: none;
+            }
+
+        @endif
+
+
+
+
         }
 
-        .custom-height {
-            height: calc(100vh - 5rem) !important;
-
-        }
 
     </style>
 
-    @if(request()->routeIs('colorize.index'))
-        <style>
-            .simplebar-content {
-                padding-right: 5px !important;
-                padding-left: 5px !important;
-                padding-bottom: 5px !important;
-            }
-            .custom-chat-content {
-                max-height: calc(100vh - 17rem) !important;
-            }
-        </style>
-    @endif
-
-
-@if(request()->routeIs('userbalance.history'))
-        <style>
-            .simplebar-content {
-                padding: 0px !important;
-
-            }
-
-            @media only screen and (max-width: 465px) {
-                #answer {
-                    width: 94% !important;
-                }
-            }
-
-        </style>
-    @endif
 
     <link rel="stylesheet" href="{{asset('assets/css/spin.css')}}">
 
@@ -335,21 +351,21 @@
 
 
 <!-- Back To Top -->
-<div class="scrollToTop">
-    <span class="arrow"><i class="ri-arrow-up-s-fill text-xl"></i></span>
-</div>
+{{--<div class="scrollToTop">--}}
+{{--    <span class="arrow"><i class="ri-arrow-up-s-fill text-xl"></i></span>--}}
+{{--</div>--}}
 <!-- Fill Balance Modal -->
 
 <div id="responsive-overlay"></div>
 <div id="spinnerOverlay" class="spinner-overlay"></div>
 @include('user.pages.components.scripts')
-<div id="fillballance" class="hs-overlay hidden ti-modal">
-    <div style="width: 240px"
-         class="hs-overlay-open:mt-7 ti-modal-box mt-0 ease-out min-h-[calc(100%-3.5rem)] flex items-center ">
+<div id="fillballance" class="hs-overlay hidden ti-modal [--overlay-backdrop:static]">
+    <div
+            class="hs-overlay-open:mt-7 ti-modal-box mt-0 ease-out min-h-[calc(100%-3.5rem)] flex items-center justify-center align-middle">
         <div class="ti-modal-content" id="bogtarget">
             <form action="{{route('bog.payment.request')}}" method="post">
                 @csrf
-                <div class="ti-modal-header">
+                <div style="width: 300px!important;" class="ti-modal-header">
                     <h6 class="modal-title text-[1rem] font-semibold" id="staticBackdropLabel2">{{__('Top Up')}}
                     </h6>
                     <button type="button" class="hs-dropdown-toggle ti-modal-close-btn" data-hs-overlay="#fillballance">
@@ -362,12 +378,15 @@
                     </button>
                 </div>
                 <div class="ti-modal-body flex flex-col gap-3 justify-center align-middle">
-                    <input
-                            oninvalid="this.setCustomValidity('მხოლოდ რიცხვი, არანაკლებ 3')"
-                            oninput="this.setCustomValidity('')"
-                            min="3"
-                            type="number" required class="form-control" id="amount" name="amount"
-                            placeholder="{{__('minimum 3 ₾')}}">
+                    <div class="flex justify-center">
+                        <input style="width: 160px;text-align: center"
+                               oninvalid="this.setCustomValidity('მხოლოდ რიცხვი, არანაკლებ 3')"
+                               oninput="this.setCustomValidity('')"
+                               min="3"
+                               type="number" required class="form-control" id="amount" name="amount"
+                               placeholder="{{__('minimum 3 ₾')}}">
+                    </div>
+
                     <button class="flex justify-center">
                         <img style="border-radius: 5px;height: 50px;object-fit: cover" src="{{asset('bog-dark.png')}}"
                              alt="">

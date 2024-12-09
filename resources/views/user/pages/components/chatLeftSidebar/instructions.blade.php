@@ -1,4 +1,4 @@
-<div  class="tab-pane fade custom-height !border-0 chat-groups-tab hidden" id="groups-tab-pane"
+<div   class="tab-pane fade  !border-0 chat-groups-tab hidden" id="groups-tab-pane"
       aria-labelledby="groups-item" role="tabpanel" tabindex="0">
 
     <div  class="hs-accordion-group mt-3 p-2">

@@ -1,4 +1,4 @@
-<div class="chat-info custom-height border dark:border-defaultborder/10">
+<div id="chatinfo" class="chat-info custom-height border dark:border-defaultborder/10 ">
 
     <nav class="flex border-b border-defaultborder dark:border-defaultborder/10" aria-label="Tabs"
          role="tablist">
@@ -15,7 +15,7 @@
 {{--            <i class="ri-phone-line me-1 align-middle inline-block w-[1.875rem] h-[1.875rem] p-[0.4rem] rounded-full hs-tab-active:bg-primary/10 bg-light"></i>Calls--}}
 {{--        </a>--}}
     </nav>
-    <div  class="tab-content custom-height chat-content" id="myTabContent">
+    <div   class="tab-content custom-height chat-content" id="myTabContent">
         {{--MODELS მოქმედება--}}
         <div  class="tab-pane fade show  !border-0 chat-users-tab" id="users-tab-pane"
              aria-labelledby="users-item" role="tabpanel" tabindex="0">

@@ -4,6 +4,7 @@ namespace App\Services;
 
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class BogService
 {
@@ -46,7 +47,7 @@ class BogService
 
         $response = $client->post('https://api.bog.ge/payments/v1/ecommerce/orders', [
             'headers' => [
-                'Accept-Language' => 'ka',
+                'Accept-Language' => app()->getLocale(),
                 'Authorization'   => 'Bearer '.session('bog_token'),
                 'Content-Type'    => 'application/json',
             ],
@@ -77,10 +78,18 @@ class BogService
             ],
         ]);
 
+
         $body = json_decode($response->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR);
+        if (isset($body['_links']['redirect']['href'])) {
+            return $body['_links']['redirect']['href']; // Return the redirect URL
+        } else {
+            Log::channel('bog_payment_request')->info('Payment Error'.' '.'user: '.auth()->user()->id.' '.auth()->user()->email, [
+                'user email'=>auth()->user()->email,
+                'response' => $body
+            ]);
+            return null; // Return null if there's an error
+        }
 
-
-        return redirect($body['_links']['redirect']['href']);
     }
 
     public function GetPaymentStatus($order_id)

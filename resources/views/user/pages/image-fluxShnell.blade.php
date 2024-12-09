@@ -3,12 +3,12 @@
 
 
 @section('fluxshnell')
-    <div class="main-content">
+    <div  class="main-content">
         <div class="main-chart-wrapper p-2 gap-2 lg:flex @if(request()->has('chat-open')) responsive-chat-open @endif">
             {{--Left Sidebar--}}
             @include('user.pages.components.chatLeftSidebar.chat-left-sidebar')
             {{--            Main Chat--}}
-            <div id="main-chat" class="main-chat-area  custom-height border dark:border-defaultborder/10">
+            <div   id="main-chat" class="main-chat-area  custom-height border dark:border-defaultborder/10">
                 <div class="sm:flex items-center p-2 border-b dark:border-defaultborder/10">
                     <div class="flex items-center leading-none">
                             <span class="avatar avatar-lg online me-4 avatar-rounded chatstatusperson">
@@ -74,7 +74,7 @@
                                 </div>
                             </li>
                             {{-- Answer--}}
-                            <li class="chat-item-start flex justify-center text-center">
+                            <li class="chat-item-start flex justify-center text-center"  >
                                 <div class="chat-list-inner w-full">
                                     <div class="ms-3 w-full">
                                         <div class="main-chat-msg text-center w-full">

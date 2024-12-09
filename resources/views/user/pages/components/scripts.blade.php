@@ -9,39 +9,6 @@
 <script src="{{asset('assets/js/custom-switcher.js')}}"></script>
 
 
-{{--@if(request()->routeIs('bg.remove') )--}}
-
-{{--    <script>--}}
-
-{{--        const inputElement = document.querySelector('.filepond');--}}
-
-{{--        FilePond.registerPlugin(--}}
-{{--            FilePondPluginImagePreview,--}}
-{{--            FilePondPluginImageExifOrientation,--}}
-{{--            FilePondPluginImageValidateSize,--}}
-{{--        );--}}
-
-{{--        const multipleInput = document.getElementById('multiple');--}}
-{{--        FilePond.create(inputElement, {--}}
-{{--            labelIdle: `მოათავსეთ ფოტო Drag & Drop-ით ან <span class="filepond--label-action">ატვირთეთ</span>`,--}}
-{{--            onupdatefiles: (files) => {--}}
-{{--                // When FilePond updates, update the hidden input with the FilePond files--}}
-{{--                const fileArray = files.map(fileItem => fileItem.file);--}}
-{{--                const dataTransfer = new DataTransfer();--}}
-
-{{--                // Add each file from FilePond to the hidden input--}}
-{{--                fileArray.forEach(file => {--}}
-{{--                    dataTransfer.items.add(file);--}}
-{{--                });--}}
-
-{{--                // Set the files in the hidden input--}}
-{{--                multipleInput.files = dataTransfer.files;--}}
-{{--            },--}}
-{{--        });--}}
-
-{{--    </script>--}}
-
-{{--@endif--}}
 
 @if(request()->routeIs('runway') || request()->routeIs('bg.remove') || request()->routeIs('colorize.index'))
 
@@ -233,6 +200,14 @@
         overlay.style.display="flex"
         overlay.style.justifyContent="center"
         overlay.style.alignItems="center"
+    })
+
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded',()=>{
+        document.getElementById('chatinfo').
+        console.log( document.getElementById('chatinfo'))
     })
 
 </script>

@@ -323,10 +323,13 @@ import 'simplebar/dist/simplebar.css'; // Import SimpleBar CSS
       scrollToTop.style.display = "none";
     }
   };
-  scrollToTop.onclick = () => {
-    window.scrollTo(0, 0);
-    // window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  if(scrollToTop){
+    scrollToTop.onclick = () => {
+      window.scrollTo(0, 0);
+      // window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+  }
+
   /* back to top */
 
   /*header-remove */

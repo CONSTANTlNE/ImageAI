@@ -22,7 +22,8 @@ class RunwayRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'imageUrl' => 'nullable|url|regex:/local\.ews\.ge/|required_without_all:runwayUpload',
+//            'imageUrl' => 'nullable|url|regex:/ai\.ews\.ge/|required_without_all:runwayUpload',
+            'imageUrl' => 'nullable|url|regex:/imageai\.test/|required_without_all:runwayUpload',
             'runwayUpload' => 'nullable|mimes:jpeg,png,jpg|required_without_all:imageUrl',
             'prompt' => 'required|string',
             'duration' => 'nullable|integer|in:5,10',

@@ -8,6 +8,7 @@
                    class=" staticBackdrop2 p-4 selectImage items-center related-app block text-center rounded-sm hover:bg-gray-50 dark:hover:bg-black/20">
                     <div>
                         @foreach($image->media as  $media)
+                            <input type="hidden" class="imageurl" value="{{$media->getPath()}}">
                             <img src="{{$media->getUrl()}}" alt="figma"
                                  style="height: 110px!important;object-fit: cover"
                                  class="!w-full text-2xl avatar text-primary flex justify-center items-center mx-auto">

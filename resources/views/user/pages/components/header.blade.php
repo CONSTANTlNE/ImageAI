@@ -497,6 +497,17 @@
                                     </a>
                                 </div>
                                 <div class="">
+                                    <a href="{{route('colorize.index')}}"
+                                       class="p-4 items-center related-app block text-center rounded-sm hover:bg-gray-50 dark:hover:bg-black/20">
+                                        <img src="{{asset('assets/images/colorization.png')}}"
+                                             style="height: 60px!important;width: 60px!important"
+                                             class=" text-2xl avatar text-primary flex justify-center items-center mx-auto">
+                                        <div class="text-[0.75rem] text-defaulttextcolor dark:text-[#8c9097] dark:text-white/50">
+                                            Colorize
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="">
                                     <a href="{{route('bg.remove')}}"
                                        class="p-4 items-center related-app block text-center rounded-sm hover:bg-gray-50 dark:hover:bg-black/20">
                                         <img src="{{asset('assets/images/removebg.webp')}}"

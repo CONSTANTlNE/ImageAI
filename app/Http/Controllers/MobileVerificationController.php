@@ -9,7 +9,7 @@ class MobileVerificationController extends Controller
 {
     public function index()
     {
-        return view('verify');
+        return view('landingpages.verify');
     }
 
     public function storeMobile(Request $request)

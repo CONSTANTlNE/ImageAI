@@ -3,8 +3,7 @@
     <div id="particles-js"></div>
     <div class="container">
         <div class="row g-4 justify-content-xxl-between align-items-center">
-            <div class="col-lg-6 col-xxl-5">
-
+            <div class="col-lg-6 col-xxl-5 order-2 order-lg-1">
                 <div class="swiper" style="height: 100%">
                     <!-- Additional required wrapper -->
                     <div class="swiper-wrapper">
@@ -80,9 +79,8 @@
                     {{--                                <!-- If we need scrollbar -->--}}
                     {{--                                <div class="swiper-scrollbar"></div>--}}
                 </div>
-
             </div>
-            <div class="col-lg-6 customorder">
+            <div class="col-lg-6 customorder order-1 order-lg-2">
                 <div class="d-inline-flex align-items-center flex-wrap row-gap-2 column-gap-4" data-cue="fadeIn">
                     {{--                        <div class="flex-shrink-0 d-inline-block w-100 h-2px bg-primary-gradient"></div>--}}
                     {{--                        <span class="d-block fw-medium text-light fs-20">About Us</span>--}}

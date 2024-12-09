@@ -19,7 +19,7 @@ class LandingController extends Controller
 
     public function terms(Request $request) {
 
-        return view('terms');
+        return view('landingpages.terms');
     }
 
     public function gallery(Request $request) {

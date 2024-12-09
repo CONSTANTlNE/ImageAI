@@ -26,6 +26,7 @@ use App\Services\UserBalanceService;
 use FFMpeg\FFMpeg;
 use FFMpeg\Format\Video\WebM;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -34,6 +35,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
+use Laravel\Telescope\Telescope;
 
 
 Route::prefix('{locale?}')
@@ -90,7 +92,8 @@ Route::prefix('{locale}')
     ->where(['locale' => '[a-zA-Z]{2}'])
     ->middleware(['localization', 'auth', 'verified'])
     ->group(function () {
-        //  Midjourney Routes
+
+        // Midjourney Routes
         Route::controller(MidjourneyController::class)->group(function () {
             Route::get('/midjourney', 'index')->name('midjourney');
             Route::post('/midjourney/create', 'imagine')->name('midjourney.create');
@@ -225,6 +228,10 @@ Route::controller(SocialiteController::class)->group(function () {
 
 
 // =============================  TESTING ROUTES   =========================
+
+
+Route::middleware(['auth','admin'])->group(function (){
+
 
 // RESIZE IMAGES WITH INTERVENTION
 Route::get('{locale}/resizetest', function (Request $request) {
@@ -569,3 +576,10 @@ Route::post('{locale}/colorization/colorize', function (Request $request) {
 
 })->name('colorize.test');
 
+Route::get('{locale}/telescope/delete', function () {
+    DB::table('telescope_entries')->delete(); // Delete all entries
+    DB::table('telescope_entries_tags')->delete(); // Optional: Delete tags if needed
+    return redirect()->back()->with('success', 'Telescope entries deleted.');
+});
+
+});

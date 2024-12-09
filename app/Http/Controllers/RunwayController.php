@@ -82,7 +82,7 @@ class RunwayController extends Controller
             $url   = $media->getUrl();
         }
         elseif ($data['imageUrl'] !== null){
-            $url = $data['imageUrl'];
+            $url = $request->imageUrl;
 
 
             // Add cover photo for video
@@ -97,23 +97,24 @@ class RunwayController extends Controller
 //                return back()->with('alert_error', 'ფოტო არ მოიძებნა');
 //            }
         }
-//        dd($url);
+
+
+
 
         if($url){
-
+          $contentLength = strlen($url);
             $response=Http::withHeaders([
                 'Content-Type' => 'application/json',
                 'Authorization'    => 'Bearer '.config('apikeys.runway'),
                 'X-Runway-Version' => "2024-11-06"
             ])->post('https://api.dev.runwayml.com/v1/image_to_video',[
-                'promptImage' => (string) $url,
+                'promptImage' =>  (string) $url,
                 'model'=>'gen3a_turbo',
                 'promptText'=>$translated,
                 'watermark'=>false,
                 'duration'=>$data['duration']+0,
                 'ratio'=>$data['ratio'],
             ]);
-
 
             if ($response->successful()) {
               // upgrade status if response is successful because scheduler checks for pending and not to cause error
@@ -141,7 +142,6 @@ class RunwayController extends Controller
                     'response' => $response->json(),
                 ]);
 
-
                  // Delete initial runway if api failed
                 if ($runway->media) {
                     foreach ($runway->media as $media) {
@@ -154,8 +154,6 @@ class RunwayController extends Controller
                 return back()->with('alert_error', 'ბოდიშს გიხდით, დაფიქსირდა ტექნიკური შეცდომა');
             }
         }
-
-
     }
 
     public function delete(Request $request)

@@ -28,7 +28,13 @@ class BogController extends Controller
 
         $amount = 0.05;
 
-        (new BogService())->PaymentRequest($amount, auth()->user()->id);
+        $redirectUrl = (new BogService())->PaymentRequest($amount, auth()->user()->id);
+
+        if ($redirectUrl) {
+            return redirect($redirectUrl); // Perform the redirect
+        } else {
+            return back()->with('alert_error', 'გადახდისას დაფიქსირდა შეცდომა'); // If no redirect URL, show an error
+        }
 
     }
 

@@ -204,7 +204,7 @@
                                                    document.getElementById('mediaindex3').value={{$mediaindex}}
                                                    document.getElementById('downloadId').value={{$midjourney->id}}
                                                    document.getElementById('shareId').value='{{$media->getUrl()}}'
-                                                   document.getElementById('public').value={{$mediaindex}}
+                                                   document.getElementById('public').value={{$media->id}}
                                                    document.getElementById('publicid').value={{$midjourney->id}}
                                                    "
                                            data-hs-overlay="#actionsmodal">
@@ -358,7 +358,7 @@
                         {{--make public Button--}}
                         <form action="{{route('midjourney.make.public')}}" method="post">
                             @csrf
-                            <input type="hidden" name="index" id="public">
+                            <input type="hidden" name="mediaid" id="public">
                             <input type="hidden" name="id" id="publicid">
                             <button>
                                 <svg class="badge bg-primary/10 text-primary" xmlns="http://www.w3.org/2000/svg"

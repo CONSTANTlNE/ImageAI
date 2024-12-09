@@ -3,20 +3,20 @@
 @section('gallery')
     <div class="main-content">
         <!-- Page Header -->
-        <div class="block justify-center page-header md:flex mb-5">
+        <div class="block justify-center page-header md:flex mb-1">
             <form class="flex justify-center gap-5" id="modelForm" action="">
                 <select
                         onchange="document.getElementById('modelForm').action = baseUrl + '/'+'{{app()->getLocale()}}' + '/gallery/' + this.value; document.getElementById('modelForm').submit();"
                         style="width: 150px" class="ti-form-select rounded-sm !py-2 !px-3">
-                    <option @if(request('model')=='flux-schnell') selected @endif value="flux-schnell">Flux Schnell
-                    </option>
+                    <option @if(request('model')=='flux-schnell') selected @endif value="flux-schnell">Flux Schnell</option>
                     <option @if(request('model')=='midjourney') selected @endif value="midjourney">Midjourney</option>
                     <option @if(request('model')=='removebg') selected @endif value="removebg">Remove BG</option>
                     <option @if(request('model')=='runway') selected @endif value="runway">Runway</option>
+                    <option @if(request('model')=='colorize') selected @endif value="colorize">Colorize</option>
                 </select>
 
                 <div class="flex items-center justify-center gap-3">
-                    <p>Total:</p>
+                    <p>{{__('Total')}}:</p>
                     <span class="max-w-40 truncate whitespace-nowrap inline-block py-1.5 px-3 rounded-lg text-xs font-medium bg-primary/10 text-primary/80">
                          {{$count}}
                     </span>
@@ -27,7 +27,7 @@
         <!-- Page Header Close -->
 
         <!-- Start::row-1 -->
-        <div class="grid grid-cols-12 gap-x-6 mb-3">
+        <div class="grid grid-cols-12 gap-x-6 mb-1">
             @if($model==='flux-schnell')
                 @foreach($fluxes as $indexFlux => $flux)
                     <div class="lg:col-span-3 md:col-span-3 sm:col-span-6 col-span-6">
@@ -149,33 +149,29 @@
                     </div>
                 @endforeach
             @endif
-            @if($model==='midjourney')
-                @foreach($midjourneys as $midjourney)
-                    @foreach($midjourney->media as $mediaindex=> $media)
+            @if($model==='colorize')
+                    @foreach($colorizations as $indexColorize=> $colorized)
                         <div class="lg:col-span-3 md:col-span-3 sm:col-span-6 col-span-6">
-                            <div class="flex justify-center gap-3">
-                               {{--DELETE--}}
-                                <form class="mb-2" action="{{route('midjourney.delete')}}" method="post">
+                            <div class="flex justify-center gap-2">
+                                {{--Delete--}}
+                                <form class="mb-2" action="{{route('colorize.delete',$colorized->id)}}" method="post">
                                     @csrf
-                                    <input type="hidden" name="id" value="{{$midjourney->id}}">
-                                    <input type="hidden" name="mediaid" value="{{$media->id}}">
-                                    <a href="javascript:void(0);" data-hs-overlay="#staticBackdrop2{{$media->id}}">
-                                        <svg class="badge bg-primary/10  text-primary"
-                                             xmlns="http://www.w3.org/2000/svg" width="35" height="35"
-                                             viewBox="0 0 24 24">
+                                    <a href="javascript:void(0);" data-hs-overlay="#staticBackdrop{{$indexColorize}}">
+                                        <svg class="badge bg-primary/10  text-primary" xmlns="http://www.w3.org/2000/svg"
+                                             width="30" height="30" viewBox="0 0 24 24">
                                             <path fill="currentColor"
                                                   d="M7 21q-.825 0-1.412-.587T5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.587 1.413T17 21zM17 6H7v13h10zM9 17h2V8H9zm4 0h2V8h-2zM7 6v13z"/>
                                         </svg>
                                     </a>
-                                    <div id="staticBackdrop2{{$media->id}}"
+                                    <div id="staticBackdrop{{$indexColorize}}"
                                          class="hs-overlay hidden ti-modal  [--overlay-backdrop:static]">
-                                        <div class="hs-overlay-open:mt-7 ti-modal-box mt-0 ease-out">
+                                        <div class="hs-overlay-open:mt-7 ti-modal-box mt-0 ease-out min-h-[calc(100%-3.5rem)] flex items-center">
                                             <div class="ti-modal-content">
                                                 <div class="ti-modal-header">
-                                                    <h6 class="modal-title text-[1rem] font-semibold">Modal title</h6>
+                                                    <h6 class="modal-title text-[1rem] font-semibold">Delete</h6>
                                                     <button type="button"
                                                             class="hs-dropdown-toggle !text-[1rem] !font-semibold !text-defaulttextcolor"
-                                                            data-hs-overlay="#staticBackdrop2{{$media->id}}">
+                                                            data-hs-overlay="#staticBackdrop{{$indexColorize}}">
                                                         <span class="sr-only">Close</span>
                                                         <i class="ri-close-line"></i>
                                                     </button>
@@ -188,10 +184,135 @@
                                                 <div class="ti-modal-footer">
                                                     <button type="button"
                                                             class="hs-dropdown-toggle ti-btn  ti-btn-secondary-full align-middle"
-                                                            data-hs-overlay="#staticBackdrop2{{$media->id}}">
+                                                            data-hs-overlay="#staticBackdrop{{$indexColorize}}">
                                                         Close
                                                     </button>
                                                     <button class="ti-btn bg-primary text-white !font-medium">Delete
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                {{--Download--}}
+                                <form class="mb-2" action="{{route('colorize.download')}}">
+                                    <input type="hidden" name="id" value="{{$colorized->id}}">
+                                    <button>
+                                        <svg class="badge bg-primary/10  text-primary" xmlns="http://www.w3.org/2000/svg"
+                                             width="30" height="30" viewBox="0 0 24 24">
+                                            <path fill="currentColor"
+                                                  d="m12 16l-5-5l1.4-1.45l2.6 2.6V4h2v8.15l2.6-2.6L17 11zm-6 4q-.825 0-1.412-.587T4 18v-3h2v3h12v-3h2v3q0 .825-.587 1.413T18 20z"/>
+                                        </svg>
+                                    </button>
+                                </form>
+                                {{--Copy--}}
+                                <button class="mb-2" data-hs-overlay="#actionsmodal" onclick="
+                                    navigator.clipboard.writeText('{{$colorized->media->first()->getUrl()}}');
+                            copyUrl3()">
+                                    <svg class="badge bg-primary/10  text-primary" xmlns="http://www.w3.org/2000/svg"
+                                         width="30" height="30" viewBox="0 0 512 512">
+                                        <rect width="336" height="336" x="128" y="128" fill="none" stroke="currentColor"
+                                              stroke-linejoin="round" stroke-width="32" rx="57" ry="57"/>
+                                        <path fill="none" stroke="currentColor" stroke-linecap="round"
+                                              stroke-linejoin="round" stroke-width="32"
+                                              d="m383.5 128l.5-24a56.16 56.16 0 0 0-56-56H112a64.19 64.19 0 0 0-64 64v216a56.16 56.16 0 0 0 56 56h24"/>
+                                    </svg>
+                                </button>
+                                {{--Share--}}
+{{--                                <form action="{{route('flux.make.public')}}" method="post">--}}
+{{--                                    @csrf--}}
+{{--                                    <input type="hidden" name="id" value="{{$colorized->id}}">--}}
+{{--                                    <a href="javascript:void(0);" data-hs-overlay="#staticBackdrop2{{$indexColorize}}">--}}
+{{--                                        <svg class="badge bg-primary/10  text-primary" xmlns="http://www.w3.org/2000/svg"--}}
+{{--                                             width="30" height="30" viewBox="0 0 24 24">--}}
+{{--                                            <path {{$colorized->public===1? "fill=green" : "fill=currentColor"}} fill-rule="evenodd"--}}
+{{--                                                  d="M14.25 5.5a3.25 3.25 0 1 1 .833 2.173l-2.717 1.482l-3.04 1.737a3.25 3.25 0 0 1 .31 2.464l5.447 2.971a3.25 3.25 0 1 1-.719 1.316l-5.447-2.97a3.25 3.25 0 1 1-.652-4.902l3.37-1.926l2.729-1.489a3.3 3.3 0 0 1-.114-.856m3.25-1.75a1.75 1.75 0 1 0 0 3.5a1.75 1.75 0 0 0 0-3.5m-11 7a1.75 1.75 0 1 0 0 3.5a1.75 1.75 0 0 0 0-3.5m9.25 7.75a1.75 1.75 0 1 1 3.5 0a1.75 1.75 0 0 1-3.5 0"--}}
+{{--                                                  clip-rule="evenodd"/>--}}
+{{--                                        </svg>--}}
+{{--                                    </a>--}}
+{{--                                    <div id="staticBackdrop2{{$indexColorize}}"--}}
+{{--                                         class="hs-overlay hidden ti-modal  [--overlay-backdrop:static]">--}}
+{{--                                        <div class="hs-overlay-open:mt-7 ti-modal-box mt-0 ease-out min-h-[calc(100%-3.5rem)] flex items-center">--}}
+{{--                                            <div class="ti-modal-content">--}}
+{{--                                                <div class="ti-modal-header">--}}
+{{--                                                    <h6 class="modal-title text-[1rem] font-semibold">{{__('Make Public')}}</h6>--}}
+{{--                                                    <button type="button"--}}
+{{--                                                            class="hs-dropdown-toggle !text-[1rem] !font-semibold !text-defaulttextcolor"--}}
+{{--                                                            data-hs-overlay="#staticBackdrop2{{$indexColorize}}">--}}
+{{--                                                        <span class="sr-only">Close</span>--}}
+{{--                                                        <i class="ri-close-line"></i>--}}
+{{--                                                    </button>--}}
+{{--                                                </div>--}}
+{{--                                                <div class="ti-modal-body px-4">--}}
+{{--                                                    <p>--}}
+{{--                                                        {{__('Make the photo available to everyone')}}--}}
+{{--                                                    </p>--}}
+{{--                                                </div>--}}
+{{--                                                <div class="ti-modal-footer">--}}
+{{--                                                    <button type="button"--}}
+{{--                                                            class="hs-dropdown-toggle ti-btn  ti-btn-secondary-full align-middle"--}}
+{{--                                                            data-hs-overlay="#staticBackdrop2{{$indexColorize}}">--}}
+{{--                                                        {{__('Close')}}--}}
+{{--                                                    </button>--}}
+{{--                                                    <button class="ti-btn bg-primary text-white !font-medium">{{__('share')}}--}}
+{{--                                                    </button>--}}
+{{--                                                </div>--}}
+{{--                                            </div>--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                </form>--}}
+                            </div>
+                            @foreach($colorized->media as $media)
+                                <a  href="{{$media->getUrl()}}" class="glightbox box" data-gallery="gallery1">
+                                    <img style="object-fit: cover;max-height: 290px" src="{{$media->getUrl()}}" alt="image">
+                                </a>
+                            @endforeach
+                        </div>
+                    @endforeach
+                @endif
+            @if($model==='midjourney')
+                @foreach($midjourneys as $midjourney)
+                    @foreach($midjourney->media as $mediaindex=> $media)
+                        <div class="lg:col-span-3 md:col-span-3 sm:col-span-6 col-span-6">
+                            <div class="flex justify-center gap-2">
+                               {{--DELETE--}}
+                                <form class="mb-2" action="{{route('midjourney.delete')}}" method="post">
+                                    @csrf
+                                    <input type="hidden" name="id" value="{{$midjourney->id}}">
+                                    <input type="hidden" name="mediaid" value="{{$media->id}}">
+                                    <a href="javascript:void(0);" data-hs-overlay="#staticBackdrop2{{$media->id}}">
+                                        <svg class="badge bg-primary/10  text-primary"
+                                             xmlns="http://www.w3.org/2000/svg" width="30" height="30"
+                                             viewBox="0 0 24 24">
+                                            <path fill="currentColor"
+                                                  d="M7 21q-.825 0-1.412-.587T5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.587 1.413T17 21zM17 6H7v13h10zM9 17h2V8H9zm4 0h2V8h-2zM7 6v13z"/>
+                                        </svg>
+                                    </a>
+                                    <div id="staticBackdrop2{{$media->id}}"
+                                         class="hs-overlay hidden ti-modal  [--overlay-backdrop:static]">
+                                        <div class="hs-overlay-open:mt-7 ti-modal-box mt-0 ease-out">
+                                            <div class="ti-modal-content">
+                                                <div class="ti-modal-header">
+                                                    <h6 class="modal-title text-[1rem] font-semibold">{{__('Delete')}}</h6>
+                                                    <button type="button"
+                                                            class="hs-dropdown-toggle !text-[1rem] !font-semibold !text-defaulttextcolor"
+                                                            data-hs-overlay="#staticBackdrop2{{$media->id}}">
+                                                        <span class="sr-only">Close</span>
+                                                        <i class="ri-close-line"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="ti-modal-body px-4">
+                                                    <p>
+                                                        {{__('Are you sure ?')}}
+                                                    </p>
+                                                </div>
+                                                <div class="ti-modal-footer">
+                                                    <button type="button"
+                                                            class="hs-dropdown-toggle ti-btn  ti-btn-secondary-full align-middle"
+                                                            data-hs-overlay="#staticBackdrop2{{$media->id}}">
+                                                        {{__('Close')}}
+                                                    </button>
+                                                    <button class="ti-btn bg-primary text-white !font-medium">{{__('Delete')}}
                                                     </button>
                                                 </div>
                                             </div>
@@ -204,7 +325,7 @@
                                     <input type="hidden" name="index" value="{{$mediaindex}}">
                                     <button>
                                         <svg class="badge bg-primary/10  text-primary"
-                                             xmlns="http://www.w3.org/2000/svg" width="35" height="35"
+                                             xmlns="http://www.w3.org/2000/svg" width="30" height="30"
                                              viewBox="0 0 24 24">
                                             <path fill="currentColor"
                                                   d="m12 16l-5-5l1.4-1.45l2.6 2.6V4h2v8.15l2.6-2.6L17 11zm-6 4q-.825 0-1.412-.587T4 18v-3h2v3h12v-3h2v3q0 .825-.587 1.413T18 20z"/>
@@ -217,7 +338,7 @@
                             copyUrl3()
                             ">
                                     <svg class="badge bg-primary/10  text-primary" xmlns="http://www.w3.org/2000/svg"
-                                         width="35" height="35" viewBox="0 0 512 512">
+                                         width="30" height="30" viewBox="0 0 512 512">
                                         <rect width="336" height="336" x="128" y="128" fill="none" stroke="currentColor"
                                               stroke-linejoin="round" stroke-width="32" rx="57" ry="57"/>
                                         <path fill="none" stroke="currentColor" stroke-linecap="round"
@@ -370,6 +491,7 @@
                         <div class="flex justify-center gap-3 mt-5">
                             <form class="mb-2" action="{{route('runway.delete',$runway->id)}}" method="post">
                                 @csrf
+                                <input type="hidden" name="id" value="{{$runway->id}}">
                                 <a href="javascript:void(0);" data-hs-overlay="#staticBackdrop{{$runwayindex}}">
                                     <svg class="badge bg-primary/10  text-primary" xmlns="http://www.w3.org/2000/svg"
                                          width="35" height="35" viewBox="0 0 24 24">
@@ -382,7 +504,7 @@
                                     <div class="hs-overlay-open:mt-7 ti-modal-box mt-0 ease-out">
                                         <div class="ti-modal-content">
                                             <div class="ti-modal-header">
-                                                <h6 class="modal-title text-[1rem] font-semibold">Modal title</h6>
+                                                <h6 class="modal-title text-[1rem] font-semibold">{{__('Delete Video')}}</h6>
                                                 <button type="button"
                                                         class="hs-dropdown-toggle !text-[1rem] !font-semibold !text-defaulttextcolor"
                                                         data-hs-overlay="#staticBackdrop{{$runwayindex}}">
@@ -392,16 +514,16 @@
                                             </div>
                                             <div class="ti-modal-body px-4">
                                                 <p>
-                                                    Are you sure you want to delete this image?
+                                                    {{__('Are you sure you want to delete this video?')}}
                                                 </p>
                                             </div>
                                             <div class="ti-modal-footer">
                                                 <button type="button"
                                                         class="hs-dropdown-toggle ti-btn  ti-btn-secondary-full align-middle"
                                                         data-hs-overlay="#staticBackdrop{{$runwayindex}}">
-                                                    Close
+                                                    {{__('Close')}}
                                                 </button>
-                                                <button class="ti-btn bg-primary text-white !font-medium">Delete
+                                                <button class="ti-btn bg-primary text-white !font-medium">{{__('Delete')}}
                                                 </button>
                                             </div>
                                         </div>
@@ -433,7 +555,7 @@
                                 </svg>
                             </button>
                         </div>
-                        @foreach($runway->media as $media)
+                        @foreach($runway->getMedia('runway_image') as $media)
                             <a style="position: relative" aria-label="anchor" href="javascript:void(0);"
                                data-hs-overlay="#hs-extralarge-modal"
                                onclick="document.getElementById('modalvideo').src='{{$runway->video_url}}'
@@ -522,6 +644,8 @@
                                     @endif
                                     @if(isset($removebgs)) href="{{route('gallery',['model'=>'removebg','perpage'=>$perpage1,'page'=>request()->query('page')])}}"
                                     @endif
+                                    @if(isset($colorizations)) href="{{route('gallery',['model'=>'colorize','perpage'=>$perpage1,'page'=>request()->query('page')])}}"
+                                    @endif
                                     type="button" class="ti-dropdown-item w-full justify-between">
                                 8 image
                                 @if(request()->query('perpage')==8)
@@ -535,6 +659,8 @@
                                     @endif
                                     @if(isset($removebgs)) href="{{route('gallery',['model'=>'removebg','perpage'=>$perpage2,'page'=>request()->query('page')])}}"
                                     @endif
+                                    @if(isset($colorizations)) href="{{route('gallery',['model'=>'colorize','perpage'=>$perpage2,'page'=>request()->query('page')])}}"
+                                    @endif
                                     type="button" class="ti-dropdown-item w-full justify-between">
                                 16 image
                                 @if(request()->query('perpage')==16)
@@ -547,6 +673,8 @@
                                     @if(isset($midjourneys)) href="{{route('gallery',['model'=>'midjourney','perpage'=>$perpage3,'page'=>request()->query('page')])}}"
                                     @endif
                                     @if(isset($removebgs)) href="{{route('gallery',['model'=>'removebg','perpage'=>$perpage3,'page'=>request()->query('page')])}}"
+                                    @endif
+                                    @if(isset($colorizations)) href="{{route('gallery',['model'=>'colorize','perpage'=>$perpage3,'page'=>request()->query('page')])}}"
                                     @endif
                                     type="button" class="ti-dropdown-item w-full justify-between">
                                 32 image
@@ -563,7 +691,7 @@
                 <form action="">
                     <div class="flex justify-center sm:justify-start items-center gap-x-2">
                                             <span class="text-sm text-gray-800 whitespace-nowrap dark:text-white">
-                                                Go to page
+                                                {{__('Go to page')}}
                                             </span>
                         <input type="number" name="page"
                                class="min-h-[32px] py-2 px-2.5 block w-12 border-gray-200 rounded-md text-sm text-center focus:border-primary focus:ring-primary [&amp;::-webkit-outer-spin-button]:appearance-none [&amp;::-webkit-inner-spin-button]:appearance-none disabled:opacity-50 disabled:pointer-events-none dark:bg-bodybg dark:border-white/10 dark:text-gray-400 dark:focus:ring-gray-600">

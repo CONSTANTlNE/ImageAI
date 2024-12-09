@@ -97,7 +97,7 @@
 
 
     {{--install buttons--}}
-    @include('landingcomponents.installButtonsSection')
+{{--    @include('landingcomponents.installButtonsSection')--}}
     <!-- Midjourney Section -->
     @include('landingcomponents.midjourneySection')
     <!-- Flux-schnell Section -->
@@ -109,7 +109,7 @@
 
     <!-- Runway Section -->
     @include('landingcomponents.runwaySection')
-    <button class="openModal">openModal</button>
+{{--    <button class="openModal">openModal</button>--}}
     {{--Pricing FAQ Footer--}}
     @include('landingcomponents.pricingSection')
     <!-- Scripts -->

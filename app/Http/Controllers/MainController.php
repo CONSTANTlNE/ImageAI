@@ -33,7 +33,7 @@ class MainController extends Controller
         $perpage2 = 16;
         $perpage3 = 32;
 
-        $models=['flux-schnell','midjourney','removebg','runway'];
+        $models=['flux-schnell','midjourney','removebg','runway','colorize'];
         if (!in_array($model, $models)){
             return back()->with('alert_error', 'გალერეა არ მოიძებნა');
         }
@@ -54,7 +54,8 @@ class MainController extends Controller
             return view('user.pages.gallery', compact('fluxes', 'model', 'perpage1', 'perpage2', 'perpage3', 'data', 'count'));
         }
 
-        if ($model === 'colorization') {
+
+        if ($model === 'colorize') {
             $colorizations = Colorization::with('media')
                 ->orderBy('created_at', 'desc')
                 ->paginate($perpage)->appends($request->query());

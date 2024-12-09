@@ -1,7 +1,10 @@
 import SimpleBar from 'simplebar'; // Import SimpleBar
 import 'simplebar/dist/simplebar.css'; // Import SimpleBar CSS
 
+
 document.addEventListener('DOMContentLoaded', () => {
+
+
     (function () {
         "use strict";
 
@@ -20,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
         var myElement4 = document.getElementById('main-chat-content');
         if (myElement4) {
             new SimpleBar(myElement4, {autoHide: true});
+
         }
 
         var myElement5 = document.getElementById('chat-user-details');
@@ -95,18 +99,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // SIMPLEBAR scroll to bottom
-        const chatscroll = document.querySelector('.custom-chat-content');
-        if (chatscroll) {
-            const chatsimplebar = new SimpleBar(chatscroll);
+    const chatscroll = document.querySelector('.custom-chat-content');
+    if (chatscroll) {
+        const chatsimplebar = new SimpleBar(chatscroll);
 
-            // Accessing the scroll element directly via SimpleBar’s element property
-            const scrollElement = chatscroll.querySelector('.simplebar-content-wrapper');
+        // Accessing the scroll element directly via SimpleBar’s element property
+        const scrollElement = chatscroll.querySelector('.simplebar-content-wrapper');
 
-            if (scrollElement) {
-                scrollElement.scrollTop = scrollElement.scrollHeight;
-            } else {
-                console.error('SimpleBar scrollable content could not be found.');
-            }}
+        if (scrollElement) {
+            scrollElement.scrollTop = scrollElement.scrollHeight;
+        } else {
+            console.error('SimpleBar scrollable content could not be found.');
+        }
+    }
+
+
+    const chatinfo = document.getElementById('myTabContent');
+
+
+    new SimpleBar(chatinfo); // Use the imported SimpleBar directly
 
 
 

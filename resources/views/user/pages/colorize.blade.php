@@ -143,7 +143,7 @@
                         <span class="ltr:float-right rtl:float-left text-[0.6875rem]">
                             <a href="javascript:void(0);" class="text-primary underline">
                                 <u>
-                                    <a class="text-primary startSpinner" href="{{route('gallery',['model'=>'runway'])}}">{{__('View All')}}</a>
+                                    <a class="text-primary startSpinner" href="{{route('gallery',['model'=>'colorize'])}}">{{__('View All')}}</a>
                                 </u>
                             </a>
                         </span>

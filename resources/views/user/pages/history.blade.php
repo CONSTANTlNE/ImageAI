@@ -3,7 +3,7 @@
 @section('history')
     <div class="main-content">
 
-        <div style="height: 100%!important;max-height: calc(100vh - 12rem) !important;"
+        <div
              class="main-chart-wrapper p-2 gap-2 lg:flex responsive-chat-open">
             {{--Left Sidebar--}}
             @include('user.pages.components.chatLeftSidebar.chat-left-sidebar')
@@ -12,11 +12,11 @@
                 <div class="sm:flex items-center p-2 border-b dark:border-defaultborder/10">
                     <div class="flex items-center leading-none">
                         <div class="text-center flex-col justify-center gap-2 w-full px-3 ">
-                            <form style="max-width: 100px" class="mb-2 w"
+                            <form style="max-width: 100px;align-self: center;" class="mb-2 w"
                                   action="{{route('userbalance.history')}}?{{ http_build_query(request()->query()) }}">
                                 <select
                                         onchange="this.form.submit();"
-                                        style="min-width: 115px!important;padding-bottom: 2px;padding-top:2px"
+                                        style=" min-width: 115px!important;padding-bottom: 2px;padding-top:2px"
                                         name="model"
                                         class="ti-form-select rounded-sm  !px-2">
                                     <option selected value="all">{{__('All')}}</option>
@@ -215,7 +215,7 @@
             </div>
         </div>
         {{--PAGINATION--}}
-        <div class="history-pagination grid justify-center sm:flex sm:items-center gap-2 flex-wrap">
+        <div style="margin-top: 0!important;" class="history-pagination grid justify-center sm:flex sm:items-center gap-2 flex-wrap">
             <!-- Pagination Wrapper -->
             <nav class="flex items-center justify-center -space-x-px mb-3">
 
